@@ -20,4 +20,16 @@ const map = new Map({
 });
 
 var layerSwitcher = new LayerSwitcher();
-map.addControl(layerSwitcher);
+//map.addControl(layerSwitcher);
+
+// Get out-of-the-map div element with the ID "layers" and renders layers to it.
+// NOTE: If the layers are changed outside of the layer switcher then you
+// will need to call ol.control.LayerSwitcher.renderPanel again to refesh
+// the layer tree. Style the tree via CSS.
+var sidebar = new ol.control.Sidebar({
+  element: 'sidebar',
+  position: 'left'
+});
+var toc = document.getElementById('layers');
+ol.control.LayerSwitcher.renderPanel(map, toc, { reverse: true });
+map.addControl(sidebar);

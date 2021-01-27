@@ -20,7 +20,8 @@
   "homepage": "https://github.com/swalterfub/jezero-webgis#readme",
   "dependencies": {
     "ol": "^6.5.0",
-    "ol-layerswitcher": "^3.8.3"
+    "ol-layerswitcher": "^3.8.3",
+    "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
