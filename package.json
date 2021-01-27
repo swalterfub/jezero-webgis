@@ -1,0 +1,27 @@
+{
+  "name": "jezero-webgis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "build": "parcel build --public-url . index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swalterfub/jezero-webgis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swalterfub/jezero-webgis/issues"
+  },
+  "homepage": "https://github.com/swalterfub/jezero-webgis#readme",
+  "dependencies": {
+    "ol": "^6.5.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
