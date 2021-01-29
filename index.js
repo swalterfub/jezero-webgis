@@ -23,6 +23,8 @@ var projection = new Projection({
   global: true,
   //extent: [4000000, 0, 4500000, 500000],
   extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
+  //extent: [4536590.000, 1013775.000, 4683160.000, 1180560.000],
+  //extent: [4363662.941221565, 859975.4272094945, 4808874.452132847, 1296750.544287833],
   getPointResolution: function(resolution, point) {
     var toEPSG49901 = getTransform(get("EPSG:49911"), get("EPSG:49901"));
     var vertices = [ point[0] - resolution / 2, point[1], point[0] + resolution / 2, point[1] ];
@@ -31,9 +33,31 @@ var projection = new Projection({
   }
 });
 
+var mainview = new View({
+    center: [0, 0],
+    zoom: 0,
+    extent: [4363662.941221565, 859975.4272094945, 4808874.452132847, 1296750.544287833],
+    projection: projection
+  })
+
+/*var source = new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "HRSC-hsv" }
+      });
+source.on('tileloadend', function () {
+  console.log(mainview.calculateExtent());
+});*/
+
 const map = new Map({
   target: 'map',
   layers: [
+    new TileLayer({
+      title: "HRSC",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "HRSC-hsv" }
+      })
+    }),
     new TileLayer({
       title: "CTX",
       source: new TileWMS({
@@ -42,23 +66,19 @@ const map = new Map({
       })
     }),
     new TileLayer({
-      title: "HMC",
+      title: "HIRISE",
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/eqc-bin/wms?",
-        params: { LAYERS: "HMChsvlog" }
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "HiRISE-hsv" }
       })
-    }),
+    })
   ],
   controls: defaultControls().extend([
     new ScaleLine({
       units: "metric"
     })
   ]),
-  view: new View({
-    center: [0, 0],
-    zoom: 0,
-    projection: projection
-  })
+  view: mainview
 });
 
 //var layerSwitcher = new LayerSwitcher();

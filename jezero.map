@@ -1,0 +1,73 @@
+MAP
+NAME "Jezero Landing Site"
+MAXSIZE 40960
+UNITS meters
+EXTENT 4000000 0 4500000 500000
+SIZE 900 700
+SHAPEPATH "/mnt/data/iaumars/mapdata"
+IMAGETYPE png24
+CONFIG "MS_ERRORFILE" "/mnt/data/iaumars/log/jezero-error.log"
+#DEBUG 10
+DEBUG 0
+OUTPUTFORMAT
+  NAME "geojson"
+  DRIVER "OGR/GEOJSON"
+  MIMETYPE "application/json"
+  FORMATOPTION "STORAGE=stream"
+  FORMATOPTION "FORM=SIMPLE"
+END
+WEB
+	IMAGEPATH	"/mnt/data/iaumars/htdocs/tmp"
+	IMAGEURL	"/tmp"
+	LOG		"/mnt/data/iaumars/log/jezero.log"
+	METADATA
+                "wfs_onlineresource"        "https://maps.planet.fu-berlin.de/jez-bin/wms?"
+                "wfs_srs"                   "EPSG:49911"
+                "wfs_enable_request"        "* !GetCapabilities"
+                "wfs_getfeature_formatlist" "geojson,application/json"
+		"wfs_use_default_extent_for_getfeature" "no"
+		wms_onlineresource	"https://maps.planet.fu-berlin.de/jez-bin/wms?"
+		"wms_srs"	"EPSG:49911 EPSG:49901 EPSG:4326 IAU2000:49911"
+		wms_enable_request "* !GetCapabilities"
+		#wms_enable_request "*"
+		wms_feature_info_mime_type "text/html,application/json"
+	END
+END
+PROJECTION
+    "init=epsg:49911"
+END
+#INCLUDE 'mola-eqc.map'
+#INCLUDE 'hrsc-damos-eqc.map'
+#INCLUDE 'hrsc-hmc-dtms-eqc.map'
+#INCLUDE 'ua-dtms.map'
+LAYER
+        NAME "HiRISE-hsv"
+        TYPE RASTER
+        DATA hirise/hsv/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first.tif
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END #CTX-hsv
+LAYER
+        NAME "CTX-hsv"
+        TYPE RASTER
+        DATA ctx/hsv-5500-20000/ctx-hsv-5500-20000.vrt
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END #CTX-hsv
+LAYER
+        NAME "HRSC-hsv"
+        TYPE RASTER
+        DATA hrsc/mc13e/hsv/hsv-5500-20000.vrt
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END #HRSC-hsv
+END #map
