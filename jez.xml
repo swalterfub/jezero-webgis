@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- see the accompanying mapcache.xml.sample for a fully commented configuration file -->
+
+<mapcache>
+      <metadata>
+         <title>Mars equirectangular IAU sphere 3396190 m</title>
+      </metadata>
+
+   <cache name="disk" type="disk">
+      <base>/mnt/data/iaumars/mapcache/jez</base>
+      <symlink_blank/>
+   </cache>
+
+  <cache name="tmpl" type="disk" layout="template">
+      <template>/mnt/data/iaumars/mapcache/jez/{tileset}/{grid}/{dim}/{z}/{x}/{y}.{ext}</template>
+  </cache>
+
+   <source name="HiRISE-hsv" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>HiRISE-hsv</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="HiRISE-hsv">
+      <source>HiRISE-hsv</source>
+      <cache>disk</cache>
+      <grid maxzoom="17">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
+   <source name="CTX-hsv" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>CTX-hsv</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="CTX-hsv">
+      <source>CTX-hsv</source>
+      <cache>disk</cache>
+      <grid maxzoom="14">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
+   <source name="HRSC-hsv" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>HRSC-hsv</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="HRSC-hsv">
+      <source>HRSC-hsv</source>
+      <cache>disk</cache>
+      <grid maxzoom="10">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
+   <grid name="eqc">
+      <metadata>
+         <title>Mars Equirectangular Sphere 3396190</title>
+      </metadata>
+      <read-only>true</read-only>
+      <srs>EPSG:49911</srs>
+      <srsalias>IAU2000:49911</srsalias>
+      <size>256 256</size>
+      <units>m</units>
+      <!--extent>-10668848.652 -5215881.563 10668848.652 5215881.563</extent-->
+      <!--extent>4518368.499830384 1031472.1026325921 4685520.1456985995 1147739.6140793865</extent-->
+      <extent>4296116.795881205 922701.4516912713 4909523.499383646 1258219.2903108392</extent>
+      <resolutions>41675.190046875 20837.5950234375 10418.79751171875 5209.398755859375 2604.6993779296877 1302.3496889648438 651.1748444824219 325.58742224121096 162.79371112060548 81.39685556030274 40.69842778015137 20.349213890075685 10.174606945 5.087303472 2.543651736 1.271825868 0.635912934 0.3179564670324326 0.1589782335162163</resolutions>
+   </grid>
+
+   <default_format>PNGQ_FAST</default_format>
+
+   <service type="wms" enabled="true">
+      <full_wms>assemble</full_wms>
+      <resample_mode>bilinear</resample_mode>
+      <format>PNG</format>
+      <maxsize>4096</maxsize>
+   </service>
+   <service type="wmts" enabled="true"/>
+   <service type="tms" enabled="true"/>
+   <service type="kml" enabled="false"/>
+   <service type="gmaps" enabled="false"/>
+   <service type="ve" enabled="false"/>
+   <service type="mapguide" enabled="false"/>
+   <service type="demo" enabled="false"/>
+
+   <errors>report</errors>
+   <locker type="disk">
+     <directory>/mnt/data/iaumars/log</directory>
+     <timeout>300</timeout>
+    </locker>
+   <format name="PNGQ_FAST" type ="PNG">
+	<compression>fast</compression>
+	<colors>256</colors>
+	<transparent>PNG_BEST</transparent>
+   </format>
+
+   <threaded_fetching>true</threaded_fetching>
+   
+</mapcache>

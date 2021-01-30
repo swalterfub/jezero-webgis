@@ -3,12 +3,15 @@ NAME "Jezero Landing Site"
 MAXSIZE 40960
 UNITS meters
 EXTENT 4000000 0 4500000 500000
+TRANSPARENT ON
+IMAGECOLOR 255 255 255
 SIZE 900 700
 SHAPEPATH "/mnt/data/iaumars/mapdata"
 IMAGETYPE png24
 CONFIG "MS_ERRORFILE" "/mnt/data/iaumars/log/jezero-error.log"
+FONTSET /usr/local/share/fonts.txt
 #DEBUG 10
-DEBUG 0
+DEBUG 2
 OUTPUTFORMAT
   NAME "geojson"
   DRIVER "OGR/GEOJSON"
@@ -53,7 +56,8 @@ END #CTX-hsv
 LAYER
         NAME "CTX-hsv"
         TYPE RASTER
-        DATA ctx/hsv-5500-20000/ctx-hsv-5500-20000.vrt
+        #DATA ctx/hsv-5500-20000/ctx-hsv-5500-20000.vrt
+        DATA ctx/ctx_hsv_export.tif
         METADATA
                 "wms_abstract"    "HMC30 color mosaic pan-sharpened"
                 "wms_title"     "HMC30 hsv"
@@ -61,13 +65,144 @@ LAYER
         END
 END #CTX-hsv
 LAYER
+        NAME "channels"
+        TYPE LINE
+        DATA shapes/channels/Jezero_Channels_AN_Jan15.shp
+        STATUS ON
+        LABELITEM Descript
+        CLASS
+          NAME "channel"
+          #COLOR 0 0 0
+          STYLE
+            WIDTH 2
+            COLOR 0 0 0
+            #OPACITY 50
+          END
+          LABEL 
+            COLOR 0 0 0
+            FONT "sans"
+            TYPE truetype
+            SIZE 8
+            POSITION ll
+            PARTIALS FALSE
+            BUFFER 4
+          END
+        END
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END #channesl
+LAYER
         NAME "HRSC-hsv"
         TYPE RASTER
-        DATA hrsc/mc13e/hsv/hsv-5500-20000.vrt
+        #DATA hrsc/mc13e/hsv/hsv-5500-20000.vrt
+        DATA hrsc/mc13e/mc13e-hsv-5500-20000.tif
         METADATA
                 "wms_abstract"    "HMC30 color mosaic pan-sharpened"
                 "wms_title"     "HMC30 hsv"
                 "wms_enable_request" "GetCapabilities"
         END
 END #HRSC-hsv
+LAYER
+  NAME "grid"
+  METADATA
+    "DESCRIPTION" "Grid"
+  END
+  TYPE LINE
+  STATUS ON
+  CLASS
+    NAME "Graticule"
+    COLOR 0 0 0
+    LABEL
+      COLOR  32 32 32
+      FONT "sans"
+      TYPE truetype
+      SIZE 8
+      POSITION ul
+      PARTIALS FALSE
+      BUFFER 4
+      #OUTLINECOLOR 255 255 255
+      OFFSET 2 2
+    END
+  END
+  PROJECTION
+    "init=epsg:49901"
+  END
+  GRID
+    LABELFORMAT "%g°"
+    MININTERVAL 1
+    MINARCS 5
+  END
+END # Layer
+LAYER
+  NAME "contour1"
+  GROUP "contour"
+  TYPE LINE
+  CONNECTIONTYPE CONTOUR
+  #DATA hrsc/mc13e/HMC_13E10E20E30E40_DA5.tif
+  DATA combined-dtm.vrt
+  PROCESSING "BANDS=1"
+  PROCESSING "CONTOUR_ITEM=elevation"
+  #PROCESSING "CONTOUR_INTERVAL=28000,230000:50"
+  PROCESSING "CONTOUR_INTERVAL=100"
+  GEOMTRANSFORM (smoothsia(generalize([shape], 0.25*[data_cellsize]),3,1))
+  LABELITEM "elevation"
+  CLASS
+    MINSCALEDENOM 24000
+    STYLE
+      WIDTH 1
+      COLOR 255 255 255
+      OPACITY 50
+    END
+    TEXT (tostring(([elevation]),"%.0f"))
+    LABEL 
+      STYLE
+          GEOMTRANSFORM 'labelpnt'
+          COLOR 100 100 100
+          OPACITY 100
+      END
+      COLOR 255 255 255
+      FONT "sans"
+      TYPE truetype
+      SIZE 10
+      POSITION AUTO
+      ANGLE FOLLOW
+    END
+  END
+END #layer
+LAYER
+  NAME "contour3"
+  GROUP "contour"
+  TYPE LINE
+  CONNECTIONTYPE CONTOUR
+  DATA hirise/dtm/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif
+  PROCESSING "BANDS=1"
+  PROCESSING "CONTOUR_ITEM=elevation"
+  PROCESSING "CONTOUR_INTERVAL=10"
+  LABELITEM elevation
+  GEOMTRANSFORM (smoothsia(generalize([shape], 0.25*[data_cellsize]),3,1))
+  CLASS
+    MAXSCALEDENOM 24000
+    STYLE
+      WIDTH 1
+      COLOR 255 255 255
+      OPACITY 50
+    END
+    TEXT (tostring(([elevation]),"%.0f"))
+    LABEL
+      COLOR 255 255 255
+      FONT "sans"
+      TYPE truetype
+      SIZE 8
+      POSITION AUTO
+      ANGLE FOLLOW
+      #PARTIALS TRUE
+      #BUFFER 4
+      #OUTLINECOLOR 255 255 255
+      #OFFSET 2 2
+    END
+  END
+END #layer
 END #map
