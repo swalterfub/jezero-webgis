@@ -39,6 +39,7 @@ var projection = new Projection({
 var mainview = new View({
     center: [4602820.147632426, 1090460.3710010552],
     zoom: 9,
+    minZoom: 9,
     maxZoom: 19,
     constrainResolution: true,
     extent: [4453619.711390391, 986679.3801616692, 4752020.58387446, 1194241.3618404411],
@@ -47,13 +48,16 @@ var mainview = new View({
   })
 
 var source = new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez/?",
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "HRSC-hsv" }
       });
 source.on('tileloadend', function () {
-  //console.log(mainview.calculateExtent());
+  console.log(mainview.calculateExtent());
   console.log(mainview.getZoom());
-  //var reso = mainview.getResolution();
+
+  var reso = mainview.getResolution();
+  var scale = 39.37 * 72 * reso;
+  //console.log(scale);
   //var scaledenom=(reso *)
   //console.log(mainview.getCenter());
 });
@@ -97,11 +101,21 @@ const map = new Map({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "contour" }
       })
+    }),
+    new TileLayer({
+      title: "Channels",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "channels" }
+      })
     })
   ],
   controls: defaultControls().extend([
     new ScaleLine({
-      units: "metric"
+      units: "metric",
+      //bar: true,
+      //text: true,
+      minWidth: 125
     }),
     new FullScreen(),
     mousePositionControl
