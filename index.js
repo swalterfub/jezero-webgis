@@ -14,8 +14,6 @@ import proj4 from "proj4";
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
-import MapScaleControl from 'ol-mapscale';
-
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs ");
 proj4.defs(
   "EPSG:49911",
@@ -102,12 +100,11 @@ const map = new Map({
     })
   ],
   controls: defaultControls().extend([
-    //new ScaleLine({
-      //units: "metric"
-    //}),
+    new ScaleLine({
+      units: "metric"
+    }),
     new FullScreen(),
-    mousePositionControl,
-    new MapScaleControl()
+    mousePositionControl
   ]),
   view: mainview
 });
