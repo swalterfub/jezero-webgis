@@ -48,7 +48,7 @@ var mainview = new View({
   })
 
 var source = new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "HRSC-hsv" }
       });
 source.on('tileloadend', function () {
@@ -71,6 +71,25 @@ const map = new Map({
   target: 'map',
   layers: [
     new TileLayer({
+      title: "Topography",
+      type: 'base',
+      visible: false,
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "base-dtm" }
+      })
+    }),
+    new TileLayer({
+      title: "Colour image map",
+      opacity: 1,
+      type: 'base',
+      visible: true,
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "base-hsv" }
+      })
+    }),
+    /*new TileLayer({
       title: "HRSC",
       source: source
     }),
@@ -87,26 +106,33 @@ const map = new Map({
         url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "HiRISE-hsv" }
       })
-    }),
+    }),*/
     new TileLayer({
-      title: "GRID",
+      title: "Lat/Lon GRID",
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "grid" }
       })
     }),
     new TileLayer({
-      title: "contour",
+      title: "Contour lines",
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "contour" }
       })
     }),
     new TileLayer({
-      title: "Channels",
+      title: "In-/out-flow channels",
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "channels" }
+      })
+    }),
+    new TileLayer({
+      title: "Possible paleo lake-level",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "lake" }
       })
     })
   ],
