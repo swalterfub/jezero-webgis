@@ -2,7 +2,7 @@ import 'ol/ol.css';
 import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from "ol/source/TileWMS";
-import { defaults as defaultControls, ScaleLine } from "ol/control";
+import { FullScreen, defaults as defaultControls, ScaleLine } from "ol/control";
 
 import LayerSwitcher from 'ol-layerswitcher';
 
@@ -10,6 +10,11 @@ import { register } from "ol/proj/proj4";
 import { Projection, getTransform, get } from "ol/proj";
 import { getDistance } from "ol/sphere";
 import proj4 from "proj4";
+
+import MousePosition from 'ol/control/MousePosition';
+import {createStringXY} from 'ol/coordinate';
+
+import MapScaleControl from 'ol-mapscale';
 
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs ");
 proj4.defs(
@@ -34,54 +39,82 @@ var projection = new Projection({
 });
 
 var mainview = new View({
-    center: [0, 0],
-    zoom: 0,
-    extent: [4363662.941221565, 859975.4272094945, 4808874.452132847, 1296750.544287833],
-    projection: projection
+    center: [4602820.147632426, 1090460.3710010552],
+    zoom: 9,
+    maxZoom: 19,
+    constrainResolution: true,
+    extent: [4453619.711390391, 986679.3801616692, 4752020.58387446, 1194241.3618404411],
+    projection: projection,
+    //maxResolution: 0.3179564670324326
   })
 
-/*var source = new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+var source = new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "HRSC-hsv" }
       });
 source.on('tileloadend', function () {
-  console.log(mainview.calculateExtent());
-});*/
+  //console.log(mainview.calculateExtent());
+  console.log(mainview.getZoom());
+  //var reso = mainview.getResolution();
+  //var scaledenom=(reso *)
+  //console.log(mainview.getCenter());
+});
+
+var mousePositionControl = new MousePosition({
+  coordinateFormat: createStringXY(3),
+  projection: 'EPSG:49901'
+});
 
 const map = new Map({
   target: 'map',
   layers: [
     new TileLayer({
       title: "HRSC",
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
-        params: { LAYERS: "HRSC-hsv" }
-      })
+      source: source
     }),
     new TileLayer({
       title: "CTX",
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "CTX-hsv" }
       })
     }),
     new TileLayer({
       title: "HIRISE",
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "HiRISE-hsv" }
+      })
+    }),
+    new TileLayer({
+      title: "GRID",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "grid" }
+      })
+    }),
+    new TileLayer({
+      title: "contour",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "contour" }
       })
     })
   ],
   controls: defaultControls().extend([
-    new ScaleLine({
-      units: "metric"
-    })
+    //new ScaleLine({
+      //units: "metric"
+    //}),
+    new FullScreen(),
+    mousePositionControl,
+    new MapScaleControl()
   ]),
   view: mainview
 });
 
 //var layerSwitcher = new LayerSwitcher();
+
+
 
 var sidebar = new ol.control.Sidebar({
   element: 'sidebar',
