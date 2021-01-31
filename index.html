@@ -7,69 +7,68 @@
       name="viewport"
       content="initial-scale=1.0, user-scalable=no, width=device-width"
     />
-    <link rel="stylesheet" href="jezero.css"/>
   </head>
   <body>
-    <div id="sidebar" class="sidebar collapsed">
-      <div class="sidebar-tabs">
-        <ul role="tablist">
-          <li>
-            <a href="#home" role="tab"><i class="fa fa-bars"></i></a>
-          </li>
-          <li>
-            <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
-          </li>
-          <li class="disabled">
-            <a href="#messages" role="tab"><i class="fa fa-envelope"></i></a>
-          </li>
-        </ul>
+    <div id="fullscreen" class="fullscreen">
+      <div id="sidebar" class="sidebar collapsed">
+        <div class="sidebar-tabs">
+          <ul role="tablist">
+            <li>
+              <a href="#home" role="tab"><i class="fa fa-bars"></i></a>
+            </li>
+            <li>
+              <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
+            </li>
+            <li class="disabled">
+              <a href="#messages" role="tab"><i class="fa fa-envelope"></i></a>
+            </li>
+          </ul>
 
-        <ul role="tablist">
-          <li>
-            <a href="#settings" role="tab"><i class="fa fa-gear"></i></a>
-          </li>
-        </ul>
+          <ul role="tablist">
+            <li>
+              <a href="#settings" role="tab"><i class="fa fa-gear"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+          <div class="sidebar-pane" id="home">
+            <h1 class="sidebar-header">
+              Layers
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
+            <div id="layers" class="layer-switcher"></div>
+          </div>
+
+          <div class="sidebar-pane" id="tools">
+            <h1 class="sidebar-header">
+              Tools<span class="sidebar-close"
+                ><i class="fa fa-caret-left"></i
+              ></span>
+            </h1>
+          </div>
+
+          <div class="sidebar-pane" id="messages">
+            <h1 class="sidebar-header">
+              Messages<span class="sidebar-close"
+                ><i class="fa fa-caret-left"></i
+              ></span>
+            </h1>
+          </div>
+
+          <div class="sidebar-pane" id="settings">
+            <h1 class="sidebar-header">
+              Settings<span class="sidebar-close"
+                ><i class="fa fa-caret-left"></i
+              ></span>
+            </h1>
+          </div>
+        </div>
       </div>
-
-      <!-- Tab panes -->
-      <div class="sidebar-content">
-        <div class="sidebar-pane" id="home">
-          <h1 class="sidebar-header">
-            Layers
-            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-          </h1>
-          <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
-          <div id="layers" class="layer-switcher"></div>
-        </div>
-
-        <div class="sidebar-pane" id="tools">
-          <h1 class="sidebar-header">
-            Tools<span class="sidebar-close"
-              ><i class="fa fa-caret-left"></i
-            ></span>
-          </h1>
-        </div>
-
-        <div class="sidebar-pane" id="messages">
-          <h1 class="sidebar-header">
-            Messages<span class="sidebar-close"
-              ><i class="fa fa-caret-left"></i
-            ></span>
-          </h1>
-        </div>
-
-        <div class="sidebar-pane" id="settings">
-          <h1 class="sidebar-header">
-            Settings<span class="sidebar-close"
-              ><i class="fa fa-caret-left"></i
-            ></span>
-          </h1>
-        </div>
-      </div>
+      <div id="map" class="sidebar-map"></div>
     </div>
-    <!-- END OF SIDEBAR DIV -->
-
-    <div id="map" class="sidebar-map"></div>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>
     <script src="index.js"></script>

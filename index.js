@@ -20,6 +20,8 @@ import proj4 from "proj4";
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
+import './jezero.css';
+
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs ");
 proj4.defs(
   "EPSG:49911",
@@ -91,7 +93,7 @@ const map = new Map({
       type: 'base',
       visible: true,
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        url: "https://maps.planet.fu-berlin.de/jez/?",
         params: { LAYERS: "base-hsv" }
       })
     }),
@@ -149,7 +151,9 @@ const map = new Map({
       //text: true,
       minWidth: 125
     }),
-    new FullScreen(),
+    new FullScreen({
+      source: 'fullscreen',
+    }),
     mousePositionControl
   ]),
   view: mainview
