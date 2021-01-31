@@ -4,7 +4,13 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from "ol/source/TileWMS";
 import { FullScreen, defaults as defaultControls, ScaleLine } from "ol/control";
 
+import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
+
+import 'font-awesome/css/font-awesome.min.css';
+
+import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
+import 'sidebar-v2/css/ol3-sidebar.min.css';
 
 import { register } from "ol/proj/proj4";
 import { Projection, getTransform, get } from "ol/proj";
@@ -149,14 +155,10 @@ const map = new Map({
   view: mainview
 });
 
-//var layerSwitcher = new LayerSwitcher();
-
-
-
-var sidebar = new ol.control.Sidebar({
+var sidebar = new Sidebar({
   element: 'sidebar',
   position: 'left'
 });
 var toc = document.getElementById('layers');
-ol.control.LayerSwitcher.renderPanel(map, toc, { reverse: true });
+LayerSwitcher.renderPanel(map, toc, { reverse: true });
 map.addControl(sidebar);
