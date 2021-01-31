@@ -3,8 +3,15 @@ import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from "ol/source/TileWMS";
 import { defaults as defaultControls, ScaleLine } from "ol/control";
+import Control from 'ol/control';
 
 import LayerSwitcher from 'ol-layerswitcher';
+import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+
+import 'font-awesome/css/font-awesome.min.css';
+
+import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
+import 'sidebar-v2/css/ol3-sidebar.min.css';
 
 import { register } from "ol/proj/proj4";
 import { Projection, getTransform, get } from "ol/proj";
@@ -20,7 +27,7 @@ register(proj4);
 //https://maps.planet.fu-berlin.de/jez-bin/wms?
 var projection = new Projection({
   code: "EPSG:49911",
-  global: true,
+  global: false,
   //extent: [4000000, 0, 4500000, 500000],
   extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
   getPointResolution: function(resolution, point) {
@@ -44,8 +51,8 @@ const map = new Map({
     new TileLayer({
       title: "HMC",
       source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/eqc-bin/wms?",
-        params: { LAYERS: "HMChsvlog" }
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "HRSC-hsv" }
       })
     }),
   ],
@@ -57,16 +64,17 @@ const map = new Map({
   view: new View({
     center: [0, 0],
     zoom: 0,
+    extent: [4000000, 0, 4500000, 500000],
     projection: projection
   })
 });
 
 //var layerSwitcher = new LayerSwitcher();
 
-var sidebar = new ol.control.Sidebar({
+var sidebar = new Sidebar({
   element: 'sidebar',
   position: 'left'
 });
 var toc = document.getElementById('layers');
-ol.control.LayerSwitcher.renderPanel(map, toc, { reverse: true });
+LayerSwitcher.renderPanel(map, toc, { reverse: true });
 map.addControl(sidebar);
