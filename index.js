@@ -13,7 +13,7 @@ import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
 import 'sidebar-v2/css/ol3-sidebar.min.css';
 
 import { register } from "ol/proj/proj4";
-import { Projection, getTransform, get, transform } from "ol/proj";
+import { Projection, getTransform, get, transform, addProjection, addCoordinateTransforms } from "ol/proj";
 import { getDistance } from "ol/sphere";
 import proj4 from "proj4";
 
@@ -26,9 +26,10 @@ proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
 proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
 register(proj4);
 //https://maps.planet.fu-berlin.de/jez-bin/wms?
-var projection = new Projection({
+var projection49911 = new Projection({
   code: "EPSG:49911",
   global: true,
+  units: 'm',
   //extent: [4000000, 0, 4500000, 500000],
   extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
   //extent: [4536590.000, 1013775.000, 4683160.000, 1180560.000],
@@ -37,24 +38,46 @@ var projection = new Projection({
     var toEPSG49901 = getTransform(get("EPSG:49911"), get("EPSG:49901"));
     var vertices = [ point[0] - resolution / 2, point[1], point[0] + resolution / 2, point[1] ];
     vertices = toEPSG49901(vertices, vertices, 2);
+    //console.log(vertices);
     return getDistance(vertices.slice(0, 2), vertices.slice(2, 4), 3396190);
   }
 });
+addProjection(projection49911);
+var projection49901 = new Projection({
+    code: 'EPSG:49901',
+    extent: [-180, -90, 180, 90],
+    units: 'degrees'
+});
+addProjection(projection49901);
+
+addCoordinateTransforms(
+  projection49901,
+  projection49911,
+  function (coordinate) {
+    var xdst=3396190*(coordinate[0]/180*Math.PI);
+    var ydst=3396190*(coordinate[1]/180*Math.PI);
+    return [ xdst, ydst ];
+  },
+  function (coordinate) {
+    var xdst=(coordinate[0]*180/Math.PI)/3396190;
+    var ydst=(coordinate[1]*180/Math.PI)/3396190;
+    return [ xdst, ydst ];
+  }
+);
 
 var zoom = 10;
 var center = [4602820.147632426, 1090460.3710010552];
 var rotation = 0;
 
 var mainview = new View({
-  //ol.proj.transform([35,0], 'EPSG:49900', 'EPSG:49910'),
-    center: center,
+    center: transform([77.4565,18.4475], projection49901, projection49911),
     zoom: zoom,
     //minZoom: 9,
     //maxZoom: 19,
     constrainResolution: true,
     //extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462],
     extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
-    projection: projection,
+    projection: projection49911,
     //maxResolution: 0.3179564670324326
   })
 
@@ -65,11 +88,11 @@ var source = new TileWMS({
 source.on('tileloadend', function () {
   //console.log(mainview.calculateExtent());
   //console.log(mainview.getZoom());
-  //coord = transform([35,0], 'EPSG:49901', 'EPSG:49911');
+  //coord = transform([35,0], projection49901, projection49911);
   //llcoord = transform(coord, 'EPSG:49911', 'EPSG:49901');
   //console.log(llcoord);
-  var reso = mainview.getResolution();
-  var scale = 39.37 * 72 * reso;
+  //var reso = mainview.getResolution();
+  //var scale = 39.37 * 72 * reso;
   //console.log(reso);
   //var scaledenom=(reso *)
   //console.log(mainview.getCenter());
@@ -77,7 +100,7 @@ source.on('tileloadend', function () {
 
 var mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(3),
-  projection: 'EPSG:49901'
+  projection: projection49901
 });
 
 const map = new Map({
