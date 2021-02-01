@@ -25,6 +25,13 @@
     "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "@rollup/plugin-inject": "^4.0.2",
+    "@rollup/plugin-legacy": "^2.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "parcel-bundler": "^1.12.4",
+    "rollup": "^2.38.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-re": "^1.0.7"
   }
 }
