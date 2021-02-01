@@ -2,7 +2,7 @@ import 'ol/ol.css';
 import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from "ol/source/TileWMS";
-import { FullScreen, defaults as defaultControls, ScaleLine } from "ol/control";
+import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from "ol/control";
 
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
@@ -13,7 +13,7 @@ import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
 import 'sidebar-v2/css/ol3-sidebar.min.css';
 
 import { register } from "ol/proj/proj4";
-import { Projection, getTransform, get } from "ol/proj";
+import { Projection, getTransform, get, transform } from "ol/proj";
 import { getDistance } from "ol/sphere";
 import proj4 from "proj4";
 
@@ -22,11 +22,8 @@ import {createStringXY} from 'ol/coordinate';
 
 import './jezero.css';
 
-proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs ");
-proj4.defs(
-  "EPSG:49911",
-  "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs "
-);
+proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
+proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
 register(proj4);
 //https://maps.planet.fu-berlin.de/jez-bin/wms?
 var projection = new Projection({
@@ -44,28 +41,36 @@ var projection = new Projection({
   }
 });
 
+var zoom = 10;
+var center = [4602820.147632426, 1090460.3710010552];
+var rotation = 0;
+
 var mainview = new View({
-    center: [4602820.147632426, 1090460.3710010552],
-    zoom: 9,
-    minZoom: 9,
-    maxZoom: 19,
+  //ol.proj.transform([35,0], 'EPSG:49900', 'EPSG:49910'),
+    center: center,
+    zoom: zoom,
+    //minZoom: 9,
+    //maxZoom: 19,
     constrainResolution: true,
-    extent: [4453619.711390391, 986679.3801616692, 4752020.58387446, 1194241.3618404411],
+    //extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462],
+    extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
     projection: projection,
     //maxResolution: 0.3179564670324326
   })
 
 var source = new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez/?",
-        params: { LAYERS: "HRSC-hsv" }
+        params: { LAYERS: "base-hsv" }
       });
 source.on('tileloadend', function () {
-  console.log(mainview.calculateExtent());
-  console.log(mainview.getZoom());
-
+  //console.log(mainview.calculateExtent());
+  //console.log(mainview.getZoom());
+  //coord = transform([35,0], 'EPSG:49901', 'EPSG:49911');
+  //llcoord = transform(coord, 'EPSG:49911', 'EPSG:49901');
+  //console.log(llcoord);
   var reso = mainview.getResolution();
   var scale = 39.37 * 72 * reso;
-  //console.log(scale);
+  //console.log(reso);
   //var scaledenom=(reso *)
   //console.log(mainview.getCenter());
 });
@@ -92,16 +97,13 @@ const map = new Map({
       opacity: 1,
       type: 'base',
       visible: true,
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez/?",
-        params: { LAYERS: "base-hsv" }
-      })
-    }),
-    /*new TileLayer({
-      title: "HRSC",
       source: source
     }),
     new TileLayer({
+      title: "HRSC",
+      source: source
+    }),
+    /*new TileLayer({
       title: "CTX",
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez/?",
@@ -154,9 +156,57 @@ const map = new Map({
     new FullScreen({
       source: 'fullscreen',
     }),
-    mousePositionControl
+    mousePositionControl,
+    new ZoomToExtent({label: 'O', extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462]})
   ]),
   view: mainview
+});
+
+//Permalink https://openlayers.org/en/latest/examples/permalink.html
+if (window.location.hash !== '') {
+  // try to restore center, zoom-level and rotation from the URL
+  var hash = window.location.hash.replace('#map=', '');
+  var parts = hash.split('/');
+  if (parts.length === 4) {
+    zoom = parseFloat(parts[0]);
+    center = [parseFloat(parts[1]), parseFloat(parts[2])];
+    rotation = parseFloat(parts[3]);
+  }
+}
+var shouldUpdate = true;
+var view = map.getView();
+var updatePermalink = function () {
+  if (!shouldUpdate) {
+    // do not update the URL when the view was changed in the 'popstate' handler
+    shouldUpdate = true;
+    return;
+  }
+  var center = view.getCenter();
+  var hash =
+    '#map=' +
+    view.getZoom().toFixed(2) +
+    '/' +
+    center[0].toFixed(2) +
+    '/' +
+    center[1].toFixed(2) +
+    '/' +
+    view.getRotation();
+  var state = {
+    zoom: view.getZoom(),
+    center: view.getCenter(),
+    rotation: view.getRotation(),
+  };
+  window.history.pushState(state, 'map', hash);
+};
+map.on('moveend', updatePermalink);
+window.addEventListener('popstate', function (event) {
+  if (event.state === null) {
+    return;
+  }
+  map.getView().setCenter(event.state.center);
+  map.getView().setZoom(event.state.zoom);
+  map.getView().setRotation(event.state.rotation);
+  shouldUpdate = false;
 });
 
 var sidebar = new Sidebar({

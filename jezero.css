@@ -13,50 +13,16 @@ body {
   height: 100%;
   font: 10pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
-.fullscreen:-webkit-full-screen {
-  height: 100%;
-  margin: 0;
-}
-.fullscreen:-ms-fullscreen {
-  height: 100%;
-}
-
-.fullscreen:fullscreen {
-  height: 100%;
-}
-
 .fullscreen {
   margin-bottom: 10px;
   width: 100%;
   height: 100%;
 }
-
-.map .ol-rotate {
-  top: 3em;
-}
-
 .map {
   width: 80%;
   height: 100%;
   float: left;
 }
-
-.sidepanel {
-  background: #1F6B75;
-  width: 20%;
-  height: 100%;
-  float: left;
-}
-
-.sidepanel-title {
-  width: 100%;
-  font-size: 3em;
-  color: #ffffff;
-  display: block;
-  text-align: center;
-}
-
-
 .layer-switcher {
   position: initial;
 }
@@ -64,5 +30,25 @@ body {
     opacity: 0.8;
 }
 .ol-mouse-position {
+    top: auto;
     bottom: 8px;
 }
+
+.sidebar-left ~ .sidebar-map .ol-zoom-extent {
+  margin-left: 46px; }
+  @media (min-width: 768px) {
+    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+      transition: margin-left 500ms; } }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+      margin-left: 317px; } }
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+      margin-left: 402px; } }
+  @media (min-width: 1200px) {
+    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+      margin-left: 472px; } }
+
+@media (min-width: 768px) {
+  .sidebar-left.collapsed ~ .sidebar-map .ol-zoom-extent {
+    margin-left: 52px; } }
