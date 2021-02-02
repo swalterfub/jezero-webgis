@@ -1,8 +1,13 @@
 import 'ol/ol.css';
 import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
+import VectorSource from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
+import {Fill, Stroke, Circle, Style} from 'ol/style';
+import {Vector} from 'ol/layer';
 import TileWMS from 'ol/source/TileWMS';
 import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from 'ol/control';
+import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
@@ -106,6 +111,56 @@ var mousePositionControl = new MousePosition({
   projection: projection49901
 });
 
+var poiSource = new VectorSource({
+  format: new GeoJSON(),
+  loader: function (extent, resolution, projection) {
+    var proj = projection.getCode();
+    var url = 'https://maps.planet.fu-berlin.de/jez-bin/wms?service=WFS&' +
+      'version=1.1.0&request=GetFeature&typename=poi&' +
+      'outputFormat=application/json&srsname=EPSG:49911&' +
+      'bbox=' + extent.join(',') +  proj;
+    var xhr = new XMLHttpRequest();
+     xhr.open('GET', url);
+     var onError = function() {
+       vectorSource.removeLoadedExtent(extent);
+     }
+     xhr.onerror = onError;
+     xhr.onload = function() {
+       if (xhr.status == 200) {
+         //console.dir(xhr.responseText);
+         poiSource.addFeatures(
+             poiSource.getFormat().readFeatures(xhr.responseText));
+       } else {
+         onError();
+       }
+     }
+     xhr.send();
+   },
+  strategy: bboxStrategy,
+});
+
+var fill = new Fill({
+         color: 'rgba(255,255,255,0.4)'
+       });
+var stroke = new Stroke({
+       color: 'rgba(51,153,204,0.8)',
+       width: 1.25
+     });
+
+var poi = new Vector({
+  title: "POI",
+  source: poiSource,
+  style: new Style({
+    image: new Circle({
+       fill: fill,
+       stroke: stroke,
+       radius: 15
+     }),
+     fill: fill,
+     stroke: stroke
+  }),
+});
+
 const map = new Map({
   target: 'map',
   layers: [
@@ -125,24 +180,6 @@ const map = new Map({
       visible: true,
       source: source
     }),
-    new TileLayer({
-      title: "HRSC",
-      source: source
-    }),
-    /*new TileLayer({
-      title: "CTX",
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez/?",
-        params: { LAYERS: "CTX-hsv" }
-      })
-    }),
-    new TileLayer({
-      title: "HIRISE",
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez/?",
-        params: { LAYERS: "HiRISE-hsv" }
-      })
-    }),*/
     new TileLayer({
       title: "Lat/Lon GRID",
       source: new TileWMS({
@@ -171,13 +208,7 @@ const map = new Map({
         params: { LAYERS: "lake" }
       }),
     }),
-    new TileLayer({
-      title: "POI",
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
-        params: { LAYERS: "poi" }
-      })
-    })
+    poi
   ],
   controls: defaultControls().extend([
     new ScaleLine({
