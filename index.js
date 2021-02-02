@@ -1,24 +1,27 @@
 import 'ol/ol.css';
 import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
-import TileWMS from "ol/source/TileWMS";
-import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from "ol/control";
+import TileWMS from 'ol/source/TileWMS';
+import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from 'ol/control';
 
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
 
-import 'font-awesome/css/font-awesome.min.css';
+import 'font-awesome/css/font-awesome.css';
 
 import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
-import 'sidebar-v2/css/ol3-sidebar.min.css';
+import 'sidebar-v2/css/ol3-sidebar.css';
 
-import { register } from "ol/proj/proj4";
-import { Projection, getTransform, get, transform, addProjection, addCoordinateTransforms } from "ol/proj";
-import { getDistance } from "ol/sphere";
-import proj4 from "proj4";
+import { register } from 'ol/proj/proj4';
+import { Projection, getTransform, get, transform, addProjection, addCoordinateTransforms } from 'ol/proj';
+import { getDistance } from 'ol/sphere';
+import proj4 from 'proj4';
 
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
+
+import * as THREE from 'three';
+import * as PANOLENS from 'panolens';
 
 import './jezero.css';
 
@@ -166,6 +169,13 @@ const map = new Map({
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "lake" }
+      }),
+    }),
+    new TileLayer({
+      title: "POI",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "poi" }
       })
     })
   ],
