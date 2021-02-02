@@ -1,5 +1,5 @@
 import 'ol/ol.css';
-import {Map, View} from 'ol';
+import {Map, View, Feature} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -283,7 +283,7 @@ LayerSwitcher.renderPanel(map, toc, { reverse: true });
 map.addControl(sidebar);
 
 var strokeBig = new Stroke({
-       color: 'rgba(51,153,204,0.8)',
+       color: 'rgba(51,153,204,1)',
        width: 5
      });
 var styleFeatureBig = new Style({
@@ -298,7 +298,7 @@ var styleFeatureBig = new Style({
 
 var info = document.getElementById('info');
 var target = document.getElementById('map');
-var currentFeature;
+var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
   /*info.css({
     //left: pixel[0] + 'px',
@@ -320,7 +320,8 @@ var displayFeatureInfo = function (pixel) {
     target.style.cursor = "pointer";
   } else {
     //info.tooltip('hide');
-    currentFeature.setStyle(styleFeature);
+    if (currentFeature) {
+    currentFeature.setStyle(styleFeature) };
     info.style.display = 'none';
     target.style.cursor = "";
   }
