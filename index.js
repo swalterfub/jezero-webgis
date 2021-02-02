@@ -91,9 +91,9 @@ source.on('tileloadend', function () {
   //coord = transform([35,0], projection49901, projection49911);
   //llcoord = transform(coord, 'EPSG:49911', 'EPSG:49901');
   //console.log(llcoord);
-  //var reso = mainview.getResolution();
-  //var scale = 39.37 * 72 * reso;
-  //console.log(reso);
+  var reso = mainview.getResolution();
+  var scale = 39.37 * 72 * reso;
+  //console.log(scale);
   //var scaledenom=(reso *)
   //console.log(mainview.getCenter());
 });
