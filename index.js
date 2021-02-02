@@ -80,8 +80,8 @@ var rotation = 0;
 var mainview = new View({
     center: transform([77.4565,18.4475], projection49901, projection49911),
     zoom: zoom,
-    //minZoom: 9,
-    //maxZoom: 19,
+    minZoom: 10,
+    maxZoom: 19,
     constrainResolution: true,
     //extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462],
     extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
