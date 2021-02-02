@@ -57,6 +57,7 @@ body {
   position: absolute;
   height: 1px;
   width: 1px;
+  font: 14pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
   z-index: 100;
 }
 .tooltip.in {

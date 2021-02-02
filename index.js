@@ -146,11 +146,7 @@ var stroke = new Stroke({
        color: 'rgba(51,153,204,0.8)',
        width: 1.25
      });
-
-var poi = new Vector({
-  title: "POI",
-  source: poiSource,
-  style: new Style({
+var styleFeature = new Style({
     image: new Circle({
        fill: fill,
        stroke: stroke,
@@ -158,7 +154,12 @@ var poi = new Vector({
      }),
      fill: fill,
      stroke: stroke
-  }),
+  });
+
+var poi = new Vector({
+  title: "POI",
+  source: poiSource,
+  style: styleFeature
 });
 
 const map = new Map({
@@ -281,8 +282,23 @@ var toc = document.getElementById('layers');
 LayerSwitcher.renderPanel(map, toc, { reverse: true });
 map.addControl(sidebar);
 
+var strokeBig = new Stroke({
+       color: 'rgba(51,153,204,0.8)',
+       width: 5
+     });
+var styleFeatureBig = new Style({
+    image: new Circle({
+       fill: fill,
+       stroke: strokeBig,
+       radius: 25
+     }),
+     fill: fill,
+     //stroke: stroke
+  });
+
 var info = document.getElementById('info');
 var target = document.getElementById('map');
+var currentFeature;
 var displayFeatureInfo = function (pixel) {
   /*info.css({
     //left: pixel[0] + 'px',
@@ -295,6 +311,8 @@ var displayFeatureInfo = function (pixel) {
   });
   if (feature) {
     //info.attr('data-original-title', feature.get('name')).tooltip('show');
+    feature.setStyle(styleFeatureBig);
+    currentFeature=feature;
     var text = feature.get('name');
     info.style.display = 'none';
     info.innerHTML = text;
@@ -302,6 +320,7 @@ var displayFeatureInfo = function (pixel) {
     target.style.cursor = "pointer";
   } else {
     //info.tooltip('hide');
+    currentFeature.setStyle(styleFeature);
     info.style.display = 'none';
     target.style.cursor = "";
   }
