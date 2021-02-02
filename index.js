@@ -129,10 +129,10 @@ var poiSource = new VectorSource({
        if (xhr.status == 200) {
          //console.dir(xhr.responseText);
          poiSource.addFeatures(
-             poiSource.getFormat().readFeatures(xhr.responseText));
-       } else {
-         onError();
-       }
+           poiSource.getFormat().readFeatures(xhr.responseText));
+         } else {
+           onError();
+         }
      }
      xhr.send();
    },
@@ -280,3 +280,37 @@ var sidebar = new Sidebar({
 var toc = document.getElementById('layers');
 LayerSwitcher.renderPanel(map, toc, { reverse: true });
 map.addControl(sidebar);
+
+var info = document.getElementById('info');
+var target = document.getElementById('map');
+var displayFeatureInfo = function (pixel) {
+  /*info.css({
+    //left: pixel[0] + 'px',
+    //top: pixel[1] - 15 + 'px',
+  });*/
+  info.style.left = pixel[0] + 'px';
+  info.style.top = (pixel[1] - 50) + 'px';
+  var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
+    return feature;
+  });
+  if (feature) {
+    //info.attr('data-original-title', feature.get('name')).tooltip('show');
+    var text = feature.get('name');
+    info.style.display = 'none';
+    info.innerHTML = text;
+    info.style.display = 'block';
+    target.style.cursor = "pointer";
+  } else {
+    //info.tooltip('hide');
+    info.style.display = 'none';
+    target.style.cursor = "";
+  }
+};
+
+map.on('pointermove', function (evt) {
+  if (evt.dragging) {
+    info.style.display = 'none';
+    return;
+  }
+  displayFeatureInfo(map.getEventPixel(evt.originalEvent));
+});
