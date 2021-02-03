@@ -11,13 +11,14 @@
   <body>
     <div id="fullscreen" class="fullscreen">
       <div id="sidebar" class="sidebar collapsed">
-        <div class="sidebar-tabs">
+        <div class="sidebar-tabs" id='sidebar-tabs'>
           <ul role="tablist">
             <li>
-              <a href="#home" role="tab"><i class="fa fa-bars"></i></a>
+              <!--a href="#home" role="tab"><i class="fa "></i></a-->
+              <a href="#home" role="tab"><i class="fa fa-layer-group" id='mapicon'></i></a>
             </li>
             <li>
-              <a href="#poi" role="tab"><i class="fa fa-eye"></i></a>
+              <a href="#poi" role="tab"><i class="fa fa-eye" id='poiicon'></i></a>
             </li>
             <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
@@ -44,9 +45,8 @@
 
           <div class="sidebar-pane" id="poi">
             <h1 class="sidebar-header">
-              Panoramic views<span class="sidebar-close"
-                ><i class="fa fa-caret-left"></i
-              ></span>
+              Panoramic views
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1>
             <!-- !!! HERE WILL GO THE CONTENT OF PANOLENS !!! -->
             <div id="panos" class="panolens">
