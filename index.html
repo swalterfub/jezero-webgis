@@ -17,17 +17,17 @@
               <a href="#home" role="tab"><i class="fa fa-bars"></i></a>
             </li>
             <li>
+              <a href="#poi" role="tab"><i class="fa fa-eye"></i></a>
+            </li>
+            <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
-            </li>
-            <li class="disabled">
-              <a href="#messages" role="tab"><i class="fa fa-envelope"></i></a>
-            </li>
+            </li-->
           </ul>
 
           <ul role="tablist">
-            <li>
+            <!--li class="disabled">
               <a href="#settings" role="tab"><i class="fa fa-gear"></i></a>
-            </li>
+            </li-->
           </ul>
         </div>
 
@@ -42,29 +42,38 @@
             <div id="layers" class="layer-switcher"></div>
           </div>
 
-          <div class="sidebar-pane" id="tools">
+          <div class="sidebar-pane" id="poi">
+            <h1 class="sidebar-header">
+              Panoramic views<span class="sidebar-close"
+                ><i class="fa fa-caret-left"></i
+              ></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE CONTENT OF PANOLENS !!! -->
+            <div id="panos" class="panolens">
+              <ul>
+                <li style="list-style: none;">
+                  <!--input type="button" id="crater"></input-->
+                  <a href="index.html"><label>Crater</label></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!--div class="sidebar-pane" id="tools">
             <h1 class="sidebar-header">
               Tools<span class="sidebar-close"
                 ><i class="fa fa-caret-left"></i
               ></span>
             </h1>
-          </div>
+          </div-->
 
-          <div class="sidebar-pane" id="messages">
-            <h1 class="sidebar-header">
-              Messages<span class="sidebar-close"
-                ><i class="fa fa-caret-left"></i
-              ></span>
-            </h1>
-          </div>
-
-          <div class="sidebar-pane" id="settings">
+          <!--div class="sidebar-pane" id="settings">
             <h1 class="sidebar-header">
               Settings<span class="sidebar-close"
                 ><i class="fa fa-caret-left"></i
               ></span>
             </h1>
-          </div>
+          </div-->
         </div>
       </div>
       <div id="map" class="sidebar-map"></div><div id="info"></div>

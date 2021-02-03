@@ -3,7 +3,7 @@ import {Map, View, Feature} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import {Fill, Stroke, Circle, Style} from 'ol/style';
+import {Fill, Stroke, Circle, Style, Text} from 'ol/style';
 import {Vector} from 'ol/layer';
 import TileWMS from 'ol/source/TileWMS';
 import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from 'ol/control';
@@ -12,7 +12,7 @@ import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
 
-import 'font-awesome/css/font-awesome.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 import Sidebar from 'sidebar-v2/js/ol3-sidebar.mjs';
 import 'sidebar-v2/css/ol3-sidebar.css';
@@ -130,6 +130,7 @@ var poiSource = new VectorSource({
          //console.dir(xhr.responseText);
          poiSource.addFeatures(
            poiSource.getFormat().readFeatures(xhr.responseText));
+
          } else {
            onError();
          }
@@ -139,21 +140,15 @@ var poiSource = new VectorSource({
   strategy: bboxStrategy,
 });
 
-var fill = new Fill({
-         color: 'rgba(255,255,255,0.4)'
-       });
-var stroke = new Stroke({
-       color: 'rgba(51,153,204,0.8)',
-       width: 1.25
-     });
 var styleFeature = new Style({
-    image: new Circle({
-       fill: fill,
-       stroke: stroke,
-       radius: 15
-     }),
-     fill: fill,
-     stroke: stroke
+    text: new Text({
+      text: '\uf3c5',
+      font: '900 24px "Font Awesome 5 Free"',
+      textBaseline: 'bottom',
+      fill: new Fill({
+        color: 'white'
+      })
+    })
   });
 
 var poi = new Vector({
@@ -286,16 +281,17 @@ var strokeBig = new Stroke({
        color: 'rgba(51,153,204,1)',
        width: 5
      });
-var styleFeatureBig = new Style({
-    image: new Circle({
-       fill: fill,
-       stroke: strokeBig,
-       radius: 25
-     }),
-     fill: fill,
-     //stroke: stroke
-  });
 
+var styleFeatureBig = new Style({
+    text: new Text({
+      text: '\uf3c5',
+      font: '900 28px "Font Awesome 5 Free"',
+      textBaseline: 'bottom',
+      fill: new Fill({
+        color: 'rgba(51,153,204,1)'
+      })
+    })
+  });
 var info = document.getElementById('info');
 var target = document.getElementById('map');
 var currentFeature = new Feature();
@@ -311,6 +307,7 @@ var displayFeatureInfo = function (pixel) {
   });
   if (feature) {
     //info.attr('data-original-title', feature.get('name')).tooltip('show');
+    feature.setStyle();
     feature.setStyle(styleFeatureBig);
     currentFeature=feature;
     var text = feature.get('name');
@@ -321,7 +318,9 @@ var displayFeatureInfo = function (pixel) {
   } else {
     //info.tooltip('hide');
     if (currentFeature) {
-    currentFeature.setStyle(styleFeature) };
+      currentFeature.setStyle();
+      currentFeature.setStyle(styleFeature)
+    };
     info.style.display = 'none';
     target.style.cursor = "";
   }
@@ -334,3 +333,7 @@ map.on('pointermove', function (evt) {
   }
   displayFeatureInfo(map.getEventPixel(evt.originalEvent));
 });
+
+const pano1 = new PANOLENS.ImagePanorama( 'sphere.jpg' );
+const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#map' ) });
+viewer.add(pano1);
