@@ -13,15 +13,17 @@
       <div id="sidebar" class="sidebar collapsed">
         <div class="sidebar-tabs" id='sidebar-tabs'>
           <ul role="tablist">
-            <li>
-              <!--a href="#home" role="tab"><i class="fa "></i></a-->
-              <a href="#home" role="tab"><i class="fa fa-layer-group" id="maptab"></i></a>
+            <li id="mtab" class='hidden'>
+              <a role="tab" title="Back to map"><i class="fa fa-map" id="mapicon"></i></a>
             </li>
-            <li>
-              <a href="#poi" role="tab"><i class="fa fa-eye" id="poitab"></i></a>
+            <li id="ltab">
+              <a href="#home" role="tab" title="Map layers"><i class="fa fa-layer-group" id="licon"></i></a>
             </li>
-            <li class="disabled">
-              <a href="#spots" role="tab"><i class="fa fa-binoculars" id="spotstab"></i></a>
+            <li id="poitab">
+              <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
+            </li>
+            <li id="spotstab" class="disabled">
+              <a href="#spots" role="tab" title="Infospots"><i class="fa fa-binoculars"></i></a>
             </li>
             <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
@@ -36,7 +38,7 @@
               <a href="https://www.fu-berlin.de/planets" target="new" role="tab"><i class="fa" id="fu-planets"></i></a>
             </li-->
             <li>
-              <a href="#credits" role="tab"><i class="fa fa-copyright" id='creditstab'></i></a>
+              <a href="#credits" role="tab" title="Credits"><i class="fa fa-copyright" id='creditstab'></i></a>
             </li>
           </ul>
         </div>
@@ -46,7 +48,7 @@
           <!-- !!! HOME !!! -->
           <div class="sidebar-pane" id="home">
             <h1 class="sidebar-header">
-              Layers
+              Map layers
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1>
             <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->

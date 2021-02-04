@@ -343,22 +343,33 @@ var returnToMap = function() {
   //enable pano canvas
   var panodiv = document.getElementById('pano');
   panodiv.style.visibility = 'hidden';
+  //show layers tab pane
+  var ltab = document.getElementById('ltab');
+  ltab.classList.remove('hidden');
+  //remove map tab pane
+  var mtab = document.getElementById('mtab');
+  mtab.classList.add('hidden');
+  //activate infospots tab
+  var spotstab = document.getElementById('spotstab');
+  spotstab.classList.add('disabled');
   view.animate(
       {
         duration: 2000,
         zoom: previousZoom
       });
+  //LayerSwitcher.renderPanel(map, toc, { reverse: true });
   //Add layers tab pane
-  var maptab = document.getElementById('maptab');
-  maptab.className='fas fa-layer-group';
-  LayerSwitcher.renderPanel(map, toc, { reverse: true });
-  map.removeControl(sidebar);
-  map.addControl(sidebar);
+  //var licon = document.getElementById('licon');
+  //licon.className='fas fa-layer-group';
+  //map.removeControl(sidebar);
+  //map.addControl(sidebar);
   tooltip.style.display = 'block';
-  //mapicon.parentElement.onclick=onClickFunction;
 }
 var previousZoom;
 var onClickFunction;
+//Define map tab onclick action
+var micon = document.getElementById('mapicon');
+micon.parentElement.onclick=function() { returnToMap() };
 var clickPanoramaFeature = function (pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
@@ -375,10 +386,14 @@ var clickPanoramaFeature = function (pixel) {
       var panodiv = document.getElementById('pano');
       panodiv.style.visibility = 'visible';
       //remove layers tab pane
-      var maptab = document.getElementById('maptab');
-      maptab.className='fas fa-map';
-      onClickFunction=maptab.parentElement.getAttribute("onclick");
-      maptab.parentElement.onclick=function() { returnToMap() };
+      var ltab = document.getElementById('ltab');
+      ltab.classList.add('hidden');
+      //show map tab pane
+      var mtab = document.getElementById('mtab');
+      mtab.classList.remove('hidden');
+      //activate infospots tab
+      var spotstab = document.getElementById('spotstab');
+      spotstab.classList.remove('disabled');
       viewer.add(pano1);
       //console.dir(mapdiv);
     }

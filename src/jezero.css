@@ -73,6 +73,10 @@ body {
 .sidebar-tabs {
     background-color: rgba(0,0,0, 0.5);
 }
+.sidebar-tabs .hidden {
+    visibility: hidden;
+    position: absolute;
+}
 .sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
     color: #fff;
     background-color: rgba(0,0,0, 0.8);
