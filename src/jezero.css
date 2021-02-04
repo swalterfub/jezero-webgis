@@ -86,10 +86,13 @@ body {
 
 #tooltip {
   position: absolute;
-  height: 1px;
-  width: 1px;
+  height: 18px;
   font: 14pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
   z-index: 100;
+  background-color: rgb(255,255,255,0.3);
+  border: 1px solid black ;
+  padding: 2px;
+  border-radius: 5px;
 }
 
 #fu-planets {
