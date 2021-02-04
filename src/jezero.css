@@ -39,6 +39,18 @@ body {
     bottom: 8px;
 }
 
+.ol-control button {
+  background-color: rgba(0,0,0, 0.5);
+}
+.ol-control button:hover,
+.ol-control button:focus {
+  text-decoration: none;
+  background-color: rgba(0,0,0,0.7);
+}
+.ol-scale-line {
+  background: rgba(0,0,0,0.3);
+}
+
 .sidebar-left ~ .sidebar-map .ol-zoom-extent {
   margin-left: 46px; }
   @media (min-width: 768px) {
@@ -58,6 +70,20 @@ body {
   .sidebar-left.collapsed ~ .sidebar-map .ol-zoom-extent {
     margin-left: 52px; } }
 
+.sidebar-tabs {
+    background-color: rgba(0,0,0, 0.5);
+}
+.sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
+    color: #fff;
+    background-color: rgba(0,0,0, 0.8);
+}
+.sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover {
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.4); }
+.sidebar-header {
+    background-color: rgba(0,0,0, 0.8);
+}
+
 #info {
   position: absolute;
   height: 1px;
@@ -73,4 +99,12 @@ body {
 }
 .tooltip-inner {
   border: 2px solid white;
+}
+
+#fu-planets {
+background-image: url('/assets/fu_label_3zeilig_RGB_40x40.png');
+width: 36px;
+height: 36px;
+margin: 1px;
+background-size: 40px;
 }
