@@ -293,11 +293,12 @@ var styleFeatureBig = new Style({
       })
     })
   });
+var mapdiv = document.getElementById('map');
 var tooltip = document.getElementById('tooltip');
 var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
-  var mapdiv = document.getElementById('map');
-  var tooltip = document.getElementById('tooltip');
+  //var mapdiv = document.getElementById('map');
+  //var tooltip = document.getElementById('tooltip');
   /*info.css({
     //left: pixel[0] + 'px',
     //top: pixel[1] - 15 + 'px',
@@ -322,6 +323,7 @@ var displayFeatureInfo = function (pixel) {
     if (currentFeature) {
       currentFeature.setStyle();
       currentFeature.setStyle(styleFeature)
+      currentFeature=null;
     };
     tooltip.style.display = 'none';
     mapdiv.style.cursor = "";
