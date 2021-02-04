@@ -15,13 +15,13 @@
           <ul role="tablist">
             <li>
               <!--a href="#home" role="tab"><i class="fa "></i></a-->
-              <a href="#home" role="tab"><i class="fa fa-layer-group" id='maptab'></i></a>
+              <a href="#home" role="tab"><i class="fa fa-layer-group" id="maptab"></i></a>
             </li>
             <li>
-              <a href="#poi" role="tab"><i class="fa fa-eye" id='poitab'></i></a>
+              <a href="#poi" role="tab"><i class="fa fa-eye" id="poitab"></i></a>
             </li>
-            <li>
-              <a href="#spots" role="tab"><i class="fa fa-binoculars" id='spotstab'></i></a>
+            <li class="disabled">
+              <a href="#spots" role="tab"><i class="fa fa-binoculars" id="spotstab"></i></a>
             </li>
             <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
@@ -98,7 +98,7 @@
       </div>
       <div id="map" class="sidebar-map"></div>
       <div id="pano" class="sidebar-map"></div>
-      <div id="info"></div>
+      <div id="tooltip"></div>
     </div>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>

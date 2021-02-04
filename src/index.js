@@ -178,13 +178,6 @@ const map = new Map({
       source: source
     }),
     new TileLayer({
-      title: "Lat/Lon GRID",
-      source: new TileWMS({
-        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
-        params: { LAYERS: "grid" }
-      })
-    }),
-    new TileLayer({
       title: "Contour lines",
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez/?",
@@ -205,7 +198,14 @@ const map = new Map({
         params: { LAYERS: "lake" }
       }),
     }),
-    poi
+    poi,
+    new TileLayer({
+      title: "Lat/Lon GRID",
+      source: new TileWMS({
+        url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
+        params: { LAYERS: "grid" }
+      })
+    })
   ],
   controls: defaultControls().extend([
     new ScaleLine({
@@ -293,16 +293,17 @@ var styleFeatureBig = new Style({
       })
     })
   });
-var info = document.getElementById('info');
-var target = document.getElementById('map');
+var tooltip = document.getElementById('tooltip');
 var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
+  var mapdiv = document.getElementById('map');
+  var tooltip = document.getElementById('tooltip');
   /*info.css({
     //left: pixel[0] + 'px',
     //top: pixel[1] - 15 + 'px',
   });*/
-  info.style.left = pixel[0] + 'px';
-  info.style.top = (pixel[1] - 50) + 'px';
+  tooltip.style.left = pixel[0] + 'px';
+  tooltip.style.top = (pixel[1] - 50) + 'px';
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
   });
@@ -312,30 +313,32 @@ var displayFeatureInfo = function (pixel) {
     feature.setStyle(styleFeatureBig);
     currentFeature=feature;
     var text = feature.get('name');
-    info.style.display = 'none';
-    info.innerHTML = text;
-    info.style.display = 'block';
-    target.style.cursor = "pointer";
+    tooltip.style.display = 'none';
+    tooltip.innerHTML = text;
+    tooltip.style.display = 'block';
+    mapdiv.style.cursor = "pointer";
   } else {
     //info.tooltip('hide');
     if (currentFeature) {
       currentFeature.setStyle();
       currentFeature.setStyle(styleFeature)
     };
-    info.style.display = 'none';
-    target.style.cursor = "";
+    tooltip.style.display = 'none';
+    mapdiv.style.cursor = "";
   }
 };
 map.on('pointermove', function (event) {
   if (event.dragging) {
-    info.style.display = 'none';
+    tooltip.style.display = 'none';
     return;
   }
   displayFeatureInfo(map.getEventPixel(event.originalEvent));
 });
 var returnToMap = function() {
+  //disable map canvas
   var mapdiv = document.getElementById('map');
   mapdiv.style.visibility = 'visible';
+  //enable pano canvas
   var panodiv = document.getElementById('pano');
   panodiv.style.visibility = 'hidden';
   view.animate(
@@ -343,11 +346,13 @@ var returnToMap = function() {
         duration: 2000,
         zoom: previousZoom
       });
+  //Add layers tab pane
+  var maptab = document.getElementById('maptab');
+  maptab.className='fas fa-layer-group';
   LayerSwitcher.renderPanel(map, toc, { reverse: true });
-  var mapicon = document.getElementById('mapicon');
-  mapicon.className='fas fa-layer-group';
   map.removeControl(sidebar);
   map.addControl(sidebar);
+  tooltip.style.display = 'block';
   //mapicon.parentElement.onclick=onClickFunction;
 }
 var previousZoom;
@@ -361,17 +366,17 @@ var clickPanoramaFeature = function (pixel) {
     var parts = 1;
     var called = false;
     function switchToPano(complete) {
-      var info = document.getElementById('info');
-      info.style.display = 'none';
+      //remove tooltip
+      tooltip.style.display = 'none';
       var mapdiv = document.getElementById('map');
       mapdiv.style.visibility = 'hidden';
       var panodiv = document.getElementById('pano');
       panodiv.style.visibility = 'visible';
-      var mapicon = document.getElementById('mapicon');
-      mapicon.className='fas fa-map';
-      //console.dir(mapicon.parentElement);
-      onClickFunction=mapicon.parentElement.getAttribute("onclick");
-      mapicon.parentElement.onclick=function() { returnToMap() };
+      //remove layers tab pane
+      var maptab = document.getElementById('maptab');
+      maptab.className='fas fa-map';
+      onClickFunction=maptab.parentElement.getAttribute("onclick");
+      maptab.parentElement.onclick=function() { returnToMap() };
       viewer.add(pano1);
       //console.dir(mapdiv);
     }
