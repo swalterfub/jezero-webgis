@@ -15,13 +15,13 @@
           <ul role="tablist">
             <li>
               <!--a href="#home" role="tab"><i class="fa "></i></a-->
-              <a href="#home" role="tab"><i class="fa fa-layer-group" id='mapicon'></i></a>
+              <a href="#home" role="tab"><i class="fa fa-layer-group" id='maptab'></i></a>
             </li>
             <li>
-              <a href="#poi" role="tab"><i class="fa fa-eye" id='poiicon'></i></a>
+              <a href="#poi" role="tab"><i class="fa fa-eye" id='poitab'></i></a>
             </li>
             <li>
-              <a href="#info" role="tab"><i class="fa fa-info" id='infoicon'></i></a>
+              <a href="#spots" role="tab"><i class="fa fa-binoculars" id='spotstab'></i></a>
             </li>
             <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
@@ -35,11 +35,15 @@
             <!--li>
               <a href="https://www.fu-berlin.de/planets" target="new" role="tab"><i class="fa" id="fu-planets"></i></a>
             </li-->
+            <li>
+              <a href="#credits" role="tab"><i class="fa fa-copyright" id='creditstab'></i></a>
+            </li>
           </ul>
         </div>
 
         <!-- Tab panes -->
         <div class="sidebar-content">
+          <!-- !!! HOME !!! -->
           <div class="sidebar-pane" id="home">
             <h1 class="sidebar-header">
               Layers
@@ -48,21 +52,23 @@
             <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
             <div id="layers" class="layer-switcher"></div>
           </div>
-
+          <!-- !!! PANORAMAS !!! -->
           <div class="sidebar-pane" id="poi">
             <h1 class="sidebar-header">
               Panoramic views
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1>
-            <!-- !!! HERE WILL GO THE CONTENT OF PANOLENS !!! -->
-            <div id="panos" class="panolens">
-              <ul>
-                <li style="list-style: none;">
-                  <!--input type="button" id="crater"></input-->
-                  <a href="index.html"><label>Crater</label></a>
-                </li>
-              </ul>
-            </div>
+            <!-- !!! HERE WILL GO THE PANORAMAS OF PANOLENS !!! -->
+            <div id="panoramas" class="panolens"></div>
+          </div>
+          <!-- !!! INFOSPOTS !!! -->
+          <div class="sidebar-pane" id="spots">
+            <h1 class="sidebar-header">
+              Infospots
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE INFOSPOTS OF PANOLENS !!! -->
+            <div id="infospots" class="panolens"></div>
           </div>
 
           <!--div class="sidebar-pane" id="tools">
@@ -80,6 +86,14 @@
               ></span>
             </h1>
           </div-->
+          <div class="sidebar-pane">
+            <h1 class="sidebar-header">
+              Credits
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE CREDITS TO THE DATA !!! -->
+            <div id="credits" class="credits"></div>
+          </div>
         </div>
       </div>
       <div id="map" class="sidebar-map"></div>
