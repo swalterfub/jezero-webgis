@@ -74,17 +74,18 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 10;
+var zoom = 9;
 var center = [4602820.147632426, 1090460.3710010552];
 var rotation = 0;
 
 
 const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 
+
 var mainview = new View({
     center: transform([77.4565,18.4475], projection49901, projection49911),
     zoom: zoom,
-    minZoom: 10,
+    minZoom: 9,
     maxZoom: 19,
     constrainResolution: true,
     //extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462],
@@ -114,9 +115,8 @@ var mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(3),
   projection: projection49901
 });
-
-var poiSource = new VectorSource({
-  format: new GeoJSON(),
+/*var poiSource = new VectorSource({
+  //format: new GeoJSON(),
   loader: function (extent, resolution, projection) {
     var proj = projection.getCode();
     var url = 'https://maps.planet.fu-berlin.de/jez-bin/wms?service=WFS&' +
@@ -135,6 +135,8 @@ var poiSource = new VectorSource({
          poiSource.addFeatures(
            poiSource.getFormat().readFeatures(xhr.responseText));
            poiSource.forEachFeature(addPano);
+           var text = poiSource.getFormat().writeFeatures(poiSource.getFeatures());
+           console.dir(text);
          } else {
            onError();
          }
@@ -142,8 +144,28 @@ var poiSource = new VectorSource({
      xhr.send();
    },
   strategy: bboxStrategy,
+});*/
+class Panorama {
+  constructor(id, name, image) {
+    this.id=id;
+    this.name=name;
+    this.image=image;
+    this.pano=new PANOLENS.ImagePanorama(image);
+    this.infos=[];
+  }
+}
+var addPano=function(feature){
+  var id = feature.get('id');
+  panos[id] = new Panorama(id, feature.get('name'), 'assets/'+feature.get('panorama'));
+}
+var currentPano=-1;
+var panos = [];
+var currentMode='map';
+var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"13","panorama":"sphere2.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"12","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"inlet1","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"inlet2","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"crater","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}}]}';
+var poiSource = new VectorSource({
+  features: new GeoJSON().readFeatures(featuresAsText)
 });
-
+poiSource.forEachFeature(addPano);
 var styleFeature = new Style({
     text: new Text({
       text: '\uf3c5',
@@ -226,83 +248,6 @@ const map = new Map({
   view: mainview
 });
 
-//Permalink https://openlayers.org/en/latest/examples/permalink.html
-if (window.location.hash !== '') {
-  if (window.location.hash.includes('#map=')) {
-    // try to restore center, zoom-level and rotation from the URL
-    var hash = window.location.hash.replace('#map=', '');
-    var parts = hash.split('/');
-    if (parts.length === 4) {
-      zoom = parseFloat(parts[0]);
-      center = [parseFloat(parts[1]), parseFloat(parts[2])];
-      rotation = parseFloat(parts[3]);
-    }
-  } else if (window.location.hash.includes('#pano=')) {
-    var id = window.location.hash.replace('#pano=', '');
-    currentPano=id;
-    currentMode='pano';
-    shouldUpdate = false;
-    //TODO
-    //switchToPano(id);
-    console.dir('updatehash');
-  }
-}
-var shouldUpdate = true;
-var updatePermalink = function () {
-  if (!shouldUpdate) {
-    // do not update the URL when the view was changed in the 'popstate' handler
-    shouldUpdate = true;
-    return;
-  }
-  var center = mainview.getCenter();
-  var hash =
-    '#map=' +
-    mainview.getZoom().toFixed(2) +
-    '/' +
-    center[0].toFixed(2) +
-    '/' +
-    center[1].toFixed(2) +
-    '/' +
-    mainview.getRotation();
-  var state = {
-    mode: "map",
-    zoom: mainview.getZoom(),
-    center: mainview.getCenter(),
-    rotation: mainview.getRotation(),
-  };
-  window.history.pushState(state, 'map', hash);
-  currentMode='map';
-};
-var updatePanoLink = function () {
-  var hash = '#pano=' + currentPano;
-  var state = {
-    mode: "pano",
-    currentPano: currentPano
-  }
-  window.history.pushState(state, 'pano', hash);
-}
-map.on('moveend', updatePermalink);
-window.addEventListener('popstate', function (event) {
-  if (event.state === null) {
-    return;
-  }
-  if (event.state.mode=='map') {
-    if (currentMode='pano') {
-      returnToMap();
-    }
-    map.getView().setCenter(event.state.center);
-    map.getView().setZoom(event.state.zoom);
-    map.getView().setRotation(event.state.rotation);
-    shouldUpdate = false;
-  } else if (event.state.mode=='pano') {
-    if (currentMode='map') {
-      currentPano=event.state.currentPano;
-      switchToPano(currentPano);
-    }
-    shouldUpdate = false;
-  }
-});
-
 var sidebar = new Sidebar({
   element: 'sidebar',
   position: 'left'
@@ -374,6 +319,9 @@ map.on('pointermove', function (event) {
   displayFeatureInfo(map.getEventPixel(event.originalEvent));
 });
 var returnToMap = function() {
+  console.dir(shouldUpdate);
+  currentMode='map';
+  shouldUpdate=false;
   //disable map canvas
   var mapdiv = document.getElementById('map');
   mapdiv.style.visibility = 'visible';
@@ -394,7 +342,7 @@ var returnToMap = function() {
         duration: 2000,
         zoom: previousZoom
       });
-  //console.dir(currentPano);
+  console.dir('dispose Pano');
   viewer.dispose();
   //LayerSwitcher.renderPanel(map, toc, { reverse: true });
   //Add layers tab pane
@@ -403,7 +351,6 @@ var returnToMap = function() {
   //map.removeControl(sidebar);
   //map.addControl(sidebar);
   tooltip.style.display = 'block';
-  currentMode='map';
 }
 var previousZoom;
 var onClickFunction;
@@ -414,7 +361,7 @@ micon.parentElement.onclick=function() {
   updatePermalink();
   };
 function switchToPano(id) {
-  shouldUpdate = false;
+  //shouldUpdate = false;
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
   tooltip.style.display = 'none';
@@ -433,9 +380,13 @@ function switchToPano(id) {
   spotstab.classList.remove('disabled');
   //var id=feature.get('id');
   currentPano=id;
+  console.dir('add pano');
   viewer.add(panos[id].pano);
+  if (currentMode=='map'){
+    //updatePanoLink();
+    shouldUpdate = false;
+  }
   currentMode='pano';
-  updatePanoLink();
 }
 var clickPanoramaFeature = function (pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
@@ -483,19 +434,105 @@ pano1.add(info1a);*/
 /*viewer.on('control-bar-toggle', function (event) {
   console.dir('mode');
 })*/
-class Panorama {
-  constructor(id, name, image) {
-    this.id=id;
-    this.name=name;
-    this.image=image;
-    this.pano=new PANOLENS.ImagePanorama(image);
-    this.infos=[];
+
+//Permalink https://openlayers.org/en/latest/examples/permalink.html
+if (window.location.hash !== '') {
+  //Bei reload
+  if (window.location.hash.includes('#map=')) {
+    // try to restore center, zoom-level and rotation from the URL
+    var hash = window.location.hash.replace('#map=', '');
+    var parts = hash.split('/');
+    if (parts.length === 4) {
+      zoom = parseFloat(parts[0]);
+      center = [parseFloat(parts[1]), parseFloat(parts[2])];
+      rotation = parseFloat(parts[3]);
+    }
+  } else if (window.location.hash.includes('#pano=')) {
+    var id = window.location.hash.replace('#pano=', '');
+    currentPano=id;
+    currentMode='pano';
+    shouldUpdate = false;
+    //TODO
+    switchToPano(id);
+    console.dir('updatehash');
+    //shouldUpdate=false;
   }
 }
-var addPano=function(feature){
-  var id = feature.get('id');
-  panos[id] = new Panorama(id, feature.get('name'), 'assets/'+feature.get('panorama'));
+var shouldUpdate = true;
+var updatePermalink = function () {
+  console.dir('updatePermalink');
+  if (!shouldUpdate) {
+    // do not update the URL when the view was changed in the 'popstate' handler
+    shouldUpdate = true;
+    return;
+  }
+  if (currentMode=='pano') {
+    // do not update the URL when in pano mode, happens when reload with pano has
+    return;
+  }
+  console.dir('update');
+  var center = mainview.getCenter();
+  var hash =
+    '#map=' +
+    mainview.getZoom().toFixed(2) +
+    '/' +
+    center[0].toFixed(2) +
+    '/' +
+    center[1].toFixed(2) +
+    '/' +
+    mainview.getRotation();
+  var state = {
+    mode: "map",
+    zoom: mainview.getZoom(),
+    center: mainview.getCenter(),
+    rotation: mainview.getRotation(),
+  };
+  window.history.pushState(state, 'map', hash);
+  currentMode='map';
+};
+var updatePanoLink = function () {
+  console.dir('updatePanolink');
+  if (!shouldUpdate) {
+    // do not update the URL when the view was changed in the 'popstate' handler
+    shouldUpdate = true;
+    return;
+  }
+  console.dir('update');
+  var hash = '#pano=' + currentPano;
+  var state = {
+    mode: "pano",
+    currentPano: currentPano
+  }
+  //switchToPano(currentPano);
+  window.history.pushState(state, 'pano', hash);
 }
-var currentPano=-1;
-var panos = [];
-var currentMode='map';
+map.on('moveend', updatePermalink);
+window.addEventListener('popstate', function (event) {
+  //durch back/forward
+  console.dir('popstate');
+  if (event.state === null) {
+    return;
+  }
+  if (event.state.mode=='map') {
+    console.dir('map');
+    if (currentMode=='pano') {
+      returnToMap();
+    }
+    map.getView().setCenter(event.state.center);
+    map.getView().setZoom(event.state.zoom);
+    map.getView().setRotation(event.state.rotation);
+    shouldUpdate = false;
+  } else if (event.state.mode=='pano') {
+    console.dir('pano');
+    if (currentMode='map') {
+      currentMode='pano';
+      console.dir(viewer);
+      currentPano=event.state.currentPano;
+      console.dir('switchtopano');
+      switchToPano(currentPano);
+    }
+    shouldUpdate = false;
+  }
+});
+
+viewer.onAnimate(updatePanoLink());
