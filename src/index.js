@@ -131,7 +131,7 @@ var poiSource = new VectorSource({
          //console.dir(xhr.responseText);
          poiSource.addFeatures(
            poiSource.getFormat().readFeatures(xhr.responseText));
-
+           poiSource.forEachFeature(addPano);
          } else {
            onError();
          }
@@ -282,11 +282,16 @@ var strokeBig = new Stroke({
        color: 'rgba(51,153,204,1)',
        width: 5
      });
-
+var whiteFill=new Fill({
+        color: 'rgba(255,255,255,1)'
+      });
+var cyanFill=new Fill({
+        color: 'rgba(51,153,204,1)'
+      });
 var styleFeatureBig = new Style({
     text: new Text({
       text: '\uf3c5',
-      font: '900 28px "Font Awesome 5 Free"',
+      font: '900 24px "Font Awesome 5 Free"',
       textBaseline: 'bottom',
       fill: new Fill({
         color: 'rgba(51,153,204,1)'
@@ -310,6 +315,7 @@ var displayFeatureInfo = function (pixel) {
   });
   if (feature) {
     //info.attr('data-original-title', feature.get('name')).tooltip('show');
+    console.dir(feature.getStyle());
     feature.setStyle();
     feature.setStyle(styleFeatureBig);
     currentFeature=feature;
@@ -357,6 +363,8 @@ var returnToMap = function() {
         duration: 2000,
         zoom: previousZoom
       });
+  //console.dir(currentPano);
+  viewer.dispose();
   //LayerSwitcher.renderPanel(map, toc, { reverse: true });
   //Add layers tab pane
   //var licon = document.getElementById('licon');
@@ -394,8 +402,11 @@ var clickPanoramaFeature = function (pixel) {
       //activate infospots tab
       var spotstab = document.getElementById('spotstab');
       spotstab.classList.remove('disabled');
-      viewer.add(pano1);
-      //console.dir(mapdiv);
+      var id=feature.get('id');
+      console.dir(id);
+      currentPano=id;
+      viewer.add(panos[id].pano);
+      console.dir(panos[id].image);
     }
     function callback(complete) {
       --parts;
@@ -408,21 +419,42 @@ var clickPanoramaFeature = function (pixel) {
       }
     }
     previousZoom = view.getZoom();
-    view.animate(
-      {
+    var zoom=feature.get('zoom');
+    if ( zoom < 10) {
+      console.dir(zoom);
+      zoom=10;
+    }
+    view.animate({
         center: feature.getGeometry().getCoordinates(),
         duration: 2000,
-        zoom: 15
-      },
-      callback
-      );
-    
-    
+        zoom: zoom,
+      }, callback
+    );
   }
 }
 map.on('singleclick', function (event) {
   clickPanoramaFeature(map.getEventPixel(event.originalEvent));
 })
-const pano1 = new PANOLENS.ImagePanorama( 'assets/sphere.jpg' );
+/*const pano1 = new PANOLENS.ImagePanorama( 'assets/sphere.jpg' );
+const info1a = new PANOLENS.Infospot(200);
+info1a.position.set( -1000, 92, 5000 );
+info1a.addHoverText( 'Berg am Kraterrand' );
+pano1.add(info1a);*/
 const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 //viewer.add(pano1);
+
+class Panorama {
+  constructor(id, name, image) {
+    this.id=id;
+    this.name=name;
+    this.image=image;
+    this.pano=new PANOLENS.ImagePanorama(image);
+    this.infos=[];
+  }
+}
+var addPano=function(feature){
+  var id = feature.get('id');
+  panos[id] = new Panorama(id, feature.get('name'), 'assets/'+feature.get('panorama'));
+}
+var currentPano=-1;
+var panos = [];
