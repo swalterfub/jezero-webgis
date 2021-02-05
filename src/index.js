@@ -78,6 +78,9 @@ var zoom = 10;
 var center = [4602820.147632426, 1090460.3710010552];
 var rotation = 0;
 
+
+const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
+
 var mainview = new View({
     center: transform([77.4565,18.4475], projection49901, projection49911),
     zoom: zoom,
@@ -225,49 +228,79 @@ const map = new Map({
 
 //Permalink https://openlayers.org/en/latest/examples/permalink.html
 if (window.location.hash !== '') {
-  // try to restore center, zoom-level and rotation from the URL
-  var hash = window.location.hash.replace('#map=', '');
-  var parts = hash.split('/');
-  if (parts.length === 4) {
-    zoom = parseFloat(parts[0]);
-    center = [parseFloat(parts[1]), parseFloat(parts[2])];
-    rotation = parseFloat(parts[3]);
+  if (window.location.hash.includes('#map=')) {
+    // try to restore center, zoom-level and rotation from the URL
+    var hash = window.location.hash.replace('#map=', '');
+    var parts = hash.split('/');
+    if (parts.length === 4) {
+      zoom = parseFloat(parts[0]);
+      center = [parseFloat(parts[1]), parseFloat(parts[2])];
+      rotation = parseFloat(parts[3]);
+    }
+  } else if (window.location.hash.includes('#pano=')) {
+    var id = window.location.hash.replace('#pano=', '');
+    currentPano=id;
+    currentMode='pano';
+    shouldUpdate = false;
+    //TODO
+    //switchToPano(id);
+    console.dir('updatehash');
   }
 }
 var shouldUpdate = true;
-var view = map.getView();
 var updatePermalink = function () {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the 'popstate' handler
     shouldUpdate = true;
     return;
   }
-  var center = view.getCenter();
+  var center = mainview.getCenter();
   var hash =
     '#map=' +
-    view.getZoom().toFixed(2) +
+    mainview.getZoom().toFixed(2) +
     '/' +
     center[0].toFixed(2) +
     '/' +
     center[1].toFixed(2) +
     '/' +
-    view.getRotation();
+    mainview.getRotation();
   var state = {
-    zoom: view.getZoom(),
-    center: view.getCenter(),
-    rotation: view.getRotation(),
+    mode: "map",
+    zoom: mainview.getZoom(),
+    center: mainview.getCenter(),
+    rotation: mainview.getRotation(),
   };
   window.history.pushState(state, 'map', hash);
+  currentMode='map';
 };
+var updatePanoLink = function () {
+  var hash = '#pano=' + currentPano;
+  var state = {
+    mode: "pano",
+    currentPano: currentPano
+  }
+  window.history.pushState(state, 'pano', hash);
+}
 map.on('moveend', updatePermalink);
 window.addEventListener('popstate', function (event) {
   if (event.state === null) {
     return;
   }
-  map.getView().setCenter(event.state.center);
-  map.getView().setZoom(event.state.zoom);
-  map.getView().setRotation(event.state.rotation);
-  shouldUpdate = false;
+  if (event.state.mode=='map') {
+    if (currentMode='pano') {
+      returnToMap();
+    }
+    map.getView().setCenter(event.state.center);
+    map.getView().setZoom(event.state.zoom);
+    map.getView().setRotation(event.state.rotation);
+    shouldUpdate = false;
+  } else if (event.state.mode=='pano') {
+    if (currentMode='map') {
+      currentPano=event.state.currentPano;
+      switchToPano(currentPano);
+    }
+    shouldUpdate = false;
+  }
 });
 
 var sidebar = new Sidebar({
@@ -299,7 +332,6 @@ var styleFeatureBig = new Style({
     })
   });
 var mapdiv = document.getElementById('map');
-var tooltip = document.getElementById('tooltip');
 var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
   //var mapdiv = document.getElementById('map');
@@ -315,7 +347,6 @@ var displayFeatureInfo = function (pixel) {
   });
   if (feature) {
     //info.attr('data-original-title', feature.get('name')).tooltip('show');
-    console.dir(feature.getStyle());
     feature.setStyle();
     feature.setStyle(styleFeatureBig);
     currentFeature=feature;
@@ -358,7 +389,7 @@ var returnToMap = function() {
   //activate infospots tab
   var spotstab = document.getElementById('spotstab');
   spotstab.classList.add('disabled');
-  view.animate(
+  mainview.animate(
       {
         duration: 2000,
         zoom: previousZoom
@@ -372,12 +403,40 @@ var returnToMap = function() {
   //map.removeControl(sidebar);
   //map.addControl(sidebar);
   tooltip.style.display = 'block';
+  currentMode='map';
 }
 var previousZoom;
 var onClickFunction;
 //Define map tab onclick action
 var micon = document.getElementById('mapicon');
-micon.parentElement.onclick=function() { returnToMap() };
+micon.parentElement.onclick=function() {
+  returnToMap();
+  updatePermalink();
+  };
+function switchToPano(id) {
+  shouldUpdate = false;
+  //remove tooltip
+  var tooltip = document.getElementById('tooltip');
+  tooltip.style.display = 'none';
+  var mapdiv = document.getElementById('map');
+  mapdiv.style.visibility = 'hidden';
+  var panodiv = document.getElementById('pano');
+  panodiv.style.visibility = 'visible';
+  //remove layers tab pane
+  var ltab = document.getElementById('ltab');
+  ltab.classList.add('hidden');
+  //show map tab pane
+  var mtab = document.getElementById('mtab');
+  mtab.classList.remove('hidden');
+  //activate infospots tab
+  var spotstab = document.getElementById('spotstab');
+  spotstab.classList.remove('disabled');
+  //var id=feature.get('id');
+  currentPano=id;
+  viewer.add(panos[id].pano);
+  currentMode='pano';
+  updatePanoLink();
+}
 var clickPanoramaFeature = function (pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
@@ -386,28 +445,7 @@ var clickPanoramaFeature = function (pixel) {
     //console.dir(feature.getGeometry().getCoordinates());
     var parts = 1;
     var called = false;
-    function switchToPano(complete) {
-      //remove tooltip
-      tooltip.style.display = 'none';
-      var mapdiv = document.getElementById('map');
-      mapdiv.style.visibility = 'hidden';
-      var panodiv = document.getElementById('pano');
-      panodiv.style.visibility = 'visible';
-      //remove layers tab pane
-      var ltab = document.getElementById('ltab');
-      ltab.classList.add('hidden');
-      //show map tab pane
-      var mtab = document.getElementById('mtab');
-      mtab.classList.remove('hidden');
-      //activate infospots tab
-      var spotstab = document.getElementById('spotstab');
-      spotstab.classList.remove('disabled');
-      var id=feature.get('id');
-      console.dir(id);
-      currentPano=id;
-      viewer.add(panos[id].pano);
-      console.dir(panos[id].image);
-    }
+    
     function callback(complete) {
       --parts;
       if (called) {
@@ -415,16 +453,16 @@ var clickPanoramaFeature = function (pixel) {
       }
       if (parts === 0 || !complete) {
         called = true;
-        switchToPano(complete);
+        switchToPano(feature.get('id'));
       }
     }
-    previousZoom = view.getZoom();
+    previousZoom = mainview.getZoom();
     var zoom=feature.get('zoom');
     if ( zoom < 10) {
       console.dir(zoom);
       zoom=10;
     }
-    view.animate({
+    mainview.animate({
         center: feature.getGeometry().getCoordinates(),
         duration: 2000,
         zoom: zoom,
@@ -440,9 +478,11 @@ const info1a = new PANOLENS.Infospot(200);
 info1a.position.set( -1000, 92, 5000 );
 info1a.addHoverText( 'Berg am Kraterrand' );
 pano1.add(info1a);*/
-const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 //viewer.add(pano1);
-
+//viewer.on('mode-change',console.dir('mode'));
+/*viewer.on('control-bar-toggle', function (event) {
+  console.dir('mode');
+})*/
 class Panorama {
   constructor(id, name, image) {
     this.id=id;
@@ -458,3 +498,4 @@ var addPano=function(feature){
 }
 var currentPano=-1;
 var panos = [];
+var currentMode='map';
