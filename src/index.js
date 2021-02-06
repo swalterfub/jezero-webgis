@@ -375,6 +375,7 @@ function switchToPano(id) {
   //show map tab pane
   var mtab = document.getElementById('mtab');
   mtab.classList.remove('hidden');
+  mtab.style.cursor = "pointer";
   //activate infospots tab
   var spotstab = document.getElementById('spotstab');
   spotstab.classList.remove('disabled');
@@ -535,4 +536,4 @@ window.addEventListener('popstate', function (event) {
   }
 });
 
-viewer.onAnimate(updatePanoLink());
+//viewer.onAnimate(updatePanoLink());
