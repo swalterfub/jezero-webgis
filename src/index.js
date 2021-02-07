@@ -369,6 +369,7 @@ function switchToPano(id) {
   mapdiv.classList.add('hidden');
   var panodiv = document.getElementById('pano');
   panodiv.classList.remove('hidden');
+  panodiv.classList.add('visible');
   //remove layers tab pane
   var ltab = document.getElementById('ltab');
   ltab.classList.add('hidden');
@@ -540,7 +541,9 @@ var renderPanViews = function() {
         var parts = 1;
         var called = false;
         function callback() {
-            switchToPano(feature.get('id'));
+          //geht nicht?
+          //var delay = parts === 0 ? 0 : 1750;
+          switchToPano(feature.get('id'));
         }
         mainview.animate({
           //first zoom back out
@@ -590,3 +593,4 @@ var renderPanViews = function() {
   }
 }
 renderPanViews();
+
