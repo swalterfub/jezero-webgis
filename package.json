@@ -20,6 +20,7 @@
   "homepage": "https://github.com/swalterfub/jezero-webgis#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "aframe": "^1.2.0",
     "ol": "^6.5.0",
     "ol-layerswitcher": "^3.8.3",
     "panolens": "^0.11.0",

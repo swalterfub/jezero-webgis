@@ -99,12 +99,26 @@
         </div>
       </div>
       <div id="map" class="sidebar-map"></div>
-      <div id="pano" class="sidebar-map"></div>
+      <!--div id="pano" class="sidebar-map"></div-->
+      
       <div id="tooltip"></div>
     </div>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>
     <script src="src/index.js"></script>
+    <a-scene id="pano" class="aframe hidden" background="color: red" webxr="requiredFeatures: hit-test,local-floor;
+                optionalFeatures: dom-overlay,unbounded;
+                overlayElement: #overlay;">
+      <a-assets>
+        <img id="sphere" src="assets/sphere.jpg">
+        <img id="sphere2" src="assets/sphere2.jpg">
+        <img id="sphere3" src="assets/sphere3.jpg">
+      </a-assets>
+      <a-sky id="panorama" radius="100" src="#sphere"
+             animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
+             animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade">
+      </a-sky>
+    </a-scene>
   </body>
 </html>
 

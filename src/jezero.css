@@ -106,3 +106,7 @@ height: 36px;
 margin: 1px;
 background-size: 40px;
 }
+
+.aframe.hidden {
+  visibility: hidden;
+}

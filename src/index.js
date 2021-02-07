@@ -27,7 +27,8 @@ import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
 //import * as THREE from 'three';
-import * as PANOLENS from 'panolens';
+//import * as PANOLENS from 'panolens';
+import 'aframe';
 
 import './jezero.css';
 
@@ -79,7 +80,7 @@ var center = [4602820.147632426, 1090460.3710010552];
 var rotation = 0;
 
 
-const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
+//const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 
 
 var mainview = new View({
@@ -150,18 +151,18 @@ class Panorama {
     this.id=id;
     this.name=name;
     this.image=image;
-    this.pano=new PANOLENS.ImagePanorama(image);
+    //this.pano=new PANOLENS.ImagePanorama(image);
     this.infos=[];
   }
 }
 var addPano=function(feature){
   var id = feature.get('id');
-  panos[id] = new Panorama(id, feature.get('name'), 'assets/'+feature.get('panorama'));
+  panos[id] = new Panorama(id, feature.get('name'), feature.get('panorama'));
 }
 var currentPano=-1;
 var panos = [];
 var currentMode='map';
-var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"13","panorama":"sphere2.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"12","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"inlet1","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"inlet2","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"crater","link":"","content":"","zoom":"10","panorama":"sphere3.jpg"}}]}';
+var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"13","panorama":"sphere2"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"12","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"inlet1","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"inlet2","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -333,7 +334,7 @@ var returnToMap = function() {
   ltab.classList.remove('hidden');
   //remove map tab pane
   var mtab = document.getElementById('mtab');
-  mtab.classList.add('hidden');
+  //mtab.classList.add('hidden');
   //activate infospots tab
   var spotstab = document.getElementById('spotstab');
   spotstab.classList.add('disabled');
@@ -343,13 +344,8 @@ var returnToMap = function() {
         zoom: previousZoom
       });
   console.dir('dispose Pano');
-  viewer.dispose();
-  //LayerSwitcher.renderPanel(map, toc, { reverse: true });
-  //Add layers tab pane
-  //var licon = document.getElementById('licon');
-  //licon.className='fas fa-layer-group';
-  //map.removeControl(sidebar);
-  //map.addControl(sidebar);
+  var asky=document.getElementById('panorama');
+  asky.removeAttribute('src');
   tooltip.style.display = 'block';
 }
 var previousZoom;
@@ -361,6 +357,10 @@ micon.parentElement.onclick=function() {
   updatePermalink();
   };
 function switchToPano(id) {
+  //geht nicht aus popstate!
+  var asky=document.getElementById('panorama');
+  asky.setAttribute('src','#'+panos[id].image);
+  console.dir(asky.getAttribute('src'));
   //shouldUpdate = false;
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
@@ -379,11 +379,10 @@ function switchToPano(id) {
   //activate infospots tab
   var spotstab = document.getElementById('spotstab');
   spotstab.classList.remove('disabled');
-  //var id=feature.get('id');
   currentPano=id;
   console.dir('add pano');
-  viewer.add(panos[id].pano);
   if (currentMode=='map'){
+    //Deaktiviert, solange es nicht geht
     //updatePanoLink();
     shouldUpdate = false;
   }
@@ -425,16 +424,6 @@ var clickPanoramaFeature = function (pixel) {
 map.on('singleclick', function (event) {
   clickPanoramaFeature(map.getEventPixel(event.originalEvent));
 })
-/*const pano1 = new PANOLENS.ImagePanorama( 'assets/sphere.jpg' );
-const info1a = new PANOLENS.Infospot(200);
-info1a.position.set( -1000, 92, 5000 );
-info1a.addHoverText( 'Berg am Kraterrand' );
-pano1.add(info1a);*/
-//viewer.add(pano1);
-//viewer.on('mode-change',console.dir('mode'));
-/*viewer.on('control-bar-toggle', function (event) {
-  console.dir('mode');
-})*/
 
 //Permalink https://openlayers.org/en/latest/examples/permalink.html
 if (window.location.hash !== '') {
@@ -527,7 +516,6 @@ window.addEventListener('popstate', function (event) {
     console.dir('pano');
     if (currentMode='map') {
       currentMode='pano';
-      console.dir(viewer);
       currentPano=event.state.currentPano;
       console.dir('switchtopano');
       switchToPano(currentPano);
