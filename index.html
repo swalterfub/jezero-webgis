@@ -11,67 +11,100 @@
   <body>
     <div id="fullscreen" class="fullscreen">
       <div id="sidebar" class="sidebar collapsed">
-        <div class="sidebar-tabs">
+        <div class="sidebar-tabs" id='sidebar-tabs'>
           <ul role="tablist">
-            <li>
-              <a href="#home" role="tab"><i class="fa fa-bars"></i></a>
+            <li id="mtab" class='hidden'>
+              <a role="tab" title="Back to map"><i class="fa fa-map" id="mapicon"></i></a>
             </li>
-            <li>
+            <li id="ltab">
+              <a href="#home" role="tab" title="Map layers"><i class="fa fa-layer-group" id="licon"></i></a>
+            </li>
+            <li id="poitab">
+              <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
+            </li>
+            <li id="spotstab" class="disabled">
+              <a href="#spots" role="tab" title="Infospots"><i class="fa fa-binoculars"></i></a>
+            </li>
+            <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
-            </li>
-            <li class="disabled">
-              <a href="#messages" role="tab"><i class="fa fa-envelope"></i></a>
-            </li>
+            </li-->
           </ul>
 
           <ul role="tablist">
-            <li>
+            <!--li class="disabled">
               <a href="#settings" role="tab"><i class="fa fa-gear"></i></a>
+            </li-->
+            <!--li>
+              <a href="https://www.fu-berlin.de/planets" target="new" role="tab"><i class="fa" id="fu-planets"></i></a>
+            </li-->
+            <li>
+              <a href="#credits" role="tab" title="Credits"><i class="fa fa-copyright" id='creditstab'></i></a>
             </li>
           </ul>
         </div>
 
         <!-- Tab panes -->
         <div class="sidebar-content">
+          <!-- !!! HOME !!! -->
           <div class="sidebar-pane" id="home">
             <h1 class="sidebar-header">
-              Layers
+              Map layers
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1>
             <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
             <div id="layers" class="layer-switcher"></div>
           </div>
+          <!-- !!! PANORAMAS !!! -->
+          <div class="sidebar-pane" id="poi">
+            <h1 class="sidebar-header">
+              Panoramic views
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE PANORAMAS OF PANOLENS !!! -->
+            <div id="panoramas" class="panolens"></div>
+          </div>
+          <!-- !!! INFOSPOTS !!! -->
+          <div class="sidebar-pane" id="spots">
+            <h1 class="sidebar-header">
+              Infospots
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE INFOSPOTS OF PANOLENS !!! -->
+            <div id="infospots" class="panolens"></div>
+          </div>
 
-          <div class="sidebar-pane" id="tools">
+          <!--div class="sidebar-pane" id="tools">
             <h1 class="sidebar-header">
               Tools<span class="sidebar-close"
                 ><i class="fa fa-caret-left"></i
               ></span>
             </h1>
-          </div>
+          </div-->
 
-          <div class="sidebar-pane" id="messages">
-            <h1 class="sidebar-header">
-              Messages<span class="sidebar-close"
-                ><i class="fa fa-caret-left"></i
-              ></span>
-            </h1>
-          </div>
-
-          <div class="sidebar-pane" id="settings">
+          <!--div class="sidebar-pane" id="settings">
             <h1 class="sidebar-header">
               Settings<span class="sidebar-close"
                 ><i class="fa fa-caret-left"></i
               ></span>
             </h1>
+          </div-->
+          <div class="sidebar-pane">
+            <h1 class="sidebar-header">
+              Credits
+              <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <!-- !!! HERE WILL GO THE CREDITS TO THE DATA !!! -->
+            <div id="credits" class="credits"></div>
           </div>
         </div>
       </div>
-      <div id="map" class="sidebar-map"></div><div id="info"></div>
+      <div id="map" class="sidebar-map"></div>
+      <div id="pano" class="sidebar-map"></div>
+      <div id="tooltip"></div>
     </div>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>
-    <script src="index.js"></script>
+    <script src="src/index.js"></script>
   </body>
 </html>
 
