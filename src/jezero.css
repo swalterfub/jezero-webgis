@@ -71,7 +71,7 @@ body {
 .sidebar-tabs {
     background-color: rgba(0,0,0, 0.5);
 }
-.sidebar-tabs.hidden {
+.sidebar-tabs .hidden {
     visibility: hidden;
     position: absolute;
 }

@@ -335,7 +335,7 @@ var returnToMap = function() {
   ltab.classList.remove('hidden');
   //remove map tab pane
   var mtab = document.getElementById('mtab');
-  //mtab.classList.add('hidden');
+  mtab.classList.add('hidden');
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.add('disabled');
@@ -346,6 +346,7 @@ var returnToMap = function() {
   console.dir('dispose Pano');
   var asky=document.getElementById('panorama');
   asky.removeAttribute('src');
+  tooltip.innerHTML='';
   tooltip.style.display = 'block';
 }
 var previousZoom;
