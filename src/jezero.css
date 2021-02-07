@@ -91,12 +91,12 @@ body {
 #tooltip {
   position: absolute;
   height: 18px;
-  font: 14pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 12pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
   z-index: 100;
-  background-color: rgb(255,255,255,0.3);
-  border: 1px solid black ;
+  color: white;
+  background-color: rgb(0,0,0,0.3);
+  border: 1px solid white;
   padding: 2px;
-  border-radius: 5px;
 }
 
 #fu-planets {
