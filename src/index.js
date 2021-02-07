@@ -336,8 +336,8 @@ var returnToMap = function() {
   var mtab = document.getElementById('mtab');
   //mtab.classList.add('hidden');
   //activate infospots tab
-  var spotstab = document.getElementById('spotstab');
-  spotstab.classList.add('disabled');
+  //var spotstab = document.getElementById('spotstab');
+  //spotstab.classList.add('disabled');
   mainview.animate(
       {
         duration: 2000,
@@ -377,10 +377,9 @@ function switchToPano(id) {
   mtab.classList.remove('hidden');
   mtab.style.cursor = "pointer";
   //activate infospots tab
-  var spotstab = document.getElementById('spotstab');
-  spotstab.classList.remove('disabled');
+  //var spotstab = document.getElementById('spotstab');
+  //spotstab.classList.remove('disabled');
   currentPano=id;
-  console.dir('add pano');
   if (currentMode=='map'){
     //Deaktiviert, solange es nicht geht
     //updatePanoLink();
