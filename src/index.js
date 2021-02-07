@@ -157,12 +157,13 @@ class Panorama {
 }
 var addPano=function(feature){
   var id = feature.get('id');
+  feature.setId(id);
   panos[id] = new Panorama(id, feature.get('name'), feature.get('panorama'));
 }
 var currentPano=-1;
 var panos = [];
 var currentMode='map';
-var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"13","panorama":"sphere2"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"12","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"inlet1","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"inlet2","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
+var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"13","panorama":"sphere2"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"12","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"Inlet 2","link":"","content":"","zoom":"10","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"Crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -325,10 +326,10 @@ var returnToMap = function() {
   shouldUpdate=false;
   //disable map canvas
   var mapdiv = document.getElementById('map');
-  mapdiv.style.visibility = 'visible';
+  mapdiv.classList.remove('hidden');
   //enable pano canvas
   var panodiv = document.getElementById('pano');
-  panodiv.style.visibility = 'hidden';
+  panodiv.classList.add('hidden');
   //show layers tab pane
   var ltab = document.getElementById('ltab');
   ltab.classList.remove('hidden');
@@ -338,11 +339,10 @@ var returnToMap = function() {
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.add('disabled');
-  mainview.animate(
-      {
-        duration: 2000,
-        zoom: previousZoom
-      });
+  mainview.animate({
+    duration: 2000,
+    zoom: previousZoom
+  });
   console.dir('dispose Pano');
   var asky=document.getElementById('panorama');
   asky.removeAttribute('src');
@@ -366,9 +366,9 @@ function switchToPano(id) {
   var tooltip = document.getElementById('tooltip');
   tooltip.style.display = 'none';
   var mapdiv = document.getElementById('map');
-  mapdiv.style.visibility = 'hidden';
+  mapdiv.classList.add('hidden');
   var panodiv = document.getElementById('pano');
-  panodiv.style.visibility = 'visible';
+  panodiv.classList.remove('hidden');
   //remove layers tab pane
   var ltab = document.getElementById('ltab');
   ltab.classList.add('hidden');
@@ -395,16 +395,8 @@ var clickPanoramaFeature = function (pixel) {
     //console.dir(feature.getGeometry().getCoordinates());
     var parts = 1;
     var called = false;
-    
-    function callback(complete) {
-      --parts;
-      if (called) {
-        return;
-      }
-      if (parts === 0 || !complete) {
-        called = true;
-        switchToPano(feature.get('id'));
-      }
+    function callback() {
+      switchToPano(feature.get('id'));
     }
     previousZoom = mainview.getZoom();
     var zoom=feature.get('zoom');
@@ -524,3 +516,77 @@ window.addEventListener('popstate', function (event) {
 });
 
 //viewer.onAnimate(updatePanoLink());
+
+var renderPanViews = function() {
+  var panoramas = document.getElementById('panoramas');
+  var ul = document.createElement('ul');
+  panoramas.appendChild(ul);
+  for (const pano of panos){
+    var li = document.createElement('li');
+    var label = document.createElement('label');
+    label.innerHTML=pano.name;
+    label.onclick=function(event) {
+      console.dir(pano.image);
+      var mapdiv=document.getElementById('map');
+      var feature=poiSource.getFeatureById(pano.id);
+      if (mapdiv.classList.contains('hidden')) {
+        console.dir('inside pano');
+        mapdiv.classList.remove('hidden');
+        //disable pano canvas
+        var panodiv = document.getElementById('pano');
+        panodiv.classList.add('hidden');
+        var asky=document.getElementById('panorama');
+        asky.removeAttribute('src');
+        var parts = 1;
+        var called = false;
+        function callback() {
+            switchToPano(feature.get('id'));
+        }
+        mainview.animate({
+          //first zoom back out
+            duration: 2000,
+            zoom: 10,
+          }, 
+          {
+            center: feature.getGeometry().getCoordinates(),
+            //zoom: feature.get('zoom'),
+            zoom: 14,
+            duration: 2000          
+          },
+          callback
+        );
+
+      } else {
+        var parts = 1;
+        var called = false;
+        function callback(complete) {
+          --parts;
+          if (called) {
+            return;
+          }
+          if (parts === 0 || !complete) {
+            called = true;
+            switchToPano(feature.get('id'));
+          }
+        }
+        previousZoom = mainview.getZoom();
+        var zoom=feature.get('zoom');
+        if ( zoom < 10) {
+          console.dir(zoom);
+          zoom=10;
+        }
+        mainview.animate({
+          center: feature.getGeometry().getCoordinates(),
+          duration: 2000,
+          zoom: zoom,
+        }, callback
+      );
+      }
+      
+    }
+    li.className = 'panorama';
+    li.appendChild(label);
+    ul.appendChild(li);
+  }
+}
+renderPanViews();
