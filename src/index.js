@@ -75,8 +75,8 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 9;
-var center = [4602820.147632426, 1090460.3710010552];
+var zoom = 10;
+var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 var rotation = 0;
 
 
@@ -84,7 +84,7 @@ var rotation = 0;
 
 
 var mainview = new View({
-    center: transform([77.4565,18.4475], projection49901, projection49911),
+    center: mapCenter,
     zoom: zoom,
     minZoom: 9,
     maxZoom: 19,
@@ -430,9 +430,9 @@ if (window.location.hash !== '') {
     var hash = window.location.hash.replace('#map=', '');
     var parts = hash.split('/');
     if (parts.length === 4) {
-      zoom = parseFloat(parts[0]);
-      center = [parseFloat(parts[1]), parseFloat(parts[2])];
-      rotation = parseFloat(parts[3]);
+      var zoom = parseFloat(parts[0]);
+      var center = [parseFloat(parts[1]), parseFloat(parts[2])];
+      var rotation = parseFloat(parts[3]);
     }
   } else if (window.location.hash.includes('#pano=')) {
     var id = window.location.hash.replace('#pano=', '');
@@ -562,16 +562,16 @@ var renderPanViews = function() {
           //var delay = parts === 0 ? 0 : 1750;
           switchToPano(feature.get('id'));
         }
-        mainview.animate({
+        if (mainview.getZoom()>11) {
+          mainview.animate({
           //first zoom back out
             duration: 2000,
             zoom: 10,
-          }, 
+          });
+        }
+        mainview.animate(
           {
             center: feature.getGeometry().getCoordinates(),
-            duration: 2000          
-          },
-          {
             zoom: feature.get('zoom')-1,
             duration: 2000          
           },
@@ -581,39 +581,30 @@ var renderPanViews = function() {
           },
           callback
         );
-
       } else {
-
         sidebar.close();
         var parts = 1;
         var called = false;
         function callback(complete) {
-          --parts;
-          if (called) {
-            return;
-          }
-          if (parts === 0 || !complete) {
-            called = true;
-            switchToPano(feature.get('id'));
-          }
+          switchToPano(feature.get('id'));
         }
         previousZoom = mainview.getZoom();
         var zoomTo=feature.get('zoom');
         //var viewZoom=view.getZoom();
-        if ( zoomTo < 12 ) {
-          zoomTo=12;
-        };
-        mainview.animate({
-          duration: 2000,
-          zoom: 10,
-        },
+        if ( mainview.getZoom()>11 ) {
+          mainview.animate({
+            duration: 2000,
+            zoom: 10,
+          });
+        }
+        /*var viewCenter=transform([77.4565,18.4475], projection49901, projection49911);
+        console.dir(mainview.getCenter()[0]-viewCenter[0]);
+        console.dir(mainview.getCenter()[1]-viewCenter[1]);*/
+        mainview.animate(
         {
           center: feature.getGeometry().getCoordinates(),
-          duration: 2000,
-        },
-        {
-          duration: 2000,
           zoom: zoomTo-1,
+          duration: 2000,
         },
         {
           duration: 2000,
