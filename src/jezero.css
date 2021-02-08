@@ -53,6 +53,9 @@ padding-left: 2.7em;
 #panoramas > ul > li:hover {
   background-color: rgba(192,192,192, 0.8);
 }
+#panoramas > ul > li.selected {
+  background-color: rgba(128,128,128, 0.8);
+}
 #panoramas > ul > li > input {
     position: absolute;
     left: 1.2em;

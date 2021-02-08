@@ -339,6 +339,10 @@ var returnToMap = function() {
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.add('disabled');
+  for (const pano of panos){
+    let loopli=document.getElementById('pli-'+pano.id);
+    loopli.classList.remove('selected');
+  }
   mainview.animate({
     duration: 2000,
     zoom: previousZoom
@@ -518,13 +522,14 @@ window.addEventListener('popstate', function (event) {
 });
 
 //viewer.onAnimate(updatePanoLink());
-
+var selectedLabel;
 var renderPanViews = function() {
   var panoramas = document.getElementById('panoramas');
   var ul = document.createElement('ul');
   panoramas.appendChild(ul);
   for (const pano of panos){
     var li = document.createElement('li');
+    li.id='pli-'+pano.id;
     var input = document.createElement('input');
     input.setAttribute('type','checkbox');
     input.disabled=true;
@@ -533,7 +538,12 @@ var renderPanViews = function() {
     var label = document.createElement('label');
     label.innerHTML=pano.name;
     label.onclick=function(event) {
-      console.dir(pano.image);
+      for (const pano of panos){
+        let loopli=document.getElementById('pli-'+pano.id);
+        loopli.classList.remove('selected');
+      }
+      this.parentElement.classList.add('selected');
+      console.dir(this.parentElement);
       var mapdiv=document.getElementById('map');
       var feature=poiSource.getFeatureById(pano.id);
       if (mapdiv.classList.contains('hidden')) {
