@@ -4,7 +4,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: sans-serif;
-  font-size: small;
+  font-size: large;
   overflow: hidden;
   font: 10pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
@@ -30,14 +30,44 @@ body {
 .layer-switcher {
   position: initial;
 }
-.sidebar-left .sidebar-content {
-    opacity: 0.8;
+
+#layers > ul > li:hover {
+  background-color: rgba(192,192,192, 0.8);
 }
+
+#panoramas li label {
+padding-left: 2.7em;
+    padding-right: 1.2em;
+    display: inline-block;
+    margin-top: 1px;
+}
+#panoramas > ul {
+  list-style: none;
+  margin: 1.6em 0.4em;
+  padding-left: 0;
+}
+#panoramas > ul > li {
+  position: relative;
+  margin-top: 0.3em;
+}
+#panoramas > ul > li:hover {
+  background-color: rgba(192,192,192, 0.8);
+}
+#panoramas > ul > li > input {
+    position: absolute;
+    left: 1.2em;
+    height: 1em;
+    width: 1em;
+    font-size: 1em;
+}
+#panoramas > ul > li > label:hover {
+  text-decoration: underline;
+}
+
 .ol-mouse-position {
     top: auto;
     bottom: 8px;
 }
-
 .ol-control button {
   background-color: rgba(0,0,0, 0.5);
 }
@@ -49,25 +79,28 @@ body {
 .ol-scale-line {
   background: rgba(0,0,0,0.3);
 }
-.sidebar-left ~ .sidebar-map .ol-zoom-extent {
+
+.ol-zoom-extent {
   margin-left: 46px; }
   @media (min-width: 768px) {
-    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+    .ol-zoom-extent {
       transition: margin-left 500ms; } }
   @media (min-width: 768px) and (max-width: 991px) {
-    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+    .ol-zoom-extent {
       margin-left: 317px; } }
   @media (min-width: 992px) and (max-width: 1199px) {
-    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+    .ol-zoom-extent {
       margin-left: 402px; } }
   @media (min-width: 1200px) {
-    .sidebar-left ~ .sidebar-map .ol-zoom-extent {
+   .ol-zoom-extent {
       margin-left: 472px; } }
-
 @media (min-width: 768px) {
   .sidebar-left.collapsed ~ .sidebar-map .ol-zoom-extent {
     margin-left: 52px; } }
 
+.sidebar-left .sidebar-content {
+    background-color: rgba(192,192,192, 0.8);
+}
 .sidebar-tabs {
     background-color: rgba(0,0,0, 0.5);
 }
