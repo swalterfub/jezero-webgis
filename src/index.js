@@ -547,7 +547,8 @@ var renderPanViews = function() {
       var mapdiv=document.getElementById('map');
       var feature=poiSource.getFeatureById(pano.id);
       if (mapdiv.classList.contains('hidden')) {
-        console.dir('inside pano');
+        //inside pano, fist switch to map and zoom out
+        sidebar.close();
         mapdiv.classList.remove('hidden');
         //disable pano canvas
         var panodiv = document.getElementById('pano');
@@ -582,6 +583,8 @@ var renderPanViews = function() {
         );
 
       } else {
+
+        sidebar.close();
         var parts = 1;
         var called = false;
         function callback(complete) {
