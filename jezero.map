@@ -39,7 +39,7 @@ END
 PROJECTION
     "init=epsg:49911"
 END
-#INCLUDE 'mola-eqc.map'
+INCLUDE 'dtm.map'
 #INCLUDE 'hrsc-damos-eqc.map'
 #INCLUDE 'hrsc-hmc-dtms-eqc.map'
 #INCLUDE 'ua-dtms.map'
@@ -65,6 +65,65 @@ LAYER
         END
 END #CTX-hsv
 LAYER
+        NAME "poi"
+        TYPE POINT
+        DATA shapes/poi/POI.shp
+        LABELITEM "name"
+        CLASSITEM "name"
+        CLASS
+          NAME "name"
+          #COLOR 0 0 0
+          STYLE
+            WIDTH 2
+            COLOR 255 0 0
+            #OPACITY 50
+            SYMBOL "star-dots"
+            SIZE   12
+            OUTLINECOLOR 255 255 255
+          END
+          LABEL
+            SIZE 8
+            TYPE TRUETYPE
+            COLOR 0 0 0
+            POSITION auto
+            MAXLENGTH 0
+          END
+        END
+        METADATA
+                "wms_abstract"       "HMC30 color mosaic pan-sharpened"
+                "wms_title"          "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+                "wfs_title"          "poi"
+                "wfs_srs"            "EPSG:49910"
+                "wfs_enable_request" "*"
+                "wfs_use_default_extent_for_getfeature" "no"
+                "wfs_abstract"       "SRS: Martian sphere with radius 339600 (proj=eqc a=3396000 b=3396000 units=m)"
+                "gml_include_items"  "all"
+                "gml_featureid"      "ID"
+        END
+END
+LAYER
+        NAME "lake"
+        TYPE LINE
+        DATA lake-level.shp
+        STATUS ON
+        GEOMTRANSFORM (smoothsia(generalize([shape], 25),3,1))
+        CLASS
+          NAME "elevation"
+          #COLOR 0 0 0
+          STYLE
+            WIDTH 2
+            COLOR 0 0 255
+            #OPACITY 50
+          END
+        END
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END
+LAYER
         NAME "channels"
         TYPE LINE
         DATA shapes/channels/Jezero_Channels_AN_Jan15.shp
@@ -82,8 +141,8 @@ LAYER
             COLOR 0 0 0
             FONT "sans"
             TYPE truetype
-            SIZE 8
-            POSITION ll
+            SIZE 10
+            POSITION auto
             PARTIALS FALSE
             BUFFER 4
           END
@@ -94,6 +153,16 @@ LAYER
                 "wms_enable_request" "GetCapabilities"
         END
 END #channesl
+LAYER
+        NAME "base-hsv"
+        TYPE RASTER
+        DATA basemap.vrt
+        METADATA
+                "wms_abstract"    "HMC30 color mosaic pan-sharpened"
+                "wms_title"     "HMC30 hsv"
+                "wms_enable_request" "GetCapabilities"
+        END
+END #HRSC-hsv
 LAYER
         NAME "HRSC-hsv"
         TYPE RASTER
@@ -142,12 +211,14 @@ LAYER
   TYPE LINE
   CONNECTIONTYPE CONTOUR
   #DATA hrsc/mc13e/HMC_13E10E20E30E40_DA5.tif
-  DATA combined-dtm.vrt
+  DATA dtm/combined-dtm.vrt
   PROCESSING "BANDS=1"
   PROCESSING "CONTOUR_ITEM=elevation"
   #PROCESSING "CONTOUR_INTERVAL=28000,230000:50"
   PROCESSING "CONTOUR_INTERVAL=100"
-  GEOMTRANSFORM (smoothsia(generalize([shape], 0.25*[data_cellsize]),3,1))
+  GEOMTRANSFORM (smoothsia(generalize([shape], 3*[data_cellsize]),3,1))
+  #GEOMTRANSFORM (smoothsia([shape],3,1))
+  #GEOMTRANSFORM (generalize([shape], 0.25*[data_cellsize]))
   LABELITEM "elevation"
   CLASS
     MINSCALEDENOM 24000
@@ -176,13 +247,12 @@ LAYER
   NAME "contour3"
   GROUP "contour"
   TYPE LINE
-  CONNECTIONTYPE CONTOUR
-  DATA hirise/dtm/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif
-  PROCESSING "BANDS=1"
-  PROCESSING "CONTOUR_ITEM=elevation"
-  PROCESSING "CONTOUR_INTERVAL=10"
+  #CONNECTIONTYPE C
+  #DATA hirise/dtm/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif
+  DATA hirise/dtm/contour.shp
   LABELITEM elevation
-  GEOMTRANSFORM (smoothsia(generalize([shape], 0.25*[data_cellsize]),3,1))
+  GEOMTRANSFORM (smoothsia(generalize([shape], 25),3,1))
+  #GEOMTRANSFORM (generalize([shape], 25))
   CLASS
     MAXSCALEDENOM 24000
     STYLE
@@ -205,4 +275,22 @@ LAYER
     END
   END
 END #layer
+SYMBOL
+  NAME "star-dots"
+  TYPE VECTOR
+  FILLED TRUE
+    POINTS
+      0 0.375
+      0.35 0.375
+      0.5 0
+      0.65 0.375
+      1 0.375
+      0.75 0.625
+      0.875 1
+      0.5 0.75
+      0.125 1
+      0.25 0.625
+      0 0.375
+    END
+END
 END #map

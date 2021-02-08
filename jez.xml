@@ -16,6 +16,72 @@
       <template>/mnt/data/iaumars/mapcache/jez/{tileset}/{grid}/{dim}/{z}/{x}/{y}.{ext}</template>
   </cache>
 
+   <source name="contour" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>contour</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="contour">
+      <source>contour</source>
+      <cache>disk</cache>
+      <grid maxzoom="17">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
+   <source name="base-dtm" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>base-dtm</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="base-dtm">
+      <source>base-dtm</source>
+      <cache>disk</cache>
+      <grid maxzoom="16">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
+   <source name="base-hsv" type="wms">
+      <getmap>
+         <params>
+            <FORMAT>image/png</FORMAT>
+            <LAYERS>base-hsv</LAYERS>
+            <TRANSPARENT>true</TRANSPARENT>
+         </params>
+      </getmap>
+      <http>
+         <url>https://maps.planet.fu-berlin.de/jez-bin/wms</url>
+      </http>
+   </source>
+   <tileset name="base-hsv">
+      <source>base-hsv</source>
+      <cache>disk</cache>
+      <grid maxzoom="17">eqc</grid>
+      <format>PNGQ_FAST</format>
+      <metatile>5 5</metatile>
+      <metabuffer>10</metabuffer>
+      <expires>3600</expires>
+   </tileset>
+
    <source name="HiRISE-hsv" type="wms">
       <getmap>
          <params>
@@ -94,7 +160,7 @@
       <!--extent>-10668848.652 -5215881.563 10668848.652 5215881.563</extent-->
       <!--extent>4518368.499830384 1031472.1026325921 4685520.1456985995 1147739.6140793865</extent-->
       <extent>4296116.795881205 922701.4516912713 4909523.499383646 1258219.2903108392</extent>
-      <resolutions>41675.190046875 20837.5950234375 10418.79751171875 5209.398755859375 2604.6993779296877 1302.3496889648438 651.1748444824219 325.58742224121096 162.79371112060548 81.39685556030274 40.69842778015137 20.349213890075685 10.174606945 5.087303472 2.543651736 1.271825868 0.635912934 0.3179564670324326 0.1589782335162163</resolutions>
+      <resolutions>41675.190046875 20837.5950234375 10418.79751171875 5209.398755859375 2604.6993779296877 1302.3496889648438 651.1748444824219 325.58742224121096 162.79371112060548 81.39685556030274 40.69842778015137 20.349213890075685 10.174606945 5.087303472 2.543651736 1.271825868 0.635912934 0.3179564670324326</resolutions>
    </grid>
 
    <default_format>PNGQ_FAST</default_format>
