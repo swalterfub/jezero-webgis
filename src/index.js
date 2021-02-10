@@ -82,15 +82,14 @@ var rotation = 0;
 
 //const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 
-
 var mainview = new View({
     center: mapCenter,
     zoom: zoom,
     minZoom: 9,
     maxZoom: 19,
     constrainResolution: true,
-    //extent: [4471445.622758097, 953062.4788152642, 4734194.672506754, 1227858.2631868462],
-    extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
+    extent: [4504877, 1007670, 4741975, 1185493],
+    //extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
     projection: projection49911,
     //maxResolution: 0.3179564670324326
   })
@@ -474,7 +473,6 @@ if (window.location.hash !== '') {
     shouldUpdate = false;
     //TODO
     switchToPano(id);
-    console.dir('updatehash');
     //shouldUpdate=false;
   }
 }
