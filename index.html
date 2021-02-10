@@ -22,9 +22,9 @@
             <li id="poitab">
               <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
             </li>
-            <!--li id="spotstab" class="disabled">
-              <a href="#spots" role="tab" title="Infospots"><i class="fa fa-binoculars"></i></a>
-            </li-->
+            <li id="infotab" class="disabled">
+              <a href="#info" role="tab" title="Information"><i class="fa fa-info-circle"></i></a>
+            </li>
             <!--li class="disabled">
               <a href="#tools" role="tab"><i class="fa fa-wrench"></i></a>
             </li-->
@@ -37,9 +37,9 @@
             <!--li>
               <a href="https://www.fu-berlin.de/planets" target="new" role="tab"><i class="fa" id="fu-planets"></i></a>
             </li-->
-            <!--li id="vrtab">
-              <a href="#vr" role="tab" title="VR"><i class="fa fa-expand" id='vrtab'></i></a>
-            </li-->
+            <li id="vrtab" class="disabled">
+              <a href="#vr" role="tab" title="Switch to VR (panorama mode)"><i class="fa fa-vr-cardboard" id='vrtab'></i></a>
+            </li>
             <li>
               <a href="#help" role="tab" title="Help"><i class="fa fa-question-circle" id='helptab'></i></a>
             </li>
@@ -70,14 +70,14 @@
             <div id="panoramas" class="panolens"></div>
           </div>
           <!-- !!! INFOSPOTS !!! -->
-          <!--div class="sidebar-pane" id="spots">
+          <div class="sidebar-pane" id="infotext">
             <h1 class="sidebar-header">
-              Infospots
+              Info texts
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1-->
-            <!-- !!! HERE WILL GO THE INFOSPOTS OF PANOLENS !!! -->
-            <!--div id="infospots" class="panolens"></div>
-          </div-->
+            <!-- !!! HERE WILL GO THE INFO Texts !!! -->
+            <div id="info" class="panolens"></div>
+          </div>
 
           <!--div class="sidebar-pane" id="tools">
             <h1 class="sidebar-header">
@@ -112,18 +112,22 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>
     <script src="src/index.js"></script>
-    <a-scene id="pano" class="aframe hidden" background="color: red" webxr="requiredFeatures: hit-test,local-floor;
-                optionalFeatures: dom-overlay,unbounded;
-                overlayElement: #overlay;">
+    <a-scene id="pano" class="aframe hidden" background="color: red" vr-mode-ui="enabled: false" webxr="
+        requiredFeatures: hit-test,local-floor;
+        optionalFeatures: dom-overlay,unbounded;
+        overlayElement: #overlay;">
       <a-assets>
         <img id="sphere" src="assets/sphere.jpg">
         <img id="sphere2" src="assets/sphere2.jpg">
         <img id="sphere3" src="assets/sphere3.jpg">
+        <img id="sphere4" src="assets/Camera14_landing_site_spheric.jpg">
+        <img id="sphere5" src="assets/Camera4_inflow_spheric3.jpg">
       </a-assets>
       <a-sky id="panorama" src="#sphere"
              animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
              animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade">
       </a-sky>
+      <a-entity camera look-controls position="0 1.6 0" id="cam"></a-entity>
     </a-scene>
   </body>
 </html>

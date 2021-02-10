@@ -163,7 +163,15 @@ var addPano=function(feature){
 var currentPano=-1;
 var panos = [];
 var currentMode='map';
-var featuresAsText='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[4594665.685709229,1090491.7343160897]},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Volcano in SE","link":"","content":"","zoom":"14","panorama":"sphere2"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"14","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"14","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"14","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"Crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
+var featuresAsText='{"type":"FeatureCollection","features":[\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+transform([77.4565,18.4475], projection49901, projection49911).toString()+']},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere4"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain View","link":"","content":"","zoom":"14","panorama":"sphere2"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"14","panorama":"sphere5","rotation":"0 -89 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"Crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
+
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -279,7 +287,7 @@ var styleFeatureBig = new Style({
     })
   });
 var mapdiv = document.getElementById('map');
-var currentFeature = new Feature();
+//var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
   //var mapdiv = document.getElementById('map');
   //var tooltip = document.getElementById('tooltip');
@@ -320,8 +328,9 @@ map.on('pointermove', function (event) {
   }
   displayFeatureInfo(map.getEventPixel(event.originalEvent));
 });
+var currentFeature;
 var returnToMap = function() {
-  console.dir(shouldUpdate);
+  //console.dir(shouldUpdate);
   currentMode='map';
   shouldUpdate=false;
   //disable map canvas
@@ -347,7 +356,7 @@ var returnToMap = function() {
     duration: 2000,
     zoom: previousZoom
   });
-  console.dir('dispose Pano');
+  //console.dir('dispose Pano');
   var asky=document.getElementById('panorama');
   asky.removeAttribute('src');
   tooltip.innerHTML='';
@@ -359,13 +368,16 @@ var onClickFunction;
 var micon = document.getElementById('mapicon');
 micon.parentElement.onclick=function() {
   returnToMap();
-  updatePermalink();
+  //updatePermalink();
   };
 function switchToPano(id) {
   //geht nicht aus popstate!
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
-  console.dir(asky.getAttribute('src'));
+  if (currentFeature.get('rotation')) {
+    asky.setAttribute('rotation',currentFeature.get('rotation'));
+  }
+  //console.dir(asky.getAttribute('src'));
   //shouldUpdate = false;
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
@@ -399,6 +411,7 @@ var clickPanoramaFeature = function (pixel) {
   });
   if (feature) {
     //console.dir(feature.getGeometry().getCoordinates());
+    currentFeature=feature;
     var parts = 1;
     var called = false;
     function callback() {
@@ -447,7 +460,6 @@ if (window.location.hash !== '') {
 }
 var shouldUpdate = true;
 var updatePermalink = function () {
-  console.dir('updatePermalink');
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the 'popstate' handler
     shouldUpdate = true;
@@ -457,7 +469,6 @@ var updatePermalink = function () {
     // do not update the URL when in pano mode, happens when reload with pano has
     return;
   }
-  console.dir('update');
   var center = mainview.getCenter();
   var hash =
     '#map=' +
@@ -621,4 +632,18 @@ var renderPanViews = function() {
   }
 }
 renderPanViews();
+window.addEventListener("wheel", event => {
+    const delta = Math.sign(event.wheelDelta);
+    //getting the mouse wheel change (120 or -120 and normalizing it to 1 or -1)
+    var mycam=document.getElementById('cam').getAttribute('camera');
+    var finalZoom=document.getElementById('cam').getAttribute('camera').zoom+delta;
+    //limiting the zoom so it doesnt zoom too much in or out
+    if(finalZoom<1)
+      finalZoom=1;
+    if(finalZoom>5)
+      finalZoom=5;  
 
+    mycam.zoom=finalZoom;
+    //setting the camera element
+    document.getElementById('cam').setAttribute('camera',mycam);
+  });
