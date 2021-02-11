@@ -345,6 +345,10 @@ var returnToMap = function() {
   //remove map tab pane
   var mtab = document.getElementById('mtab');
   mtab.classList.add('hidden');
+  var vrtab = document.getElementById('vrtab');
+  vrtab.classList.add('disabled');
+  var vrtab = document.getElementById('vrtab');
+  vrtab.classList.add('disabled');
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.add('disabled');
@@ -365,15 +369,21 @@ var returnToMap = function() {
 var previousZoom;
 var onClickFunction;
 //Define map tab onclick action
-var micon = document.getElementById('mapicon');
-micon.parentElement.onclick=function() {
+var mapbutton = document.getElementById('mapbutton');
+mapbutton.parentElement.onclick=function() {
   returnToMap();
+  //updatePermalink();
+  };
+var vrbutton = document.getElementById('vrbutton');
+vrbutton.parentElement.onclick=function() {
+  console.dir('nothing');
   //updatePermalink();
   };
 function switchToPano(id) {
   //geht nicht aus popstate!
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
+  //cannot read property get of null!
   if (currentFeature.get('rotation')) {
     asky.setAttribute('rotation',currentFeature.get('rotation'));
   }
@@ -397,6 +407,10 @@ function switchToPano(id) {
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.remove('disabled');
+  //show VR button
+  var vrtab = document.getElementById('vrtab');
+  vrtab.classList.remove('disabled');
+  vrtab.style.cursor = "pointer";
   currentPano=id;
   if (currentMode=='map'){
     //Deaktiviert, solange es nicht geht
