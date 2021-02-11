@@ -147,10 +147,14 @@ var mousePositionControl = new MousePosition({
   strategy: bboxStrategy,
 });*/
 class Panorama {
-  constructor(id, name, image) {
+  constructor(id, name, image, rotation) {
     this.id=id;
     this.name=name;
     this.image=image;
+    if (rotation === undefined) {
+      rotation='0 0 0';
+    }
+    this.rotation=rotation;
     //this.pano=new PANOLENS.ImagePanorama(image);
     this.infos=[];
   }
@@ -158,7 +162,7 @@ class Panorama {
 var addPano=function(feature){
   var id = feature.get('id');
   feature.setId(id);
-  panos[id] = new Panorama(id, feature.get('name'), feature.get('panorama'));
+  panos[id] = new Panorama(id, feature.get('name'), feature.get('panorama'), feature.get('rotation'));
 }
 var currentPano=-1;
 var panos = [];
@@ -349,6 +353,8 @@ var returnToMap = function() {
   vrtab.classList.add('disabled');
   var vrtab = document.getElementById('vrtab');
   vrtab.classList.add('disabled');
+  var sound=document.getElementById('insightsnd');
+  sound.pause();
   //activate infospots tab
   //var spotstab = document.getElementById('spotstab');
   //spotstab.classList.add('disabled');
@@ -384,9 +390,7 @@ function switchToPano(id) {
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
   //cannot read property get of null!
-  if (currentFeature.get('rotation')) {
-    asky.setAttribute('rotation',currentFeature.get('rotation'));
-  }
+  asky.setAttribute('rotation',panos[id].rotation);
   //console.dir(asky.getAttribute('src'));
   //shouldUpdate = false;
   //remove tooltip
@@ -411,6 +415,8 @@ function switchToPano(id) {
   var vrtab = document.getElementById('vrtab');
   vrtab.classList.remove('disabled');
   vrtab.style.cursor = "pointer";
+  var sound=document.getElementById('insightsnd');
+  sound.play();
   currentPano=id;
   if (currentMode=='map'){
     //Deaktiviert, solange es nicht geht
