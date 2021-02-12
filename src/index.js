@@ -169,7 +169,6 @@ var addPano=function(feature){
 }
 var currentPano=-1;
 var panos = [];
-var currentMode='map';
 var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+transform([77.4565,18.4475], projection49901, projection49911).toString()+']},"properties":{"id":"6","name":"Mars 2020 Rover landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"sphere4"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain View","link":"","content":"","zoom":"14","panorama":"sphere2"}},\
@@ -337,9 +336,6 @@ map.on('pointermove', function (event) {
 });
 var currentFeature;
 var returnToMap = function() {
-  //console.dir(shouldUpdate);
-  currentMode='map';
-  shouldUpdate=false;
   //disable map canvas
   var mapdiv = document.getElementById('map');
   mapdiv.classList.remove('hidden');
@@ -395,7 +391,6 @@ function switchToPano(id) {
   //cannot read property get of null!
   asky.setAttribute('rotation',panos[id].rotation);
   //console.dir(asky.getAttribute('src'));
-  //shouldUpdate = false;
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
   tooltip.style.display = 'none';
@@ -421,12 +416,6 @@ function switchToPano(id) {
   var sound=document.getElementById('insightsnd');
   sound.play();
   currentPano=id;
-  if (currentMode=='map'){
-    //Deaktiviert, solange es nicht geht
-    //updatePanoLink();
-    shouldUpdate = false;
-  }
-  currentMode='pano';
 }
 var clickPanoramaFeature = function (pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
@@ -460,102 +449,6 @@ map.on('singleclick', function (event) {
 map.on('moveend', function (event) {
   console.dir(transform(mainview.getCenter(), projection49911, projection49901));
 })
-
-//Permalink https://openlayers.org/en/latest/examples/permalink.html
-if (window.location.hash !== '') {
-  //Bei reload
-  if (window.location.hash.includes('#map=')) {
-    // try to restore center, zoom-level and rotation from the URL
-    var hash = window.location.hash.replace('#map=', '');
-    var parts = hash.split('/');
-    if (parts.length === 4) {
-      var zoom = parseFloat(parts[0]);
-      var center = [parseFloat(parts[1]), parseFloat(parts[2])];
-      var rotation = parseFloat(parts[3]);
-    }
-  } else if (window.location.hash.includes('#pano=')) {
-    var id = window.location.hash.replace('#pano=', '');
-    currentPano=id;
-    currentMode='pano';
-    shouldUpdate = false;
-    //TODO
-    switchToPano(id);
-    //shouldUpdate=false;
-  }
-}
-var shouldUpdate = true;
-var updatePermalink = function () {
-  if (!shouldUpdate) {
-    // do not update the URL when the view was changed in the 'popstate' handler
-    shouldUpdate = true;
-    return;
-  }
-  if (currentMode=='pano') {
-    // do not update the URL when in pano mode, happens when reload with pano has
-    return;
-  }
-  var center = mainview.getCenter();
-  var hash =
-    '#map=' +
-    mainview.getZoom().toFixed(2) +
-    '/' +
-    center[0].toFixed(2) +
-    '/' +
-    center[1].toFixed(2) +
-    '/' +
-    mainview.getRotation();
-  var state = {
-    mode: "map",
-    zoom: mainview.getZoom(),
-    center: mainview.getCenter(),
-    rotation: mainview.getRotation(),
-  };
-  window.history.pushState(state, 'map', hash);
-  currentMode='map';
-};
-var updatePanoLink = function () {
-  console.dir('updatePanolink');
-  if (!shouldUpdate) {
-    // do not update the URL when the view was changed in the 'popstate' handler
-    shouldUpdate = true;
-    return;
-  }
-  console.dir('update');
-  var hash = '#pano=' + currentPano;
-  var state = {
-    mode: "pano",
-    currentPano: currentPano
-  }
-  //switchToPano(currentPano);
-  window.history.pushState(state, 'pano', hash);
-}
-map.on('moveend', updatePermalink);
-window.addEventListener('popstate', function (event) {
-  //durch back/forward
-  console.dir('popstate');
-  if (event.state === null) {
-    return;
-  }
-  if (event.state.mode=='map') {
-    console.dir('map');
-    if (currentMode=='pano') {
-      returnToMap();
-    }
-    map.getView().setCenter(event.state.center);
-    map.getView().setZoom(event.state.zoom);
-    map.getView().setRotation(event.state.rotation);
-    shouldUpdate = false;
-  } else if (event.state.mode=='pano') {
-    console.dir('pano');
-    if (currentMode='map') {
-      currentMode='pano';
-      currentPano=event.state.currentPano;
-      console.dir('switchtopano');
-      switchToPano(currentPano);
-    }
-    shouldUpdate = false;
-  }
-});
 
 //viewer.onAnimate(updatePanoLink());
 var selectedLabel;
