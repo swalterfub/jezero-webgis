@@ -76,7 +76,7 @@ addCoordinateTransforms(
 );
 
 var zoom = 10;
-var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
+//var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
 
@@ -150,7 +150,8 @@ class Panorama {
   constructor(feature) {
     this.id=feature.get('id');
     this.name=feature.get('name');
-    this.image=feature.get('image');
+    this.image=feature.get('panorama');
+    //console.dir(this.image);
     if (feature.get('rotation') === undefined) {
       feature.set('rotation','0 0 0');
     }
@@ -165,20 +166,24 @@ class Panorama {
 var addPano=function(feature){
   var id = feature.get('id');
   feature.setId(id);
-  console.dir(feature.get('name'));
   panos[id] = new Panorama(feature);
 }
 var currentPano=-1;
 var panos = [];
+var ll2xyz = function(coordinates){
+  var xyz = transform(coordinates, projection49901, projection49911);
+  return xyz;
+}
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+transform([77.4565,18.4475], projection49901, projection49911).toString()+']},"properties":{"id":"6","name":"Mars 2020 Rover landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"sphere4"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain View","link":"","content":"","zoom":"14","panorama":"sphere2"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"14","panorama":"sphere5","rotation":"0 -89 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"2","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4606677.8353885105,1098113.01988284]},"properties":{"id":"4","name":"Crater","link":"","content":"","zoom":"10","panorama":"sphere3"}}]}';
-
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.4565,18.4475]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"Camera14_landing_site_spheric","rotation":"0 60 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"sphere2","rotation":"-20 80 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"0 120 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.4,18.5]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0"}}]}';
+  //{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"7","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere"}},\
+  
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -378,8 +383,10 @@ function switchToPano(id) {
   //geht nicht aus popstate!
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
+  console.dir(panos[id].name);
   //cannot read property get of null!
-  asky.setAttribute('rotation',panos[id].rotation);
+  var acam=document.getElementById('cam');
+  acam.setAttribute('rotation',panos[id].rotation);
   //console.dir(asky.getAttribute('src'));
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
@@ -404,7 +411,7 @@ function switchToPano(id) {
   vrtab.classList.remove('disabled');
   vrtab.style.cursor = "pointer";
   var sound=document.getElementById('insightsnd');
-  sound.play();
+  //sound.play();
   currentPano=id;
 }
 var clickPanoramaFeature = function (pixel) {
@@ -462,7 +469,6 @@ var renderPanViews = function() {
         loopli.classList.remove('selected');
       }
       this.parentElement.classList.add('selected');
-      console.dir(this.parentElement);
       var mapdiv=document.getElementById('map');
       var feature=poiSource.getFeatureById(pano.id);
       if (mapdiv.classList.contains('hidden')) {
@@ -516,9 +522,6 @@ var renderPanViews = function() {
             zoom: 10,
           });
         }
-        /*var viewCenter=transform([77.4565,18.4475], projection49901, projection49911);
-        console.dir(mainview.getCenter()[0]-viewCenter[0]);
-        console.dir(mainview.getCenter()[1]-viewCenter[1]);*/
         mainview.animate(
         {
           center: feature.getGeometry().getCoordinates(),
@@ -543,8 +546,8 @@ renderPanViews();
 window.addEventListener("wheel", event => {
     const delta = Math.sign(event.wheelDelta);
     //getting the mouse wheel change (120 or -120 and normalizing it to 1 or -1)
-    var mycam=document.getElementById('cam').getAttribute('camera');
-    var finalZoom=document.getElementById('cam').getAttribute('camera').zoom+delta;
+    var mycam=document.getElementById('camera').getAttribute('camera');
+    var finalZoom=document.getElementById('camera').getAttribute('camera').zoom+delta;
     //limiting the zoom so it doesnt zoom too much in or out
     if(finalZoom<1)
       finalZoom=1;
@@ -553,5 +556,5 @@ window.addEventListener("wheel", event => {
 
     mycam.zoom=finalZoom;
     //setting the camera element
-    document.getElementById('cam').setAttribute('camera',mycam);
+    document.getElementById('camera').setAttribute('camera',mycam);
   });
