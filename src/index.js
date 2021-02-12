@@ -446,9 +446,9 @@ var clickPanoramaFeature = function (pixel) {
 map.on('singleclick', function (event) {
   clickPanoramaFeature(map.getEventPixel(event.originalEvent));
 })
-map.on('moveend', function (event) {
-  console.dir(transform(mainview.getCenter(), projection49911, projection49901));
-})
+/*map.on('moveend', function (event) {
+  //console.dir(transform(mainview.getCenter(), projection49911, projection49901));
+})*/
 
 //viewer.onAnimate(updatePanoLink());
 var selectedLabel;
