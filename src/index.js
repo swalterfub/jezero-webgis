@@ -28,9 +28,25 @@ import {createStringXY} from 'ol/coordinate';
 
 //import * as THREE from 'three';
 //import * as PANOLENS from 'panolens';
-import 'aframe';
+import  AFRAME from 'aframe';
 
 import './jezero.css';
+var textarray=[];
+textarray[5]=`
+<h3>Mountain view</h3><p>The Mountain View viewpoint offers a perfect vista into the crater. This viewpoint is located on top of the large hill southeast of the crater. From here, the observer can see that the northern part of the crater floor is sloping and that the northern crater rim is clearly less defined, compared to the flat, smooth crater floor in the south and the much steeper southern crater rim flanks. This appearance originates from the erosion of material in the catchment areas to the north of the crater, which was then transported into the crater basin itself and deposited in the deltas. Also contributing to the asymmetrical topography is the erosion of the northern crater rim, caused by the river valleys breaking through the flank of Jezero.</p>
+`
+textarray[6]=`
+<h3>Mars 2020 Rover &ldquo;Perseverance&rdquo; landing site</h3><p>The NASA Mars 2020 mission is en route to Mars since July 30th 2020. On board: The NASA rover “Perseverance”, the most complex equipment ever sent to Mars. Besides numerous scientific instruments, it will carry containers for a drill core sample collection that will be left on Mars for a later return to Earth carried out by follow-up missions planned for the 2030s. The approximately one metric ton heavy vehicle is set to land on 18 February 2021 at 21:55 CET in Jezero crater and will then start the search for traces of microbial life. The working group at Freie Universitaet Berlin is involved with Prof. Jaumann, serving as Co-Investigator on the Mastcam Z instrument. “Ingenuity” is the name of a 1.8 kg heavy helicopter drone onboard the rover that will be used as near field reconnaissance instrument.</p>
+`
+textarray[0]=`
+<h3>Outflow channel</h3><p>The outflow channel Pliva Vallis breaks through the eastern crater rim surpassing a swell. Using altitude measurements from crater rim, crater floor, swell and upper edge of the delta, the potential depth of the lake can be deduced, resulting in roughly 250 m water depth. This would result in a minimum lake water volume of 220 km3 and a maximum of 340 km3 (see corresponding images). However, as the deltas have been severely eroded since water activity ceased approximately 3.8 billion years ago, it is no longer possible to make precise assessments. Also, the crater was filled with very extensive lava flows from the nearby Syrtis Major volcanic region about 300 million years later.</p>
+`
+textarray[2]=`
+<h3>On top of the delta</h3><p>Within the delta deposits, numerous water-bearing minerals have been found, indicating liquid water was once present for an extended period of time.</p>
+`
+textarray[1]=`
+<h3>Delta basement</h3><p>Within the delta deposits, numerous water-bearing minerals have been found, indicating liquid water was once present for an extended period of time.</p>
+`
 
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
 proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
@@ -177,8 +193,8 @@ var ll2xyz = function(coordinates){
 var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.4565,18.4475]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"Camera14_landing_site_spheric","rotation":"0 60 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"sphere2","rotation":"-20 80 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"0 120 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.4,18.5]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0"}}]}';
@@ -351,6 +367,9 @@ var returnToMap = function() {
   var vrtab = document.getElementById('vrtab');
   vrtab.classList.add('disabled');
   var sound=document.getElementById('insightsnd');
+  var itab = document.getElementById('itab');
+  itab.classList.add('disabled');
+  emptyInfotab();
   sound.pause();
   for (const pano of panos){
     let loopli=document.getElementById('pli-'+pano.id);
@@ -381,12 +400,12 @@ vrbutton.parentElement.onclick=function() {
   };
 function switchToPano(id) {
   //geht nicht aus popstate!
+  changeInfotab(id);
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
   console.dir(panos[id].name);
-  //cannot read property get of null!
-  var acam=document.getElementById('cam');
-  acam.setAttribute('rotation',panos[id].rotation);
+  //var acam=document.getElementById('camera');
+  //acam.setAttribute('rotation',panos[id].rotation);
   //console.dir(asky.getAttribute('src'));
   //remove tooltip
   var tooltip = document.getElementById('tooltip');
@@ -403,15 +422,16 @@ function switchToPano(id) {
   var mtab = document.getElementById('mtab');
   mtab.classList.remove('hidden');
   mtab.style.cursor = "pointer";
-  //activate infospots tab
-  //var spotstab = document.getElementById('spotstab');
-  //spotstab.classList.remove('disabled');
+  //activate info tab
+  var itab = document.getElementById('itab');
+  itab.classList.remove('disabled');
+  itab.style.cursor = "pointer";
   //show VR button
   var vrtab = document.getElementById('vrtab');
   vrtab.classList.remove('disabled');
   vrtab.style.cursor = "pointer";
   var sound=document.getElementById('insightsnd');
-  //sound.play();
+  sound.play();
   currentPano=id;
 }
 var clickPanoramaFeature = function (pixel) {
@@ -558,3 +578,27 @@ window.addEventListener("wheel", event => {
     //setting the camera element
     document.getElementById('camera').setAttribute('camera',mycam);
   });
+var changeInfotab = function(id) {
+  var tab = document.getElementById('infotext');
+  tab.innerHTML=textarray[id];
+};
+var emptyInfotab = function(id) {
+  var tab = document.getElementById('infotext');
+  tab.innerHTML='';
+};
+AFRAME.registerComponent('rotation-reader', {
+  /**
+   * We use IIFE (immediately-invoked function expression) to only allocate one
+   * vector or euler and not re-create on every tick to save memory.
+   */
+  tick: (function () {
+    var position = new THREE.Vector3();
+    var quaternion = new THREE.Quaternion();
+
+    return function () {
+      this.el.object3D.getWorldPosition(position);
+      this.el.object3D.getWorldQuaternion(quaternion);
+      // position and rotation now contain vector and quaternion in world space.
+    };
+  })()
+});

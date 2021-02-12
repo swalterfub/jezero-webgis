@@ -20,9 +20,9 @@
               <a href="#home" role="tab" title="Map layers"><i class="fa fa-layer-group" id="licon"></i></a>
             </li>
             <li id="poitab">
-              <a href="#poi" role="tab" title="Panoramic scenes"><i class="fa fa-eye"></i></a>
+              <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
             </li>
-            <li id="infotab" class="disabled">
+            <li id="itab">
               <a href="#info" role="tab" title="Information"><i class="fa fa-info-circle"></i></a>
             </li>
           </ul>
@@ -57,10 +57,10 @@
           </div>
           <div class="sidebar-pane" id="info">
             <h1 class="sidebar-header">
-              Info texts
+              Viewpoint explanation
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-            </h1-->
-            <div id="info"></div>
+            </h1>
+            <div id="infotext" class="info-content"></div>
           </div>
           <!--div class="sidebar-pane" id="vr">
             <h1 class="sidebar-header">
@@ -107,14 +107,12 @@
         <audio id="insightsnd" src="assets/09-APSS-Mars_sound1a_2m_x100.mp3" preload="auto"></audio>
         <!--Listen to data from the air pressure sensor on NASA's InSight lander, indicating wind blowing by on Mars. The data were sped up by a factor of 100, shortening the duration of the recording and shifting it up in frequency 100 times (a little more than six octaves).-->
       </a-assets>
-      <a-sky id="panorama" src="#Camera15_center_crater"
-             animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
-             animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade">
+      <a-sky id="panorama" src="#Camera15_center_crater">
       </a-sky>
-      <!--a-entity sound="src: #insightsnd; loop=true"></a-entity-->
-      <a-entity id="cam" position="0 0 0">
-        <a-camera id="camera"></a-camera>
-      </a-entity>
+      <!--a-entity sound="src: #insightsnd; loop=true" id='sound'></a-entity-->
+      <!--a-entity id="cam" position="0 0 0"-->
+        <a-camera position="0 0 0"  id="camera"></a-camera>
+      <!--/a-entity-->
       <!--a-camera camera look-controls position="0 0 0" id="cam"></a-camera-->
     </a-scene>
   </body>

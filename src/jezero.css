@@ -132,7 +132,7 @@ padding-left: 2.7em;
 
 #tooltip {
   position: absolute;
-  font: 14pt 'Helvetica Neue', Arial, Helvetica, sans-serif;;
+  font: 14pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: normal;
   z-index: 100;
   color: white;
@@ -164,4 +164,8 @@ background-size: 40px;
   visibility: 'hidden';
   opacity: 0;
   transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.info-content {
+  font: 12pt serif;
 }
