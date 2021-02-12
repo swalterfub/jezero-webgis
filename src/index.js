@@ -148,23 +148,24 @@ var mousePositionControl = new MousePosition({
 });*/
 class Panorama {
   constructor(feature) {
-    this.id=feature.id;
-    this.name=feature.name;
-    this.image=feature.image;
-    if (feature.rotation === undefined) {
-      feature.rotation='0 0 0';
+    this.id=feature.get('id');
+    this.name=feature.get('name');
+    this.image=feature.get('image');
+    if (feature.get('rotation') === undefined) {
+      feature.set('rotation','0 0 0');
     }
-    this.rotation=feature.rotation;
-    if (feature.icon === undefined) {
-      feature.icon='map-marker-alt';
+    this.rotation=feature.get('rotation');
+    if (feature.get('icon') === undefined) {
+      feature.set('icon','map-marker-alt');
     }
-    this.icon=feature.icon;
+    this.icon=feature.get('icon');
     this.infos=[];
   }
 }
 var addPano=function(feature){
   var id = feature.get('id');
   feature.setId(id);
+  console.dir(feature.get('name'));
   panos[id] = new Panorama(feature);
 }
 var currentPano=-1;
@@ -295,19 +296,12 @@ var styleFeatureBig = new Style({
 var mapdiv = document.getElementById('map');
 //var currentFeature = new Feature();
 var displayFeatureInfo = function (pixel) {
-  //var mapdiv = document.getElementById('map');
-  //var tooltip = document.getElementById('tooltip');
-  /*info.css({
-    //left: pixel[0] + 'px',
-    //top: pixel[1] - 15 + 'px',
-  });*/
   tooltip.style.left = pixel[0] + 'px';
   tooltip.style.top = (pixel[1] - 50) + 'px';
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
   });
   if (feature) {
-    //info.attr('data-original-title', feature.get('name')).tooltip('show');
     feature.setStyle();
     feature.setStyle(styleFeatureBig);
     currentFeature=feature;
@@ -317,7 +311,6 @@ var displayFeatureInfo = function (pixel) {
     tooltip.style.display = 'block';
     mapdiv.style.cursor = "pointer";
   } else {
-    //info.tooltip('hide');
     if (currentFeature) {
       currentFeature.setStyle();
       currentFeature.setStyle(styleFeature)
@@ -354,9 +347,6 @@ var returnToMap = function() {
   vrtab.classList.add('disabled');
   var sound=document.getElementById('insightsnd');
   sound.pause();
-  //activate infospots tab
-  //var spotstab = document.getElementById('spotstab');
-  //spotstab.classList.add('disabled');
   for (const pano of panos){
     let loopli=document.getElementById('pli-'+pano.id);
     loopli.classList.remove('selected');
