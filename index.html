@@ -55,7 +55,7 @@
             </h1>
             <div id="panoramas"></div>
           </div>
-          <div class="sidebar-pane" id="info">
+          <div class="sidebar-pane" id="info" class="disabled">
             <h1 class="sidebar-header">
               Viewpoint explanation
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
@@ -110,8 +110,8 @@
       <a-sky id="panorama" src="#Camera15_center_crater">
       </a-sky>
       <!--a-entity sound="src: #insightsnd; loop=true" id='sound'></a-entity-->
-      <!--a-entity id="cam" position="0 0 0"-->
-        <a-camera position="0 0 0"  id="camera"></a-camera>
+      <!--a-entity id="cam" look-controls position="0 0 0"-->
+        <a-camera position="0 0 0" look-controls id="camera"></a-camera>
       <!--/a-entity-->
       <!--a-camera camera look-controls position="0 0 0" id="cam"></a-camera-->
     </a-scene>

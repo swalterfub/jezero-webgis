@@ -216,7 +216,7 @@ var styleFeature = new Style({
   });
 
 var poi = new Vector({
-  title: "POI",
+  title: "Panoramic views",
   source: poiSource,
   style: styleFeature
 });
@@ -256,6 +256,7 @@ const map = new Map({
     }),
     new TileLayer({
       title: "Possible paleo lake-level",
+      visible: false,
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "lake" }
