@@ -77,6 +77,7 @@ addCoordinateTransforms(
 
 var zoom = 10;
 var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
+var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
 
 
@@ -146,28 +147,31 @@ var mousePositionControl = new MousePosition({
   strategy: bboxStrategy,
 });*/
 class Panorama {
-  constructor(id, name, image, rotation) {
-    this.id=id;
-    this.name=name;
-    this.image=image;
-    if (rotation === undefined) {
-      rotation='0 0 0';
+  constructor(feature) {
+    this.id=feature.id;
+    this.name=feature.name;
+    this.image=feature.image;
+    if (feature.rotation === undefined) {
+      feature.rotation='0 0 0';
     }
-    this.rotation=rotation;
-    //this.pano=new PANOLENS.ImagePanorama(image);
+    this.rotation=feature.rotation;
+    if (feature.icon === undefined) {
+      feature.icon='map-marker-alt';
+    }
+    this.icon=feature.icon;
     this.infos=[];
   }
 }
 var addPano=function(feature){
   var id = feature.get('id');
   feature.setId(id);
-  panos[id] = new Panorama(id, feature.get('name'), feature.get('panorama'), feature.get('rotation'));
+  panos[id] = new Panorama(feature);
 }
 var currentPano=-1;
 var panos = [];
 var currentMode='map';
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+transform([77.4565,18.4475], projection49901, projection49911).toString()+']},"properties":{"id":"6","name":"Mars 2020 Rover landing site","link":"","content":"","zoom":"14","panorama":"sphere4"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+transform([77.4565,18.4475], projection49901, projection49911).toString()+']},"properties":{"id":"6","name":"Mars 2020 Rover landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"sphere4"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain View","link":"","content":"","zoom":"14","panorama":"sphere2"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4586887.583567031,1096858.4872792598]},"properties":{"id":"1","name":"Delta","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"14","panorama":"sphere3"}},\
@@ -181,7 +185,7 @@ var poiSource = new VectorSource({
 poiSource.forEachFeature(addPano);
 var styleFeature = new Style({
     text: new Text({
-      text: '\uf3c5',
+      text: '\uf041',
       font: '900 24px "Font Awesome 5 Free"',
       textBaseline: 'bottom',
       fill: new Fill({
@@ -281,7 +285,7 @@ var cyanFill=new Fill({
       });
 var styleFeatureBig = new Style({
     text: new Text({
-      text: '\uf3c5',
+      text: '\uf041',
       font: '900 24px "Font Awesome 5 Free"',
       textBaseline: 'bottom',
       fill: new Fill({
@@ -452,6 +456,9 @@ var clickPanoramaFeature = function (pixel) {
 }
 map.on('singleclick', function (event) {
   clickPanoramaFeature(map.getEventPixel(event.originalEvent));
+})
+map.on('moveend', function (event) {
+  console.dir(transform(mainview.getCenter(), projection49911, projection49901));
 })
 
 //Permalink https://openlayers.org/en/latest/examples/permalink.html
