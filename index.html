@@ -90,10 +90,24 @@
               <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
             </h1>
             <div id="credits"></div>
-            <p>HRSC: ESA/DLR/FU-BERLIN, CC BY-SA 3.0 IGO</p>
-            <p>CTX: NASA/JPL-Caltech/MSSS</p>
-            <p>HiRISE: NASA/JPL/University of Arizona</p>
-            <p>Audio: NASA/JPL-Caltech/CNES/Cornell</p>
+            <p><b>Image credits:</b></br>
+            HRSC: ESA/DLR/FU-BERLIN, CC BY-SA 3.0 IGO</br>
+            CTX: NASA/JPL-Caltech/MSSS</br>
+            HiRISE: NASA/JPL/University of Arizona</br>
+            </p>
+            <p><b>Audio:</b></br>
+            NASA/JPL-Caltech/CNES/Cornell
+            </p>
+            <p><b>Software:</b></br>
+            MapServer</br>
+            OpenLayers</br>
+            ol-layerswitcher</br>
+            sidebar-v2</br>
+            a-frame</br>
+            parcel</br>
+            GDAL</b>
+            ISIS</br>
+            </p>
           </div>
         </div>
       </div>
@@ -104,10 +118,7 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Object.assign,Event,URL"></script>
     <script src="src/index.js"></script>
-    <a-scene id="pano" class="aframe hidden" background="color: black" vr-mode-ui="enterVRButton: #vrbutton" webxr="
-        requiredFeatures: hit-test,local-floor;
-        optionalFeatures: dom-overlay,unbounded;
-        overlayElement: #overlay;">
+    <a-scene id="pano" class="aframe hidden" background="color: black" vr-mode-ui="enterVRButton: #vrbutton; enterARButton: #arbutton" webxr>
       <a-assets>
         <img id="sphere2" src="assets/sphere2.jpg">
         <img id="Camera5_inflow_spheric2" src="assets/Camera5_inflow_spheric2.jpg">
@@ -126,6 +137,7 @@
         <a-camera position="0 0 0" look-controls id="camera"></a-camera>
       <!--/a-entity-->
       <!--a-camera camera look-controls position="0 0 0" id="cam"></a-camera-->
+      <a id="arbutton" class="hidden" href="#"></a>
     </a-scene>
   </body>
 </html>
