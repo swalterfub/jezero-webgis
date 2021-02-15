@@ -47,7 +47,12 @@ textarray[2]=`
 textarray[1]=`
 <h3>Delta basement</h3><p>Within the delta deposits, numerous water-bearing minerals have been found, indicating liquid water was once present for an extended period of time.</p>
 `
-
+textarray[3]=`
+<h3>Naretva Vallis</h3><p></p>
+`
+textarray[4]=`
+<h3>Jezero Crater (center)</h3><p></p>
+`
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
 proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
 register(proj4);
@@ -95,9 +100,6 @@ var zoom = 10;
 //var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
-
-
-//const viewer = new PANOLENS.Viewer({ output: 'console', container: document.querySelector( '#pano' ) });
 
 var mainview = new View({
     center: mapCenter,
@@ -372,9 +374,9 @@ var returnToMap = function() {
   var mtab = document.getElementById('mtab');
   mtab.classList.add('hidden');
   var vrtab = document.getElementById('vrtab');
-  vrtab.classList.add('disabled');
-  var vrtab = document.getElementById('vrtab');
-  vrtab.classList.add('disabled');
+  vrtab.classList.add('hidden');
+  var vrtab = document.getElementById('fstab');
+  fstab.classList.add('hidden');
   var sound=document.getElementById('insightsnd');
   var itab = document.getElementById('itab');
   itab.classList.add('disabled');
@@ -400,19 +402,31 @@ var onClickFunction;
 var mapbutton = document.getElementById('mapbutton');
 mapbutton.parentElement.onclick=function() {
   returnToMap();
-  //updatePermalink();
-  };
+};
 var vrbutton = document.getElementById('vrbutton');
 vrbutton.parentElement.onclick=function() {
   console.dir('nothing');
-  //updatePermalink();
-  };
+};
+//var fullScreenState=false;
+var fsbutton = document.getElementById('fsbutton');
+fsbutton.parentElement.onclick=function() {
+  console.dir('nothing');
+  //if (fullScreenState) {
+    /*fullScreenState=false;
+    var panodiv = document.getElementById('pano');
+    panodiv.exitFullscreen();
+  } else {
+    fullScreenState=true;*/
+    var panodiv = document.getElementById('pano');
+    panodiv.requestFullscreen();
+  //}
+};
 function switchToPano(id) {
   //geht nicht aus popstate!
   changeInfotab(id);
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
-  console.dir(panos[id].name);
+  //console.dir(panos[id].name);
   //var acam=document.getElementById('camera');
   //acam.setAttribute('rotation',panos[id].rotation);
   //console.dir(asky.getAttribute('src'));
@@ -437,8 +451,12 @@ function switchToPano(id) {
   itab.style.cursor = "pointer";
   //show VR button
   var vrtab = document.getElementById('vrtab');
-  vrtab.classList.remove('disabled');
+  vrtab.classList.remove('hidden');
   vrtab.style.cursor = "pointer";
+  //show FS button
+  var fstab = document.getElementById('fstab');
+  fstab.classList.remove('hidden');
+  fstab.style.cursor = "pointer";
   var sound=document.getElementById('insightsnd');
   sound.play();
   currentPano=id;
@@ -458,25 +476,29 @@ var clickPanoramaFeature = function (pixel) {
     previousZoom = mainview.getZoom();
     var zoom=feature.get('zoom');
     if ( zoom < 10) {
-      console.dir(zoom);
+      //console.dir(zoom);
       zoom=10;
     }
+    if (Math.abs(mainview.getCenter()[0]-previousCenter[0])>5000||Math.abs(mainview.getCenter()[1]-previousCenter[1])>5000) {
     mainview.animate({
         center: feature.getGeometry().getCoordinates(),
         duration: 2000,
         zoom: zoom,
-      }, callback
-    );
+      }, callback );
+    } else {
+      //console.dir('noanimate');
+      switchToPano(feature.get('id'));
+    }
   }
 }
 map.on('singleclick', function (event) {
   clickPanoramaFeature(map.getEventPixel(event.originalEvent));
 })
-/*map.on('moveend', function (event) {
-  //console.dir(transform(mainview.getCenter(), projection49911, projection49901));
-})*/
+var previousCenter=mainview.getCenter();
+map.on('moveend', function (event) {
+  //console.dir([Math.abs(mainview.getCenter()[0]-previousCenter[0]),Math.abs(mainview.getCenter()[1]-previousCenter[1])]);
+})
 
-//viewer.onAnimate(updatePanoLink());
 var selectedLabel;
 var renderPanViews = function() {
   var panoramas = document.getElementById('panoramas');
