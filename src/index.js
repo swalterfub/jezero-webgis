@@ -198,7 +198,7 @@ var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Inlet 1","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Naretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0"}}]}';
   //{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"7","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere"}},\
   
@@ -410,16 +410,8 @@ vrbutton.parentElement.onclick=function() {
 //var fullScreenState=false;
 var fsbutton = document.getElementById('fsbutton');
 fsbutton.parentElement.onclick=function() {
-  console.dir('nothing');
-  //if (fullScreenState) {
-    /*fullScreenState=false;
-    var panodiv = document.getElementById('pano');
-    panodiv.exitFullscreen();
-  } else {
-    fullScreenState=true;*/
     var panodiv = document.getElementById('pano');
     panodiv.requestFullscreen();
-  //}
 };
 function switchToPano(id) {
   //geht nicht aus popstate!
