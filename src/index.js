@@ -32,26 +32,80 @@ import  AFRAME from 'aframe';
 
 import './jezero.css';
 var textarray=[];
-textarray[5]=`
-<h3>Mountain view</h3><p>The Mountain View viewpoint offers a perfect vista into the crater. This viewpoint is located on top of the large hill southeast of the crater. From here, the observer can see that the northern part of the crater floor is sloping and that the northern crater rim is clearly less defined, compared to the flat, smooth crater floor in the south and the much steeper southern crater rim flanks. This appearance originates from the erosion of material in the catchment areas to the north of the crater, which was then transported into the crater basin itself and deposited in the deltas. Also contributing to the asymmetrical topography is the erosion of the northern crater rim, caused by the river valleys breaking through the flank of Jezero.</p>
-`
-textarray[6]=`
-<h3>Mars 2020 Rover &ldquo;Perseverance&rdquo; landing site</h3><p>The NASA Mars 2020 mission is en route to Mars since July 30th 2020. On board: The NASA rover “Perseverance”, the most complex equipment ever sent to Mars. Besides numerous scientific instruments, it will carry containers for a drill core sample collection that will be left on Mars for a later return to Earth carried out by follow-up missions planned for the 2030s. The approximately one metric ton heavy vehicle is set to land on 18 February 2021 at 21:55 CET in Jezero crater and will then start the search for traces of microbial life. The working group at Freie Universitaet Berlin is involved with Prof. Jaumann, serving as Co-Investigator on the Mastcam Z instrument. “Ingenuity” is the name of a 1.8 kg heavy helicopter drone onboard the rover that will be used as near field reconnaissance instrument.</p>
-`
+
 textarray[0]=`
-<h3>Outflow channel</h3><p>The outflow channel Pliva Vallis breaks through the eastern crater rim surpassing a swell. Using altitude measurements from crater rim, crater floor, swell and upper edge of the delta, the potential depth of the lake can be deduced, resulting in roughly 250 m water depth. This would result in a minimum lake water volume of 220 km3 and a maximum of 340 km3. However, as the deltas have been severely eroded since water activity ceased approximately 3.8 billion years ago, it is no longer possible to make precise assessments. Also, the crater was filled with very extensive lava flows from the nearby Syrtis Major volcanic region about 300 million years later.</p>
-`
-textarray[2]=`
-<h3>On top of the delta</h3><p>Within the delta deposits, numerous water-bearing minerals have been found, indicating liquid water was once present for an extended period of time.</p>
+<h3>Pliva Vallis</h3><p>Pliva Vallis in the east of Jezero Crater is the outflow channel through
+which water was discharged from the crater. This is why this former crater
+lake is referred to as an ‘open basin lake’. These lakes were once
+numerous on Mars. Compared to closed basins (with inflow but no outflow),
+they are interesting because they were freshwater lakes with a stable
+water level. Lakes in closed basins, on the other hand, were subjected to
+more frequent periods of drying out, which turned them into salt lakes,
+thus making them less promising in the search for conditions that are
+conducive to life.</p>
 `
 textarray[1]=`
-<h3>Delta basement</h3><p>Within the delta deposits, numerous water-bearing minerals have been found, indicating liquid water was once present for an extended period of time.</p>
+<h3>Delta basement</h3><p>Volcanic minerals, carbonates and clay minerals have been found both in
+the delta and elsewhere in the crater. Some carbonates are thought to have
+been formed directly in the lake. Such lake carbonates and especially the
+clay minerals indicate freshwater conditions that enable life and have the
+potential to preserve biosignatures particularly well in their interior.
+However, other types of minerals have also been discovered there, namely
+those that paint a different picture of the crater lake. These include
+sulphates that contain iron oxide, amorphous silicon oxides and
+hydroxides, which tend to form in acidic waters that gradually dried up.
+These minerals indicate that the environmental conditions in Jezero Crater
+became drier and less conducive to life at a later stage. But even among
+these minerals there are some in which biosignatures can be very well
+preserved.
+</p>
+`
+textarray[2]=`
+<h3>Delta top</h3><p>Volcanic minerals, carbonates and clay minerals have been found both in
+the delta and elsewhere in the crater. Some carbonates are thought to have
+been formed directly in the lake. Such lake carbonates and especially the
+clay minerals indicate freshwater conditions that enable life and have the
+potential to preserve biosignatures particularly well in their interior.
+However, other types of minerals have also been discovered there, namely
+those that paint a different picture of the crater lake. These include
+sulphates that contain iron oxide, amorphous silicon oxides and
+hydroxides, which tend to form in acidic waters that gradually dried up.
+These minerals indicate that the environmental conditions in Jezero Crater
+became drier and less conducive to life at a later stage. But even among
+these minerals there are some in which biosignatures can be very well
+preserved.
+</p>
 `
 textarray[3]=`
-<h3>Naretva Vallis</h3><p></p>
+<h3>Naretva Vallis</h3><p>Neretva Vallis is an inflow channel that created a delta on the western
+and northwestern rim of the crater, which are also considered evidence for
+the existence of a former lake. Perseverance will examine the larger of
+the two in the west in more detail.</p>
 `
 textarray[4]=`
 <h3>Jezero Crater (center)</h3><p></p>
+`
+textarray[5]=`
+<h3>Mountain view</h3><p>The Mountain View viewpoint offers a perfect vista into the crater.
+This viewpoint is located on top of the large hill southeast of the crater.
+From here, the observer can see that the northern part of the crater floor is sloping and that the northern crater rim is clearly less defined, compared to the flat, smooth crater floor in the south and the much steeper southern crater rim flanks.
+This appearance originates from the erosion of material in the catchment areas to the north of the crater, which was then transported into the crater basin itself and deposited in the deltas. Also contributing to the asymmetrical topography is the erosion of the northern crater rim, caused by the river valleys breaking through the flank of Jezero.</p>
+`
+textarray[6]=`
+<h3>Mars 2020 Rover &ldquo;Perseverance&rdquo; landing site</h3><p>The NASA Mars 2020 mission is en route to Mars since July 30th 2020.
+On board: The NASA rover “Perseverance”, the most complex equipment ever sent to Mars.
+Besides numerous scientific instruments, it will carry containers for a drill core sample collection that will be left on
+Mars for a later return to Earth carried out by follow-up missions planned for the 2030s.
+The approximately one metric ton heavy vehicle is set to land on 18 February 2021 at 21:55 CET in Jezero crater and will
+then start the search for traces of microbial life.
+The working group at Freie Universitaet Berlin is involved with Prof. Jaumann, serving as Co-Investigator on the Mastcam Z instrument.
+“Ingenuity” is the name of a 1.8 kg heavy helicopter drone onboard the rover that will be used as near field reconnaissance instrument.</p>
+`
+textarray[7]=`
+<h3>Sava Vallis</h3><p>Sava Vallis is an inflow channel that created a delta on the western and
+northwestern rim of the crater, which are also considered evidence for the
+existence of a former lake. Perseverance will examine the larger of the
+two in the west in more detail.</p>
 `
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
 proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
@@ -194,14 +248,14 @@ var ll2xyz = function(coordinates){
 }
 var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.4565,18.4475]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"Camera14_landing_site_spheric","rotation":"0 60 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"sphere2","rotation":"-20 80 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Naretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0"}}]}';
-  //{"type":"Feature","geometry":{"type":"Point","coordinates":[4595104.772120481,1113418.3176465204]},"properties":{"id":"7","name":"Inlet 2","link":"","content":"","zoom":"14","panorama":"sphere"}},\
-  
+ 
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -599,7 +653,10 @@ window.addEventListener("wheel", event => {
 
     mycam.zoom=finalZoom;
     //setting the camera element
-    document.getElementById('camera').setAttribute('camera',mycam);
+    var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    if (!isFirefox) {
+      document.getElementById('camera').setAttribute('camera',mycam);
+    }
   });
 var changeInfotab = function(id) {
   var tab = document.getElementById('infotext');
