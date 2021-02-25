@@ -169,3 +169,23 @@ background-size: 40px;
 .info-content {
   font: 12pt sans-serif;
 }
+
+div.imagecredits {
+  position: absolute;
+  bottom: 5px;
+  width:100%;
+}
+
+
+#hideoverflow { overflow: hidden; }
+#outer { position: relative; left: 50%; float: left; }
+#imagecredits { position: relative; left: -50%; float: left; }
+#imagecredits.hidden { visibility: hidden; }
+p.imagecredits {
+  display: inline-block;
+  font: 10pt 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  z-index: 100;
+  color: white;
+  background-color: rgb(0,0,0,0.5);
+  padding: 4px;
+}

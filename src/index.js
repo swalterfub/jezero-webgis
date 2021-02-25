@@ -243,6 +243,7 @@ class Panorama {
       feature.set('icon','map-marker-alt');
     }
     this.icon=feature.get('icon');
+    this.credits=feature.get('credits');
     this.infos=[];
   }
 }
@@ -258,15 +259,15 @@ var ll2xyz = function(coordinates){
   return xyz;
 }
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"Camera14_landing_site_spheric","rotation":"0 60 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Neretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0"}}\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"jpegPIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Neretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}}\
   ]}';
  
 var poiSource = new VectorSource({
@@ -447,6 +448,9 @@ var returnToMap = function() {
   var sound=document.getElementById('insightsnd');
   var itab = document.getElementById('itab');
   itab.classList.add('disabled');
+  var credits=document.getElementById('imagecredits');
+  credits.children[0].innerHTML='';
+  credits.classList.add('hidden');
   emptyInfotab();
   sound.pause();
   for (const pano of panos){
@@ -485,6 +489,9 @@ function switchToPano(id) {
   changeInfotab(id);
   var asky=document.getElementById('panorama');
   asky.setAttribute('src','#'+panos[id].image);
+  var credits=document.getElementById('imagecredits');
+  credits.children[0].innerHTML='Image: '+panos[id].credits;
+  credits.classList.remove('hidden');
   //console.dir(panos[id].name);
   //var acam=document.getElementById('camera');
   //acam.setAttribute('rotation',panos[id].rotation);
