@@ -162,7 +162,7 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 14;
+var zoom = 13;
 var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 //var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
@@ -171,7 +171,7 @@ var mainview = new View({
     center: mapCenter,
     zoom: zoom,
     minZoom: 9,
-    maxZoom: 19,
+    maxZoom: 20,
     constrainResolution: true,
     extent: [4504877, 1007670, 4741975, 1185493],
     //extent: [-10668848.652, -5215881.563, 10668848.652, 5215881.563],
