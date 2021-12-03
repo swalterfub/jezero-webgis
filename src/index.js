@@ -9,6 +9,7 @@ import TileWMS from 'ol/source/TileWMS';
 import { FullScreen, defaults as defaultControls, ScaleLine, ZoomToExtent } from 'ol/control';
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import Select from 'ol/interaction/Select';
+//import WebGLPointsLayer from 'ol/layer/WebGLPoints';
 
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerSwitcher from 'ol-layerswitcher';
@@ -161,9 +162,9 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 10;
-//var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
-var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
+var zoom = 14;
+var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
+//var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
 
 var mainview = new View({
@@ -199,36 +200,6 @@ var mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(3),
   projection: projection49901
 });
-/*var poiSource = new VectorSource({
-  //format: new GeoJSON(),
-  loader: function (extent, resolution, projection) {
-    var proj = projection.getCode();
-    var url = 'https://maps.planet.fu-berlin.de/jez-bin/wms?service=WFS&' +
-      'version=1.1.0&request=GetFeature&typename=poi&' +
-      'outputFormat=application/json&srsname=EPSG:49911&' +
-      'bbox=' + extent.join(',') +  proj;
-    var xhr = new XMLHttpRequest();
-     xhr.open('GET', url);
-     var onError = function() {
-       vectorSource.removeLoadedExtent(extent);
-     }
-     xhr.onerror = onError;
-     xhr.onload = function() {
-       if (xhr.status == 200) {
-         //console.dir(xhr.responseText);
-         poiSource.addFeatures(
-           poiSource.getFormat().readFeatures(xhr.responseText));
-           poiSource.forEachFeature(addPano);
-           var text = poiSource.getFormat().writeFeatures(poiSource.getFeatures());
-           console.dir(text);
-         } else {
-           onError();
-         }
-     }
-     xhr.send();
-   },
-  strategy: bboxStrategy,
-});*/
 class Panorama {
   constructor(feature) {
     this.id=feature.get('id');
@@ -250,6 +221,9 @@ class Panorama {
 var addPano=function(feature){
   var id = feature.get('id');
   feature.setId(id);
+  feature.setProperties({
+    'layer': 'poi'
+  });
   panos[id] = new Panorama(feature);
 }
 var currentPano=-1;
@@ -269,7 +243,7 @@ var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}}\
   ]}';
- 
+//HIER AUCH BESSER PROJEKTIONEN DIREKT EINGEBEN
 var poiSource = new VectorSource({
   features: new GeoJSON().readFeatures(featuresAsText)
 });
@@ -290,6 +264,92 @@ var poi = new Vector({
   source: poiSource,
   style: styleFeature
 });
+
+// ROVER TRACK
+var track = new Vector({
+  title: "Perseverance track",
+  visible: true,
+  style: new Style({
+    stroke: new Stroke({
+      color: 'green',
+      width: 1.5,
+    })
+  })
+});
+var trackxhr = new XMLHttpRequest();
+trackxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/roverpath.geojson');
+trackxhr.onload = function() {
+ if (trackxhr.status == 200) {
+   var trackFeatures = new GeoJSON().readFeatures(trackxhr.responseText, {
+        dataProjection: projection49901,
+        featureProjection: projection49911
+        });
+   track.setSource( new VectorSource({
+      features: trackFeatures
+      })
+   );
+   } else {
+     console.dir("error loading perseverance track.");
+   }
+}
+trackxhr.send();
+//ROVER WAYPOINTS AND POSITION
+var rover = new Vector({
+  title: "Current rover position",
+  visible: true,
+  style: new Style({
+    text: new Text({
+      text: '\uf067',
+      font: '900 24px "Font Awesome 5 Free"',
+      textBaseline: 'bottom',
+      fill: new Fill({
+        color: 'white'
+      })
+    })
+  })
+});
+var way = new Vector({
+  title: "Rover waypoints",
+  visible: true,
+  symbol: new Circle({
+    radius: 120,
+    fill: new Fill({
+      color: 'white'
+    })
+  })
+});
+var wayxhr = new XMLHttpRequest();
+wayxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/Waypoints.geojson');
+wayxhr.onload = function() {
+ if (wayxhr.status == 200) {
+   //console.dir(xhr.responseText);
+   var wayFeatures = new GeoJSON().readFeatures(wayxhr.responseText, {
+        dataProjection: projection49901,
+        featureProjection: projection49911
+        });
+   way.setSource( new VectorSource({
+      features: wayFeatures
+      })
+   );
+   way.getSource().forEachFeature(function(feature){
+    feature.setProperties({
+      'layer': 'way'
+    });
+   });
+   var lastPoint = wayFeatures[wayFeatures.length - 1];
+   lastPoint.setProperties({
+     'layer': 'rover',
+     'name': 'Current rover position'
+   })
+   rover.setSource( new VectorSource({
+      features: [lastPoint]
+      })
+   );
+   } else {
+     console.dir("error loading perseverance waypoints.");
+   }
+}
+wayxhr.send();
 
 const map = new Map({
   target: 'map',
@@ -334,13 +394,16 @@ const map = new Map({
     }),
     new TileLayer({
       title: "Landing ellipse",
-      visible: true,
+      visible: false,
       source: new TileWMS({
         url: "https://maps.planet.fu-berlin.de/jez-bin/wms?",
         params: { LAYERS: "landingellipse" }
       }),
     }),
     poi,
+    rover,
+    track,
+    way,
     new TileLayer({
       title: "Lat/Lon GRID",
       source: new TileWMS({
@@ -402,14 +465,33 @@ var displayFeatureInfo = function (pixel) {
     return feature;
   });
   if (feature) {
-    feature.setStyle();
-    feature.setStyle(styleFeatureBig);
-    currentFeature=feature;
-    var text = feature.get('name');
-    tooltip.style.display = 'none';
-    tooltip.innerHTML = text;
-    tooltip.style.display = 'block';
-    mapdiv.style.cursor = "pointer";
+    if (typeof feature.get('layer') === 'undefined') {
+      //console.dir(feature);
+    } else if (feature.get('layer') == 'poi') {
+      //console.dir(feature.get('layer'));
+      feature.setStyle();
+      feature.setStyle(styleFeatureBig);
+      currentFeature=feature;
+      var text = feature.get('name');
+      tooltip.style.display = 'none';
+      tooltip.innerHTML = text;
+      tooltip.style.display = 'block';
+      mapdiv.style.cursor = "pointer";
+    } else if (feature.get('layer') == 'way') {
+      var text = 'Sol '+feature.get('sol');
+      tooltip.style.display = 'none';
+      tooltip.innerHTML = text;
+      tooltip.style.display = 'block';
+      //mapdiv.style.cursor = "pointer";
+      //console.dir(feature.get('sol'));
+    } else if (feature.get('layer') == 'rover') {
+      var text = feature.get('name');
+      tooltip.style.display = 'none';
+      tooltip.innerHTML = text;
+      tooltip.style.display = 'block';
+      //mapdiv.style.cursor = "pointer";
+      //console.dir(feature.get('sol'));
+    }
   } else {
     if (currentFeature) {
       currentFeature.setStyle();
@@ -527,38 +609,42 @@ function switchToPano(id) {
   sound.play();
   currentPano=id;
 }
-var clickPanoramaFeature = function (pixel) {
+var clickMap = function (pixel) {
   var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
   });
   if (feature) {
-    //console.dir(feature.getGeometry().getCoordinates());
-    currentFeature=feature;
-    var parts = 1;
-    var called = false;
-    function callback() {
-      switchToPano(feature.get('id'));
-    }
-    previousZoom = mainview.getZoom();
-    var zoom=feature.get('zoom');
-    if ( zoom < 10) {
-      //console.dir(zoom);
-      zoom=10;
-    }
-    if (Math.abs(mainview.getCenter()[0]-previousCenter[0])>5000||Math.abs(mainview.getCenter()[1]-previousCenter[1])>5000) {
-    mainview.animate({
-        center: feature.getGeometry().getCoordinates(),
-        duration: 2000,
-        zoom: zoom,
-      }, callback );
-    } else {
-      //console.dir('noanimate');
-      switchToPano(feature.get('id'));
-    }
+    if (typeof feature.get('layer') === 'undefined') {
+      //console.dir(feature);
+    } else if (feature.get('layer') == 'poi') {
+      //console.dir(feature.getGeometry().getCoordinates());
+      currentFeature=feature;
+      var parts = 1;
+      var called = false;
+      function callback() {
+        switchToPano(feature.get('id'));
+      }
+      previousZoom = mainview.getZoom();
+      var zoom=feature.get('zoom');
+      if ( zoom < 10) {
+        //console.dir(zoom);
+        zoom=10;
+      }
+      if (Math.abs(mainview.getCenter()[0]-previousCenter[0])>5000||Math.abs(mainview.getCenter()[1]-previousCenter[1])>5000) {
+      mainview.animate({
+          center: feature.getGeometry().getCoordinates(),
+          duration: 2000,
+          zoom: zoom,
+        }, callback );
+      } else {
+        //console.dir('noanimate');
+        switchToPano(feature.get('id'));
+      }
+    } 
   }
 }
 map.on('singleclick', function (event) {
-  clickPanoramaFeature(map.getEventPixel(event.originalEvent));
+  clickMap(map.getEventPixel(event.originalEvent));
 })
 var previousCenter=mainview.getCenter();
 map.on('moveend', function (event) {
