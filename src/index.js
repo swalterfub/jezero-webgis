@@ -162,7 +162,7 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 13;
+var zoom = 10;
 var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 //var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
@@ -233,7 +233,7 @@ var ll2xyz = function(coordinates){
   return xyz;
 }
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Perseverance landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"jpegPIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Octavia E. Butler landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"jpegPIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0","credits":"HiRISE/CTX/HRSC"}},\
@@ -277,7 +277,8 @@ var track = new Vector({
   })
 });
 var trackxhr = new XMLHttpRequest();
-trackxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/roverpath.geojson');
+//trackxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/roverpath.geojson');
+trackxhr.open('GET', 'https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_traverse.json');
 trackxhr.onload = function() {
  if (trackxhr.status == 200) {
    var trackFeatures = new GeoJSON().readFeatures(trackxhr.responseText, {
@@ -310,7 +311,7 @@ var rover = new Vector({
 });
 var way = new Vector({
   title: "Rover waypoints",
-  visible: true,
+  visible: false,
   symbol: new Circle({
     radius: 120,
     fill: new Fill({
@@ -319,7 +320,8 @@ var way = new Vector({
   })
 });
 var wayxhr = new XMLHttpRequest();
-wayxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/Waypoints.geojson');
+//wayxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/Waypoints.geojson');
+wayxhr.open('GET', 'https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json');
 wayxhr.onload = function() {
  if (wayxhr.status == 200) {
    //console.dir(xhr.responseText);
