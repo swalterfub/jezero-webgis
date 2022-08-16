@@ -1,6 +1,6 @@
 {
   "name": "jezero-webgis",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "aframe": "^1.2.0",
     "ol": "^6.5.0",
     "ol-layerswitcher": "^3.8.3",
-    "panolens": "^0.11.0",
+    "panolens": "^0.10.4",
     "proj4": "^2.7.0",
     "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git",
     "three": "^0.125.2"
@@ -32,7 +32,7 @@
     "@rollup/plugin-inject": "^4.0.2",
     "@rollup/plugin-legacy": "^2.1.0",
     "@rollup/plugin-node-resolve": "^11.1.1",
-    "parcel-bundler": "^1.12.4",
+    "parcel-bundler": "^1.9.4",
     "rollup": "^2.38.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
