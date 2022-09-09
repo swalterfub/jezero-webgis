@@ -162,8 +162,9 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 10;
-var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
+var zoom = 13;
+var mapCenter = transform([77.430,18.450], projection49901, projection49911);
+//var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 //var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
 var rotation = 0;
 
@@ -233,15 +234,17 @@ var ll2xyz = function(coordinates){
   return xyz;
 }
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Octavia E. Butler landing site","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"jpegPIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Neretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}}\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Octavia E. Butler landing site (MastcamZ panorama)","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"PIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45201926,18.44479579]).toString()+']},"properties":{"id":"9","name":"Van Zyl Overlook (MastcamZ panorama)","link":"","content":"","zoom":"14","panorama":"PIA24663","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24663, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.44244,18.433888]).toString()+']},"properties":{"id":"10","name":"Village Outcrop (MastcamZ panorama)","link":"","content":"","zoom":"14","panorama":"Village","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z, NASA/JPL/ASU/MSSS"}}\
   ]}';
 //HIER AUCH BESSER PROJEKTIONEN DIREKT EINGEBEN
 var poiSource = new VectorSource({
@@ -324,7 +327,7 @@ var wayxhr = new XMLHttpRequest();
 wayxhr.open('GET', 'https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json');
 wayxhr.onload = function() {
  if (wayxhr.status == 200) {
-   //console.dir(xhr.responseText);
+   //console.dir(wayxhr.responseText);
    var wayFeatures = new GeoJSON().readFeatures(wayxhr.responseText, {
         dataProjection: projection49901,
         featureProjection: projection49911
@@ -334,9 +337,10 @@ wayxhr.onload = function() {
       })
    );
    way.getSource().forEachFeature(function(feature){
-    feature.setProperties({
-      'layer': 'way'
-    });
+     feature.setProperties({ 'layer': 'way'});
+     
+     console.log(feature.get('lat'),feature.get('lon'));
+     console.dir(feature.get('sol'));
    });
    var lastPoint = wayFeatures[wayFeatures.length - 1];
    lastPoint.setProperties({
@@ -789,4 +793,14 @@ AFRAME.registerComponent('rotation-reader', {
       // position and rotation now contain vector and quaternion in world space.
     };
   })()
+});
+AFRAME.registerComponent('x-button-listener', {
+  init: function () {
+    var el = this.el;
+    el.addEventListener('xbuttondown', function (evt) {
+      //el.setAttribute('visible', !el.getAttribute('visible'));
+      var panodiv = document.getElementById('pano');
+      panodiv.exitFullscreen();
+    });
+  }
 });
