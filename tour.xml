@@ -1,0 +1,243 @@
+﻿<krpano version="1.20.11" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+
+	
+	<scene name="scene_Camera13_inflow_2_spheric" title="Camera13_inflow_2_spheric" onstart="" thumburl="panos/Camera13_inflow_2_spheric.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera13_inflow_2_spheric.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera13_inflow_2_spheric.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera14_landing_site_spheric" title="Camera14_landing_site_spheric" onstart="" thumburl="panos/Camera14_landing_site_spheric.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera14_landing_site_spheric.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera14_landing_site_spheric.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera15_center_crater" title="Camera15_center_crater" onstart="" thumburl="panos/Camera15_center_crater.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera15_center_crater.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera15_center_crater.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera4_inflow_spheric3" title="Camera4_inflow_spheric3" onstart="" thumburl="panos/Camera4_inflow_spheric3.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera4_inflow_spheric3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera4_inflow_spheric3.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera5_delta_spheric2" title="Camera5_delta_spheric2" onstart="" thumburl="panos/Camera5_delta_spheric2.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera5_delta_spheric2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera5_delta_spheric2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera5_inflow_spheric2" title="Camera5_inflow_spheric2" onstart="" thumburl="panos/Camera5_inflow_spheric2.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera5_inflow_spheric2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera5_inflow_spheric2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera8_outflow_2_spheric" title="Camera8_outflow_2_spheric" onstart="" thumburl="panos/Camera8_outflow_2_spheric.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera8_outflow_2_spheric.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera8_outflow_2_spheric.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Camera9_Mountain_2" title="Camera9_Mountain_2" onstart="" thumburl="panos/Camera9_Mountain_2.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Camera9_Mountain_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Camera9_Mountain_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_pano" title="Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_pano" onstart="" thumburl="panos/Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_pano.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_pano.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_pano.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424,14912,29824" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano" title="Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano" onstart="" thumburl="panos/Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,1024,1792,3712,7424,14848,29696" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_paleo_lake_view" title="paleo_lake_view" onstart="" thumburl="panos/paleo_lake_view.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/paleo_lake_view.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/paleo_lake_view.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2560" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_PIA24264-Perseverance_Sol3_Mastcam-Z_panorama" title="PIA24264-Perseverance_Sol3_Mastcam-Z_panorama" onstart="" thumburl="panos/PIA24264-Perseverance_Sol3_Mastcam-Z_panorama.tiles/thumb.jpg" lat="" lng="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/PIA24264-Perseverance_Sol3_Mastcam-Z_panorama.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/PIA24264-Perseverance_Sol3_Mastcam-Z_panorama.tiles/%s/l%l/%0v/l%l_%s_%0v_%0h.jpg" multires="512,768,1536,3072,5888,11776" />
+		</image>
+
+	</scene>
+
+
+</krpano>
