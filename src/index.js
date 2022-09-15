@@ -129,6 +129,7 @@ textarray[11]=`
 It captures some of the sedimentary rocks that scientists came to the Red Planet to study. Only the very edges of the rover are visible in this mosaic.
 NASA's Perseverance Mars rover is now exploring a really important part of Jezero crater. Around 3.5 billion years ago, a river flowed into Lake Jezero, depositing mud and sand on the crater floor, forming an ancient delta.
 What you see are some of the hills and cliffs at the edge of that delta. Here you can see some of Perseverance's wheel tracks showing where we came from on the crater floor where we spent the first year of our mission.</p>
+<p>These images were taken in 2022 on June 12, 13, 16, 17, and 20 (the 466th, 467th, 470th, 471st, and 474th Martian days, or sols, of Perseverance’s mission).</p>
 <p>Source: https://mars.nasa.gov/resources/26979/perseverance-explores-the-jezero-crater-delta/</p>
 `
 
@@ -548,14 +549,23 @@ var returnToMap = function() {
   vrtab.classList.add('hidden');
   var vrtab = document.getElementById('fstab');
   fstab.classList.add('hidden');
-  var sound=document.getElementById('roversnd-wind');
+  //var sound=document.getElementById('roversnd-wind');
+  var lastSound='';
+  var sound='';
+  if (currentPano!=-1) {
+    lastSound=panos[currentPano].sound;
+    if (lastSound!='') {
+      sound=document.getElementById(lastSound);
+      sound.remove()
+    }
+  }
   var itab = document.getElementById('itab');
   itab.classList.add('disabled');
   var credits=document.getElementById('imagecredits');
   credits.children[0].innerHTML='';
   credits.classList.add('hidden');
   emptyInfotab();
-  sound.pause();
+  //sound.pause();
   for (const pano of panos){
     let loopli=document.getElementById('pli-'+pano.id);
     loopli.classList.remove('selected');
@@ -569,6 +579,7 @@ var returnToMap = function() {
   asky.removeAttribute('src');
   tooltip.innerHTML='';
   tooltip.style.display = 'block';
+  currentPano=-1;
 }
 var previousZoom;
 var onClickFunction;
