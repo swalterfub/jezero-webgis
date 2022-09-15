@@ -20,14 +20,10 @@
   "homepage": "https://github.com/swalterfub/jezero-webgis#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
-    "ol": "^6.15.1",
-    "ol-layerswitcher": "^3.8.3",
-    "panolens": "^0.10.4",
+    "ol": "^7.1.0",
+    "ol-layerswitcher": "^4.0.0",
     "proj4": "^2.8.0",
-    "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git",
-    "src": "^1.1.2",
-    "three": "^0.143.0",
-    "tour": "^2.0.3"
+    "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^4.0.4",
