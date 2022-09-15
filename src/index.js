@@ -244,6 +244,7 @@ var addPano=function(feature){
   panos[id] = new Panorama(feature);
 }
 var currentPano=-1;
+var currentSound='';
 var panos = [];
 var ll2xyz = function(coordinates){
   var xyz = transform(coordinates, projection49901, projection49911);
@@ -552,11 +553,10 @@ var returnToMap = function() {
   //var sound=document.getElementById('roversnd-wind');
   var lastSound='';
   var sound='';
-  if (currentPano!=-1) {
-    lastSound=panos[currentPano].sound;
-    if (lastSound!='') {
-      sound=document.getElementById(lastSound);
-      sound.remove()
+  if (currentSound!='') {
+    sound=document.getElementById(currentSound);
+    if (sound) {
+      sound.pause();
     }
   }
   var itab = document.getElementById('itab');
@@ -580,6 +580,7 @@ var returnToMap = function() {
   tooltip.innerHTML='';
   tooltip.style.display = 'block';
   currentPano=-1;
+  currentSound='';
 }
 var previousZoom;
 var onClickFunction;
@@ -638,22 +639,23 @@ function switchToPano(id) {
   fstab.classList.remove('hidden');
   fstab.style.cursor = "pointer";
   //console.dir(panos[id].sound);
-  var lastSound='';
   var sound='';
-  if (currentPano!=-1) {
-    lastSound=panos[currentPano].sound;
-    if (lastSound!='') {
-      sound=document.getElementById(lastSound);
-      sound.remove()
-    }
+  console.log(currentSound);
+  if (currentSound!='') {
+    sound=document.getElementById(currentSound);
+    sound.pause();
   }
   var snd=panos[id].sound;
   //console.log(currentSound);
   if (snd=="") {
     snd='roversnd-wind';
   }
+  console.log(snd);
   sound=document.getElementById(snd);
-  sound.play();
+  if (sound) {
+    sound.play();
+  }
+  currentSound=snd;
   currentPano=id;
 }
 var clickMap = function (pixel) {
