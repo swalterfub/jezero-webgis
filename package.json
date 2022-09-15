@@ -20,7 +20,7 @@
   "homepage": "https://github.com/swalterfub/jezero-webgis#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
-    "ol": "^7.1.0",
+    "ol": "^6.15.1",
     "ol-layerswitcher": "^4.0.0",
     "proj4": "^2.8.0",
     "sidebar-v2": "git+https://github.com/Turbo87/sidebar-v2.git"
