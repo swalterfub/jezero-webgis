@@ -1,132 +1,135 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    <meta charset="utf-8" />
-    <title>Jezero Crater</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    </head>
-    <body>
-        <!--<script src="src/tour.js" type="module"></script>-->
-        <div id="fullscreen" class="fullscreen">
-            <div id="sidebar" class="sidebar collapsed">
-                <div class="sidebar-tabs" id='sidebar-tabs'>
-                    <ul role="tablist">
-                        <li id="mtab" class='hidden'>
-                        <a role="tab" title="Back to map"><i class="fa fa-map" id="mapbutton"></i></a>
-                        </li>
-                        <li id="ltab">
-                        <a href="#home" role="tab" title="Map layers"><i class="fa fa-layer-group" id="licon"></i></a>
-                        </li>
-                        <li id="poitab">
-                        <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
-                        </li>
-                        <li id="itab" class="disabled">
-                        <a href="#info" role="tab" title="Information"><i class="fa fa-info-circle"></i></a>
-                        </li>
-                    </ul>
-        
-                    <ul role="tablist">
-                        <li id='fstab' class="hidden">
-                        <a href="#" role="tab" title="Go full-screen"><i class="fa fa-expand-alt" id='fsbutton'></i></a>
-                        </li>
-                        <li id='vrtab' class="hidden">
-                        <a href="#vr" role="tab" title="Switch to VR"><i class="fa fa-vr-cardboard" id='vrbutton'></i></a>
-                        </li>
-                        <li id='helptab'>
-                        <a href="#help" role="tab" title="Help"><i class="fa fa-question-circle"></i></a>
-                        </li>
-                        <li id='creditstab'>
-                        <a href="#credits" role="tab" title="Credits"><i class="fa fa-copyright"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sidebar-content">
-                    <div class="sidebar-pane" id="home">
-                        <h1 class="sidebar-header">
-                        Map layers
-                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                        </h1>
-                    </div>
-                    <div id="layers" class="layer-switcher"></div>
-                </div>
-                <div class="sidebar-pane" id="poi">
-                    <h1 class="sidebar-header">
-                        Panoramic views
-                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                    </h1>
-                    <div id="panoramas"></div>
-                </div>
-                <div class="sidebar-pane" id="info">
-                    <h1 class="sidebar-header">
-                        Viewpoint explanation
-                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                    </h1>
-                    <div id="infotext" class="info-content"></div>
-                </div>
-                <div class="sidebar-pane" id="help">
-                    <h1 class="sidebar-header">
-                        Help
-                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                    </h1>
-                    <div id="help">
-                        <p>Move around in the map with your mouse. Zoom in and out with the scroll wheel or double click.</p>
-                        <p>On mobile (touch) devices, move with your finger, zoom in and out with two finger zoom gesture.</p>
-                        <p>To switch on and off the available layers, open the "Map layers" sidebar and use the respective buttons.</p>
-                        <p>To enter a panoramic scene, click one of the "Panoramic views" symbols or choose directly a link inside the "Panoramic views" tab.</p>
-                        <p>Inside a panoramic view, the Infotext tab is available with additional explanatory text.</p>
-                        <p>When experienced on a mobile device with orientation sensors, the rotation of the view is controlled by rotating the device.</p>
-                        <p>In the map mode, the fullscreen button is located in the upper right, if the fullscreen functionality is available for your browser. Inside a panoramic view, the fullscreen mode button is located in the sidebar.</p>
-                        <p>If a Virtual Reality device is connected to your system and a compatible browser is used, the panoramic views can be experienced in VR by clicking the VR button in the sidebar.</p>
-                        <p>A list of compatible browsers and VR devices can be found <a href="https://webvr.rocks/" target="new">here</a>.</p>
-                    </div>
-                </div>
-                <div class="sidebar-pane" id="credits">
-                    <h1 class="sidebar-header">
-                        Credits
-                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                    </h1>
-                    <div id="credits"></div>
-                    <p><b>Image credits:</b></br>
-                        HRSC: ESA/DLR/FU-BERLIN, CC BY-SA 3.0 IGO</br>
-                        CTX: NASA/JPL-Caltech/MSSS</br>
-                        HiRISE: NASA/JPL/University of Arizona</br>
-                        HiRISE dataset: Fergason et al., 2020 (<a href="https://doi.org/10.5066/P9QJDP48" target=new>DOI:10.5066/P9QJDP48</a>, <a href="https://doi.org/10.5066/P9REJ9JN" target=new>DOI:10.5066/P9REJ9JN</a>)</br>
-                    </p>
-                    <p><b>Audio:</b></br>
-                        NASA/JPL-Caltech/CNES/Cornell (downloaded from <a href="https://www.nasa.gov/connect/sounds/index.html" target=new>here</a>).</br>
-                        Listen to data from the air pressure sensor on NASA's InSight lander, indicating wind blowing by on Mars. The data were sped up by a factor of 100, shortening the duration of the recording and shifting it up in frequency 100 times (a little more than six octaves).
-                    </p>
-                    <p><b>Software:</b></br>
-                        MapServer</br>
-                        OpenLayers</br>
-                        ol-layerswitcher</br>
-                        sidebar-v2</br>
-                        krpano</br>
-                        parcel</br>
-                        GDAL</b>
-                        ISIS</br>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div id="map" class="sidebar-map"></div>
-        <div id="tooltip"></div>
-        <div id="pano"></div>
-        <script src="src/index.js"></script>
-        <div class="imagecredits">
-            <div id="hideoverflow">
-                <div id="outer">
-                    <div id="imagecredits" class="hidden">
-                        <p class="imagecredits">Text</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
 
+<head>
+  <meta charset="utf-8" />
+  <title>Jezero Crater</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta http-equiv="x-ua-compatible" content="IE=edge" />
+</head>
+
+<body>
+  <!--<script src="src/tour.js" type="module"></script>-->
+  <div id="fullscreen" class="fullscreen">
+    <div id="sidebar" class="sidebar collapsed">
+      <div class="sidebar-tabs" id='sidebar-tabs'>
+        <ul role="tablist">
+          <li id="mtab" class='hidden'>
+            <a role="tab" title="Back to map"><i class="fa fa-map" id="mapbutton"></i></a>
+          </li>
+          <li id="ltab">
+            <a href="#home" role="tab" title="Map layers"><i class="fa fa-layer-group" id="licon"></i></a>
+          </li>
+          <li id="poitab">
+            <a href="#poi" role="tab" title="Panoramic views"><i class="fa fa-eye"></i></a>
+          </li>
+          <li id="itab" class="disabled">
+            <a href="#info" role="tab" title="Information"><i class="fa fa-info-circle"></i></a>
+          </li>
+        </ul>
+
+        <ul role="tablist">
+          <li id='fstab' class="hidden">
+            <a href="#" role="tab" title="Go full-screen"><i class="fa fa-expand-alt" id='fsbutton'></i></a>
+          </li>
+          <li id='vrtab' class="hidden">
+            <a href="#vr" role="tab" title="Switch to VR"><i class="fa fa-vr-cardboard" id='vrbutton'></i></a>
+          </li>
+          <li id='helptab'>
+            <a href="#help" role="tab" title="Help"><i class="fa fa-question-circle"></i></a>
+          </li>
+          <li id='creditstab'>
+            <a href="#credits" role="tab" title="Credits"><i class="fa fa-copyright"></i></a>
+          </li>
+        </ul>
+      </div>
+      <div class="sidebar-content">
+        <div class="sidebar-pane" id="home">
+          <h1 class="sidebar-header">
+            Map layers
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <div id="layers" class="layer-switcher"></div>
+        </div>
+        <div class="sidebar-pane" id="poi">
+          <h1 class="sidebar-header">
+            Panoramic views
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <div id="panoramas"></div>
+        </div>
+        <div class="sidebar-pane" id="info">
+          <h1 class="sidebar-header">
+            Viewpoint explanation
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <div id="infotext" class="info-content"></div>
+        </div>
+        <div class="sidebar-pane" id="help">
+          <h1 class="sidebar-header">
+            Help
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <div id="help">
+            <p>Move around in the map with your mouse. Zoom in and out with the scroll wheel or double click.</p>
+            <p>On mobile (touch) devices, move with your finger, zoom in and out with two finger zoom gesture.</p>
+            <p>To switch on and off the available layers, open the "Map layers" sidebar and use the respective buttons.</p>
+            <p>To enter a panoramic scene, click one of the "Panoramic views" symbols or choose directly a link inside the "Panoramic views" tab.</p>
+            <p>Inside a panoramic view, the Infotext tab is available with additional explanatory text.</p>
+            <p>When experienced on a mobile device with orientation sensors, the rotation of the view is controlled by rotating the device.</p>
+            <p>In the map mode, the fullscreen button is located in the upper right, if the fullscreen functionality is available for your browser. Inside a panoramic view, the fullscreen mode button is located in the sidebar.</p>
+            <p>If a Virtual Reality device is connected to your system and a compatible browser is used, the panoramic views can be experienced in VR by clicking the VR button in the sidebar.</p>
+            <p>A list of compatible browsers and VR devices can be found <a href="https://webvr.rocks/" target="new">here</a>.</p>
+          </div>
+        </div>
+        <div class="sidebar-pane" id="credits">
+          <h1 class="sidebar-header">
+            Credits
+            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <div id="credits"></div>
+          <p><b>Image credits:</b></br>
+            HRSC: ESA/DLR/FU-BERLIN, CC BY-SA 3.0 IGO</br>
+            CTX: NASA/JPL-Caltech/MSSS</br>
+            HiRISE: NASA/JPL/University of Arizona</br>
+            HiRISE dataset: Fergason et al., 2020 (<a href="https://doi.org/10.5066/P9QJDP48" target=new>DOI:10.5066/P9QJDP48</a>, <a href="https://doi.org/10.5066/P9REJ9JN" target=new>DOI:10.5066/P9REJ9JN</a>)</br>
+          </p>
+          <p><b>Audio:</b></br>
+            NASA/JPL-Caltech/CNES/Cornell (downloaded from <a href="https://www.nasa.gov/connect/sounds/index.html" target=new>here</a>).</br>
+            Listen to data from the air pressure sensor on NASA's InSight lander, indicating wind blowing by on Mars. The data were sped up by a factor of 100, shortening the duration of the recording and shifting it up in frequency 100 times (a
+            little more than six octaves).
+          </p>
+          <p><b>Software:</b></br>
+            MapServer</br>
+            OpenLayers</br>
+            ol-layerswitcher</br>
+            sidebar-v2</br>
+            krpano</br>
+            parcel</br>
+            GDAL</b>
+            ISIS</br>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="map" class="sidebar-map"></div>
+  <div id="tooltip"></div>
+  <div id="pano"></div>
+  <script src="src/index.js"></script>
+  <div class="imagecredits">
+    <div id="hideoverflow">
+      <div id="outer">
+        <div id="imagecredits" class="hidden">
+          <p class="imagecredits">Text</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
