@@ -118,6 +118,20 @@ from putative paleolake-shorelines and the upper delta-top boundary. The
 Jezero crater lake must have been filled with water even more to overcome
 the swell of the Pliva Vallis outflow channel.</p>
 `
+textarray[9]=`
+<h3>Van Zyl Overlook</h3><p></p>
+`
+textarray[10]=`
+<h3>Village Outcrop</h3><p></p>
+`
+textarray[11]=`
+<h3>Hagwallow Flats</h3><p>This beautiful mosaic is the most detailed image ever taken on the surface of Mars.
+It captures some of the sedimentary rocks that scientists came to the Red Planet to study. Only the very edges of the rover are visible in this mosaic.
+NASA's Perseverance Mars rover is now exploring a really important part of Jezero crater. Around 3.5 billion years ago, a river flowed into Lake Jezero, depositing mud and sand on the crater floor, forming an ancient delta.
+What you see are some of the hills and cliffs at the edge of that delta. Here you can see some of Perseverance's wheel tracks showing where we came from on the crater floor where we spent the first year of our mission.</p>
+<p>Source: https://mars.nasa.gov/resources/26979/perseverance-explores-the-jezero-crater-delta/</p>
+`
+
 //roverCoords=[77.45081155,18.44467749]
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
 proj4.defs("EPSG:49911", "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs");
@@ -162,7 +176,7 @@ addCoordinateTransforms(
   }
 );
 
-var zoom = 13;
+var zoom = 14;
 var mapCenter = transform([77.430,18.450], projection49901, projection49911);
 //var mapCenter = transform([77.4565,18.4475], projection49901, projection49911);
 //var mapCenter = transform([77.6790,18.4022], projection49901, projection49911);
@@ -206,6 +220,7 @@ class Panorama {
     this.id=feature.get('id');
     this.name=feature.get('name');
     this.image=feature.get('panorama');
+    this.sound=feature.get('sound');
     //console.dir(this.image);
     if (feature.get('rotation') === undefined) {
       feature.set('rotation','0 0 0');
@@ -234,17 +249,18 @@ var ll2xyz = function(coordinates){
   return xyz;
 }
 var featuresAsText='{"type":"FeatureCollection","features":[\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Neretva Vallis","link":"","content":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Octavia E. Butler landing site (MastcamZ panorama)","icon":"parachute-box","link":"","content":"","zoom":"14","panorama":"PIA24264","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24264, NASA/JPL/ASU/MSSS"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45201926,18.44479579]).toString()+']},"properties":{"id":"9","name":"Van Zyl Overlook (MastcamZ panorama)","link":"","content":"","zoom":"14","panorama":"PIA24663","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z/PIA24663, NASA/JPL/ASU/MSSS"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.44244,18.433888]).toString()+']},"properties":{"id":"10","name":"Village Outcrop (MastcamZ panorama)","link":"","content":"","zoom":"14","panorama":"Village","rotation":"0 60 0","credits":"Mars 2020/Mastcam-Z, NASA/JPL/ASU/MSSS"}}\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4629228.058937868,1098332.5630884669]},"properties":{"id":"0","name":"Outflow channel","link":"","content":"","sound":"","zoom":"12","panorama":"Camera8_outflow_2_spheric","rotation":"-20 -80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.46,18.530]).toString()+']},"properties":{"id":"1","name":"Delta basement","link":"","content":"","sound":"","zoom":"14","panorama":"Camera5_inflow_spheric2","rotation":"-10 120 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.358,18.508]).toString()+']},"properties":{"id":"2","name":"Delta top","link":"","content":"","sound":"","zoom":"14","panorama":"Camera5_delta_spheric2","rotation":"-30 240 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4580081.744192608,1096482.1274981857]},"properties":{"id":"3","name":"Neretva Vallis","link":"","content":"","sound":"","zoom":"12","panorama":"Camera4_inflow_spheric3","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.688, 18.396]).toString()+']},"properties":{"id":"4","name":"Jezero crater center","link":"","content":"","sound":"","zoom":"9","panorama":"Camera15_center_crater","rotation":"-30 100 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":[4632176.210556282,1074653.2601958876]},"properties":{"id":"5","name":"Mountain view","link":"","content":"","sound":"","zoom":"12","panorama":"Camera9_Mountain_2","rotation":"-20 80 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45081155,18.44467749]).toString()+']},"properties":{"id":"6","name":"Octavia E. Butler landing site (MastcamZ panorama)","icon":"parachute-box","link":"","content":"","sound":"roversnd-wind","zoom":"14","panorama":"PIA24264","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24264, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.564, 18.769]).toString()+']},"properties":{"id":"7","name":"Sava Vallis","link":"","content":"","sound":"","zoom":"10","panorama":"Camera13_inflow_2_spheric","rotation":"-20 90 0","credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","sound":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45201926,18.44479579]).toString()+']},"properties":{"id":"9","name":"Van Zyl Overlook (MastcamZ panorama)","link":"","content":"","sound":"roversnd-driving2-sol16","zoom":"14","panorama":"PIA24663","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24663, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.44244,18.433888]).toString()+']},"properties":{"id":"10","name":"Village Outcrop (MastcamZ panorama)","link":"","content":"","sound":"roversnd-laser","zoom":"14","panorama":"Village","rotation":"0 60 0","credits":"Mars 2020/MastcamZ, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.40616769,18.45889532]).toString()+']},"properties":{"id":"11","name":"Hogwallow Flats (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"HogwallowFlats","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24921, NASA/JPL/ASU/MSSS"}}\
   ]}';
 //HIER AUCH BESSER PROJEKTIONEN DIREKT EINGEBEN
 var poiSource = new VectorSource({
@@ -336,12 +352,11 @@ wayxhr.onload = function() {
       features: wayFeatures
       })
    );
-   way.getSource().forEachFeature(function(feature){
-     feature.setProperties({ 'layer': 'way'});
-     
-     console.log(feature.get('lat'),feature.get('lon'));
-     console.dir(feature.get('sol'));
-   });
+   // way.getSource().forEachFeature(function(feature){
+   //   feature.setProperties({ 'layer': 'way'});
+   //   console.log(feature.get('lat'),feature.get('lon'));
+   //   console.dir(feature.get('sol'));
+   // });
    var lastPoint = wayFeatures[wayFeatures.length - 1];
    lastPoint.setProperties({
      'layer': 'rover',
@@ -533,7 +548,7 @@ var returnToMap = function() {
   vrtab.classList.add('hidden');
   var vrtab = document.getElementById('fstab');
   fstab.classList.add('hidden');
-  var sound=document.getElementById('insightsnd');
+  var sound=document.getElementById('roversnd-wind');
   var itab = document.getElementById('itab');
   itab.classList.add('disabled');
   var credits=document.getElementById('imagecredits');
@@ -611,7 +626,22 @@ function switchToPano(id) {
   var fstab = document.getElementById('fstab');
   fstab.classList.remove('hidden');
   fstab.style.cursor = "pointer";
-  var sound=document.getElementById('insightsnd');
+  //console.dir(panos[id].sound);
+  var lastSound='';
+  var sound='';
+  if (currentPano!=-1) {
+    lastSound=panos[currentPano].sound;
+    if (lastSound!='') {
+      sound=document.getElementById(lastSound);
+      sound.remove()
+    }
+  }
+  var snd=panos[id].sound;
+  //console.log(currentSound);
+  if (snd=="") {
+    snd='roversnd-wind';
+  }
+  sound=document.getElementById(snd);
   sound.play();
   currentPano=id;
 }
@@ -632,10 +662,10 @@ var clickMap = function (pixel) {
       }
       previousZoom = mainview.getZoom();
       var zoom=feature.get('zoom');
-      if ( zoom < 10) {
-        //console.dir(zoom);
-        zoom=10;
-      }
+      //if ( zoom < 10) {
+      //  //console.dir(zoom);
+      //  zoom=10;
+      //}
       if (Math.abs(mainview.getCenter()[0]-previousCenter[0])>5000||Math.abs(mainview.getCenter()[1]-previousCenter[1])>5000) {
       mainview.animate({
           center: feature.getGeometry().getCoordinates(),

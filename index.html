@@ -138,14 +138,20 @@
         <img id="PIA24264" src="assets/PIA24264-Perseverance_Sol3_Mastcam-Z_panorama.jpg">
         <img id="PIA24663" src="assets/Mastcam-Z_Van_Zyl_Sols53-64_Z110_R0N_withrover_fullres_pano-s.jpg">
         <img id="Village" src="assets/Mastcam-Z_360_Village_Sols214-215_Z110_R0_natural_small1.jpg">
-        <audio id="insightsnd" src="assets/09-APSS-Mars_sound1a_2m_x100.mp3" preload="auto"></audio>
+        <img id="HogwallowFlats" src="assets/PIA24921_small.jpg">
+        <!--audio id="insightsnd" src="assets/09-APSS-Mars_sound1a_2m_x100.mp3" preload="auto"></audio-->
+        <audio id="roversnd-heli-sol4" src="assets/20210507_HelicopterFliesOnMars.mp3" preload="auto"></audio>
+        <audio id="roversnd-driving1-sol16" src="assets/FILTERED_HIGHLIGHTS_-_Sol16RoverDriveHighlights.mp3" preload="auto"></audio>
+        <audio id="roversnd-driving2-sol16" src="assets/RAW_AUDIO_-_mic_00000008_000_001011.mp3" preload="auto"></audio>
+        <audio id="roversnd-laser" src="assets/SCAM_MIC_SOL012_RUN001.mp3" preload="auto"></audio>
+        <audio id="roversnd-wind" src="assets/SCAM_MIC_SOL004_RUN001.mp3" preload="auto"></audio>
         <!--Listen to data from the air pressure sensor on NASA's InSight lander, indicating wind blowing by on Mars. The data were sped up by a factor of 100, shortening the duration of the recording and shifting it up in frequency 100 times (a little more than six octaves).-->
       </a-assets>
       <a-sky id="panorama" src="#Camera15_center_crater">
       </a-sky>
       <!--a-entity sound="src: #insightsnd; loop=true" id='sound'></a-entity-->
       <!--a-entity id="cam" look-controls position="0 0 0"-->
-        <a-camera position="0 0 0" look-controls id="camera"></a-camera>
+        <a-camera position="0 0 0" look-controls="reverseMouseDrag: true" id="camera"></a-camera>
       <!--/a-entity-->
       <!--a-camera camera look-controls position="0 0 0" id="cam"></a-camera-->
       <a id="arbutton" class="hidden" href="#"></a>
