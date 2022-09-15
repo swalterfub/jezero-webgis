@@ -547,8 +547,8 @@ var returnToMap = function() {
     zoom: previousZoom
   });
   //console.dir('dispose Pano');
-  var asky=document.getElementById('panorama');
-  asky.removeAttribute('src');
+  //var asky=document.getElementById('panorama');
+  //asky.removeAttribute('src');
   tooltip.innerHTML='';
   tooltip.style.display = 'block';
 }
@@ -572,8 +572,8 @@ fsbutton.parentElement.onclick=function() {
 function switchToPano(id) {
   //geht nicht aus popstate!
   changeInfotab(id);
-  var asky=document.getElementById('panorama');
-  asky.setAttribute('src','#'+panos[id].image);
+  //var asky=document.getElementById('panorama');
+  //asky.setAttribute('src','#'+panos[id].image);
   var credits=document.getElementById('imagecredits');
   credits.children[0].innerHTML='Image: '+panos[id].credits;
   credits.classList.remove('hidden');
@@ -662,6 +662,7 @@ var renderPanViews = function() {
   for (const pano of panos){
     var li = document.createElement('li');
     li.id='pli-'+pano.id;
+    console.dir(pano.id);
     var input = document.createElement('input');
     input.setAttribute('type','checkbox');
     input.disabled=true;
@@ -684,8 +685,8 @@ var renderPanViews = function() {
         //disable pano canvas
         var panodiv = document.getElementById('pano');
         panodiv.classList.add('hidden');
-        var asky=document.getElementById('panorama');
-        asky.removeAttribute('src');
+        //var asky=document.getElementById('panorama');
+        //asky.removeAttribute('src');
         var parts = 1;
         var called = false;
         function callback() {
