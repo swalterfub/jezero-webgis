@@ -27,9 +27,6 @@ import proj4 from 'proj4';
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
-//import * as THREE from 'three';
-//import * as PANOLENS from 'panolens';
-import  AFRAME from 'aframe';
 
 import './jezero.css';
 var textarray=[];
