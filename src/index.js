@@ -27,6 +27,7 @@ import proj4 from 'proj4';
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
+//import 'tour';
 
 import './jezero.css';
 var textarray=[];
@@ -333,12 +334,11 @@ wayxhr.onload = function() {
       features: wayFeatures
       })
    );
-   way.getSource().forEachFeature(function(feature){
-     feature.setProperties({ 'layer': 'way'});
-     
-     console.log(feature.get('lat'),feature.get('lon'));
-     console.dir(feature.get('sol'));
-   });
+   // way.getSource().forEachFeature(function(feature){
+   //   feature.setProperties({ 'layer': 'way'});
+   //   console.log(feature.get('lat'),feature.get('lon'));
+   //   console.dir(feature.get('sol'));
+   // });
    var lastPoint = wayFeatures[wayFeatures.length - 1];
    lastPoint.setProperties({
      'layer': 'rover',
@@ -775,29 +775,5 @@ var emptyInfotab = function(id) {
   var tab = document.getElementById('infotext');
   tab.innerHTML='';
 };
-AFRAME.registerComponent('rotation-reader', {
-  /**
-   * We use IIFE (immediately-invoked function expression) to only allocate one
-   * vector or euler and not re-create on every tick to save memory.
-   */
-  tick: (function () {
-    var position = new THREE.Vector3();
-    var quaternion = new THREE.Quaternion();
 
-    return function () {
-      this.el.object3D.getWorldPosition(position);
-      this.el.object3D.getWorldQuaternion(quaternion);
-      // position and rotation now contain vector and quaternion in world space.
-    };
-  })()
-});
-AFRAME.registerComponent('x-button-listener', {
-  init: function () {
-    var el = this.el;
-    el.addEventListener('xbuttondown', function (evt) {
-      //el.setAttribute('visible', !el.getAttribute('visible'));
-      var panodiv = document.getElementById('pano');
-      panodiv.exitFullscreen();
-    });
-  }
-});
+//embedpano({xml:"tour.xml", target:"panorama", html5:"only", mobilescale:1.0, passQueryParameters:"startscene,startlookat"});
