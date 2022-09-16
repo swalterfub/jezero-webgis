@@ -1,6 +1,7 @@
 import 'ol/ol.css';
 import {Map, View, Feature} from 'ol';
 import TileLayer from 'ol/layer/Tile';
+import LineString from 'ol/geom/LineString';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import {Fill, Stroke, Circle, Style, Text} from 'ol/style';
@@ -31,7 +32,7 @@ import {createStringXY} from 'ol/coordinate';
 //import * as PANOLENS from 'panolens';
 import  AFRAME from 'aframe';
 
-import smooth from 'chaikin-smooth';
+//import smooth from 'chaikin-smooth';
 
 import './jezero.css';
 var textarray=[];
@@ -330,6 +331,7 @@ var poi = new Vector({
 var track = new Vector({
   title: "Perseverance track",
   visible: true,
+  type: 'LineString',
   style: new Style({
     stroke: new Stroke({
       color: 'green',
@@ -337,6 +339,14 @@ var track = new Vector({
     })
   })
 });
+// function makeSmooth(path, numIterations) {
+//   numIterations = Math.min(Math.max(numIterations, 1), 10);
+//   while (numIterations > 0) {
+//     path = smooth(path);
+//     numIterations--;
+//   }
+//   return path;
+// }
 var trackxhr = new XMLHttpRequest();
 //trackxhr.open('GET', 'https://maps.planet.fu-berlin.de/jezero/roverpath.geojson');
 trackxhr.open('GET', 'https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_traverse.json');
@@ -350,6 +360,20 @@ trackxhr.onload = function() {
       features: trackFeatures
       })
    );
+   // var tempSource = new VectorSource({
+   //    features: trackFeatures
+   //    });
+   // var newSource = new VectorSource();
+   // tempSource.forEachFeature(function(feature){
+   //   //console.log(feature.getGeometry());
+   //   var geometry=feature.getGeometry();
+   //   var coords=geometry.getCoordinates();
+   //   var smoothened=makeSmooth(coords, 3);
+   //   geometry.setCoordinates(smoothened);
+   //   feature.setGeometry(geometry);
+   //   newSource.addFeature(feature);
+   // });
+   // track.setSource(newSource);
    } else {
      console.dir("error loading perseverance track.");
    }
