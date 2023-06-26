@@ -171,7 +171,6 @@ In this panorama, an area called Hogwallow Flats is visible, as is Skinner Ridge
 <p>There has been processing and editing to filter out some of the noise.</p>
 <p>Credit: NASA/JPL-Caltech</p>
 <p>Source: https://mars.nasa.gov/resources/25732/sounds-of-perseverance-mars-rover-driving-sol-16-90-second-highlights</p>
-
 `
 textarray[12]=`
 <h3>Belva Crater, Onahu, Powell Peak, Mount Julian, and Echo Creek, Sol 789 (May 10, 2023)</h3>
@@ -182,6 +181,7 @@ textarray[12]=`
 <p>There has been processing and editing to filter out some of the noise.</p>
 <p>Credit: NASA/JPL-Caltech</p>
 <p>Source: https://mars.nasa.gov/resources/25732/sounds-of-perseverance-mars-rover-driving-sol-16-90-second-highlights</p>
+`
 
 
 //roverCoords=[77.45081155,18.44467749]
@@ -313,7 +313,7 @@ var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.302, 18.554]).toString()+']},"properties":{"id":"8","name":"Paleo lake view","link":"","content":"","sound":"","zoom":"13","panorama":"paleo_lake_view","rotation":"-30 100 0", "credits":"HiRISE/CTX/HRSC"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45201926,18.44479579]).toString()+']},"properties":{"id":"9","name":"Van Zyl Overlook (MastcamZ panorama)","link":"","content":"","sound":"roversnd-driving2-sol16","zoom":"14","panorama":"PIA24663","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24663, NASA/JPL/ASU/MSSS"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.44244,18.433888]).toString()+']},"properties":{"id":"10","name":"Village Outcrop (MastcamZ panorama)","link":"","content":"","sound":"roversnd-laser","zoom":"14","panorama":"Village","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.40616769,18.45889532]).toString()+']},"properties":{"id":"11","name":"Hogwallow Flats (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"HogwallowFlats","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24921, NASA/JPL/ASU/MSSS"}}\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.40616769,18.45889532]).toString()+']},"properties":{"id":"11","name":"Hogwallow Flats (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"HogwallowFlats","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24921, NASA/JPL/ASU/MSSS"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.36862212,18.4827227]).toString()+']},"properties":{"id":"12","name":"Bela Crater (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"Bela_crater","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}}\
   ]}';
 //HIER AUCH BESSER PROJEKTIONEN DIREKT EINGEBEN
