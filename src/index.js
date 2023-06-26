@@ -27,7 +27,6 @@ import proj4 from 'proj4';
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 
-//import 'tour';
 
 import './jezero.css';
 var textarray=[];
@@ -608,8 +607,8 @@ function switchToPano(id) {
   var fstab = document.getElementById('fstab');
   fstab.classList.remove('hidden');
   fstab.style.cursor = "pointer";
-  var sound=document.getElementById('insightsnd');
-  sound.play();
+  //var sound=document.getElementById('insightsnd');
+  //sound.play();
   currentPano=id;
 }
 var clickMap = function (pixel) {
@@ -662,7 +661,6 @@ var renderPanViews = function() {
   for (const pano of panos){
     var li = document.createElement('li');
     li.id='pli-'+pano.id;
-    console.dir(pano.id);
     var input = document.createElement('input');
     input.setAttribute('type','checkbox');
     input.disabled=true;
@@ -777,4 +775,3 @@ var emptyInfotab = function(id) {
   tab.innerHTML='';
 };
 
-//embedpano({xml:"tour.xml", target:"panorama", html5:"only", mobilescale:1.0, passQueryParameters:"startscene,startlookat"});
