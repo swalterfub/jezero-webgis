@@ -13,7 +13,6 @@
 </head>
 
 <body>
-  <!--<script src="src/tour.js" type="module"></script>-->
   <div id="fullscreen" class="fullscreen">
     <div id="sidebar" class="sidebar collapsed">
       <div class="sidebar-tabs" id='sidebar-tabs'>
@@ -119,7 +118,11 @@
   </div>
   <div id="map" class="sidebar-map"></div>
   <div id="tooltip"></div>
-  <div id="pano"></div>
+  <script src="krpano.js"></script>
+  <div id="pano" style="width:100%;height:100%;"></div>
+  <script>
+  embedpano({xml:"tour.xml", target:"pano", html5:"only", mobilescale:1.0, passQueryParameters:"startscene,startlookat"});
+  </script>
   <script src="src/index.js"></script>
   <div class="imagecredits">
     <div id="hideoverflow">
