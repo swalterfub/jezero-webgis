@@ -498,10 +498,10 @@ const map = new Map({
         params: { LAYERS: "landingellipse" }
       }),
     }),
-    poi,
     rover,
     track,
     way,
+    poi,
     new TileLayer({
       title: "Lat/Lon GRID",
       source: new TileWMS({
