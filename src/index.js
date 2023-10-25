@@ -182,7 +182,16 @@ textarray[12]=`
 <p>Credit: NASA/JPL-Caltech</p>
 <p>Source: https://mars.nasa.gov/resources/25732/sounds-of-perseverance-mars-rover-driving-sol-16-90-second-highlights</p>
 `
-
+textarray[12]=`
+<h3>Stone Man Pass, Sol 817</h3>
+<p>Source: https://mars.nasa.gov/resources/26979/perseverance-explores-the-jezero-crater-delta/</p>
+<h3>Audio</h3>
+<p>NASA engineers combined three segments from the raw audio file recorded while the Perseverance Mars rover rolled across a section of Jezero Crater on sol 16 of the mission.</p>
+<p>Sections 0:20-0:45, 6:40-7:10, and 14:30-15:00 were combined into this 90-second highlight clip.</p>
+<p>There has been processing and editing to filter out some of the noise.</p>
+<p>Credit: NASA/JPL-Caltech</p>
+<p>Source: https://mars.nasa.gov/resources/25732/sounds-of-perseverance-mars-rover-driving-sol-16-90-second-highlights</p>
+`
 
 //roverCoords=[77.45081155,18.44467749]
 proj4.defs("EPSG:49901", "+proj=longlat +R=3396190 +no_defs");
@@ -314,7 +323,8 @@ var featuresAsText='{"type":"FeatureCollection","features":[\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.45201926,18.44479579]).toString()+']},"properties":{"id":"9","name":"Van Zyl Overlook (MastcamZ panorama)","link":"","content":"","sound":"roversnd-driving2-sol16","zoom":"14","panorama":"PIA24663","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24663, NASA/JPL/ASU/MSSS"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.44244,18.433888]).toString()+']},"properties":{"id":"10","name":"Village Outcrop (MastcamZ panorama)","link":"","content":"","sound":"roversnd-laser","zoom":"14","panorama":"Village","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}},\
   {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.40616769,18.45889532]).toString()+']},"properties":{"id":"11","name":"Hogwallow Flats (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"HogwallowFlats","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/PIA24921, NASA/JPL/ASU/MSSS"}},\
-  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.36862212,18.4827227]).toString()+']},"properties":{"id":"12","name":"Bela Crater (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"Bela_crater","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}}\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.36862212,18.4827227]).toString()+']},"properties":{"id":"12","name":"Bela Crater (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"Bela_crater","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}},\
+  {"type":"Feature","geometry":{"type":"Point","coordinates":['+ll2xyz([77.36854836,18.4834414]).toString()+']},"properties":{"id":"13","name":"Stone Man Pass (MastcamZ panorama)","link":"","sound":"roversnd-driving1-sol16","content":"","zoom":"14","panorama":"StoneManPass","rotation":"0 60 0","credits":"Mars 2020/MastcamZ/Supercam, NASA/JPL/ASU/MSSS"}}\
   ]}';
 //HIER AUCH BESSER PROJEKTIONEN DIREKT EINGEBEN
 var poiSource = new VectorSource({
@@ -429,11 +439,12 @@ wayxhr.onload = function() {
       features: wayFeatures
       })
    );
-   // way.getSource().forEachFeature(function(feature){
-   //   feature.setProperties({ 'layer': 'way'});
-   //   console.log(feature.get('lat'),feature.get('lon'));
-   //   console.dir(feature.get('sol'));
-   // });
+	//print rover positions per sol Sol SOL
+    //way.getSource().forEachFeature(function(feature){
+     // feature.setProperties({ 'layer': 'way'});
+      //console.log(feature.get('lat'),feature.get('lon'));
+      //console.dir(feature.get('sol'));
+    //});
    var lastPoint = wayFeatures[wayFeatures.length - 1];
    lastPoint.setProperties({
      'layer': 'rover',
